@@ -383,5 +383,5 @@ void CObject2D::SetTexture(const char* pRegisterName)
 	TexName += pRegisterName;
 
 	// Š„‚è“–‚Ä‚·‚é
-	m_nIdxTexture = pTexture->Register(TexName.c_str());
+	m_nIdxTexture = pTexture->RegisterDynamic(TexName.c_str());
 }

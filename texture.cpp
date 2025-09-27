@@ -1,85 +1,81 @@
-//=====================================
+//=============================================================================
 //
-// テクスチャ処理 [ texture.cpp ]
-// Author: Asuma Nishio
+// テクスチャ処理 [texture.cpp]
+// Author : RIKU TANEKAWA
 //
-//=====================================
+//=============================================================================
 
-//**********************
+//*****************************************************************************
 // インクルードファイル
-//**********************
+//*****************************************************************************
 #include "texture.h"
+#include "renderer.h"
 #include "manager.h"
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <sstream>
 
-//**********************
-// 静的メンバ変数
-//**********************
-int CTexture::m_nNumAll = NULL;	// 総数管理
+//*****************************************************************************
+// 静的メンバ変数宣言
+//*****************************************************************************
+int CTexture::m_nNumAll = 0;
 
-//===============================
+//=============================================================================
 // コンストラクタ
-//===============================
+//=============================================================================
 CTexture::CTexture()
 {
 	// 値のクリア
-	for (int nCnt = 0; nCnt < NUM_TEXTURE; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
-		m_apTexture[nCnt] = nullptr;
+		m_apTexture[nCnt] = {};
 	}
 }
-//===============================
+//=============================================================================
 // デストラクタ
-//===============================
+//=============================================================================
 CTexture::~CTexture()
 {
-	// 無し
+	// なし
 }
-//===============================
-// テクスチャ読み込み
-//===============================
+//=============================================================================
+// テクスチャの読み込み
+//=============================================================================
 HRESULT CTexture::Load(void)
 {
-#if 1
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// すべてのテクスチャ分回す
-	for (int nCnt = 0; nCnt < NUM_TEXTURE; nCnt++)
+	// 全てのテクスチャの読み込み
+	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
-		// ファイル名が無いならスキップ
-		if (TexName[nCnt] == nullptr)
-			continue;
-
-		// 列挙型の分読み込む
-		if (FAILED(D3DXCreateTextureFromFile(pDevice, TexName[nCnt], &m_apTexture[nCnt])))
+		if (!TEXTURE[nCnt].empty()) // 空文字列じゃなければロード
 		{
-			// 警告表示
-			MessageBox(NULL, "テクスチャパスが存在しません", TexName[nCnt], MB_OK);
+			HRESULT hr = D3DXCreateTextureFromFile(
+				pDevice,
+				TEXTURE[nCnt].c_str(),
+				&m_apTexture[nCnt]);
 
-			return E_FAIL;
+			if (FAILED(hr))
+			{
+				m_apTexture[nCnt] = nullptr;
+			}
 		}
-
-		// 加算する
-		m_nNumAll++;
+		else
+		{
+			m_apTexture[nCnt] = nullptr;
+		}
 	}
-#endif
 
-	// 結果を返す
 	return S_OK;
-
 }
-//===============================
-// テクスチャ破棄
-//===============================
-void CTexture::UnLoad(void)
+//=============================================================================
+// テクスチャの破棄
+//=============================================================================
+void CTexture::Unload(void)
 {
-	// すべてのテクスチャの破棄
-	for (int nCnt = 0; nCnt < NUM_TEXTURE; nCnt++)
+	// 全てのテクスチャの破棄
+	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
+		// クリア
+		TEXTURE[nCnt].clear();
 		if (m_apTexture[nCnt] != nullptr)
 		{
 			m_apTexture[nCnt]->Release();
@@ -87,36 +83,58 @@ void CTexture::UnLoad(void)
 		}
 	}
 }
-//===============================
-// テクスチャ番号を登録する
-//===============================
-int CTexture::Register(const char* pFileName)
+//=============================================================================
+// テクスチャの指定
+//=============================================================================
+int CTexture::Register(const char* pFilename)
 {
-	for (int nCnt = 0; nCnt < NUM_TEXTURE; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_TEXTURE; nCnt++)
 	{
-		// nullptrチェック
-		if (TexName[nCnt] != nullptr)
+		if (!TEXTURE[nCnt].empty() && TEXTURE[nCnt] == pFilename)
 		{
-			// ファイルパス名が一致していたら
-			if (strcmp(pFileName, TexName[nCnt]) == 0)
-			{
-				// 番号を返す
-				return nCnt;
-			}
+			return nCnt; // 見つかった
 		}
 	}
 
-	// テクスチャがない場合
+	return -1; // 見つからなかった
+}
+//=============================================================================
+// テクスチャの指定
+//=============================================================================
+int CTexture::RegisterDynamic(const char* pFilename)
+{
+	// すでにロード済みならインデックス返す
+	for (int nCnt = 0; nCnt < m_nNumAll; nCnt++)
+	{
+		if (!TEXTURE[nCnt].empty() && TEXTURE[nCnt] == pFilename)
+		{
+			return nCnt;
+		}
+	}
+
+	// 新しいスロットにロード
+	if (m_nNumAll < MAX_TEXTURE)
+	{
+		// デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+		if (SUCCEEDED(D3DXCreateTextureFromFile(pDevice, pFilename, &m_apTexture[m_nNumAll])))
+		{
+			TEXTURE[m_nNumAll] = pFilename;  // std::string に代入
+			return m_nNumAll++;
+		}
+	}
 	return -1;
 }
-//===============================
-// テクスチャ番号取得
-//===============================
+//=============================================================================
+// テクスチャのアドレス取得
+//=============================================================================
 LPDIRECT3DTEXTURE9 CTexture::GetAddress(int nIdx)
 {
-	// 例外処理
-	if (nIdx < 0 || nIdx >= NUM_TEXTURE) return nullptr;
+	if (nIdx < 0 || nIdx >= MAX_TEXTURE)
+	{// 範囲外
+		return NULL;
+	}
 
-	// テクスチャ番号を取得
 	return m_apTexture[nIdx];
 }

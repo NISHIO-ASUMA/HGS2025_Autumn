@@ -13,6 +13,7 @@
 //****************************
 #include "scene.h"
 #include "pausemanager.h"
+#include "blockmanager.h"
 
 //****************************
 // ゲームクラスを定義
@@ -48,9 +49,11 @@ public:
 	// 静的メンバ関数
 	static CGame* Create(void);
 	static CPauseManager* GetPause(void) { return m_pPausemanager; }
+	static CBlockManager* GetBlockManager(void) { return m_pBlockManager; }
 
 private:
 	static CPauseManager* m_pPausemanager;		// ポーズマネージャーポインタ
+	static CBlockManager* m_pBlockManager;		// ブロックマネージャーへのポインタ
 	int m_nGametype;
 	int m_nStateCount;
 };

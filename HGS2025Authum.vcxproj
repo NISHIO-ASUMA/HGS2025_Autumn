@@ -152,7 +152,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="blockmanager.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="collisionUtils.cpp" />
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
@@ -166,6 +169,7 @@
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="object3D.cpp" />
+    <ClCompile Include="objectX.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="pausemanager.cpp" />
     <ClCompile Include="pch.cpp">
@@ -183,11 +187,15 @@
     <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="block.h" />
+    <ClInclude Include="blockmanager.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="collisionUtils.h" />
     <ClInclude Include="debugproc.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
@@ -197,6 +205,7 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
+    <ClInclude Include="objectX.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="pausemanager.h" />
     <ClInclude Include="pch.h" />

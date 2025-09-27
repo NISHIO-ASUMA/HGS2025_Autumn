@@ -389,8 +389,8 @@ void CRenderer::Draw(void)
 
 		if (m_isbuller)
 		{
-			// ターゲット設定
-			ChangeTarget(CManager::GetCamera()->GetPos(),CManager::GetCamera()->GetPosR(), D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+			//// ターゲット設定
+			//ChangeTarget(CManager::GetCamera()->GetPos(),CManager::GetCamera()->GetPosR(), D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 
 			// 画面クリア
 			m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL), D3DCOLOR_RGBA(0, 0, 0, 225), 1.0f, 0);

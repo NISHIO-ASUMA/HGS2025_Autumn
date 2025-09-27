@@ -20,7 +20,7 @@
 //**************************
 CRenderer* CManager::m_pRenderer = nullptr;				// レンダラーへのポインタ
 CInputKeyboard* CManager::m_pInputKeyboard = nullptr;	// キーボードへのポインタ
-CJoyPad* CManager::m_pJoyPad = nullptr;					// ジョイパッドクラスへのポインタ
+CInputJoypad* CManager::m_pJoyPad = nullptr;					// ジョイパッドクラスへのポインタ
 CSound* CManager::m_pSound = nullptr;					// サウンドへのポインタ
 CInputMouse* CManager::m_pInputMouse = nullptr;			// マウスへのポインタ
 CTexture* CManager::m_pTexture = nullptr;				// テクスチャクラスへのポインタ
@@ -59,10 +59,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// ジョイパッドオブジェクトの生成処理
-	m_pJoyPad = new CJoyPad;
+	m_pJoyPad = new CInputJoypad;
 
 	// 初期化に失敗したら
-	if (FAILED(m_pJoyPad->Init(hInstance, hWnd)))
+	if (FAILED(m_pJoyPad->Init()))
 	{
 		// -1を返す
 		return -1;
@@ -234,7 +234,7 @@ void CManager::Uninit(void)
 	if (m_pTexture != nullptr)
 	{
 		// すべてのテクスチャの破棄
-		m_pTexture->UnLoad();
+		m_pTexture->Unload();
 
 		// ポインタの破棄
 		delete m_pTexture;
@@ -296,8 +296,8 @@ void CManager::Update()
 	// マウスの更新処理
 	m_pInputMouse->Update();
 
-	// ジョイパッド振動の更新処理
-	m_pJoyPad->UpdateVibration();
+	//// ジョイパッド振動の更新処理
+	//m_pJoyPad->UpdateVibration();
 
 	// カメラ更新
 	m_pCamera->Update();

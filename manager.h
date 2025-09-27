@@ -41,7 +41,7 @@ public:
 	// 静的メンバ関数
 	static CRenderer* GetRenderer(void) { return m_pRenderer; }
 	static CInputKeyboard* GetInputKeyboard(void) { return m_pInputKeyboard; }
-	static CJoyPad* GetJoyPad(void) { return m_pJoyPad; }
+	static CInputJoypad* GetJoyPad(void) { return m_pJoyPad; }
 	static CSound* GetSound(void) { return m_pSound; }
 	static CInputMouse* GetMouse(void) { return m_pInputMouse; }
 	static CTexture* GetTexture(void) { return m_pTexture; }
@@ -56,7 +56,7 @@ public:
 private:
 	static CRenderer* m_pRenderer;			// レンダラークラスのポインタ
 	static CInputKeyboard* m_pInputKeyboard;// キーボードクラスのポインタ
-	static CJoyPad* m_pJoyPad;				// ジョイパッドクラスのポインタ
+	static CInputJoypad* m_pJoyPad;				// ジョイパッドクラスのポインタ
 	static CSound* m_pSound;				// サウンドオブジェクトのポインタ
 	static CInputMouse* m_pInputMouse;		// マウスクラスのポインタ
 	static CTexture* m_pTexture;			// テクスチャクラスのポインタ

@@ -19,6 +19,7 @@
 // 静的メンバ変数宣言
 //**************************
 CPauseManager* CGame::m_pPausemanager = nullptr; // ポーズマネージャーのポインタ
+CBlockManager* CGame::m_pBlockManager = nullptr; // ブロックマネージャーのポインタ
 
 //==================================
 // コンストラクタ
@@ -53,11 +54,20 @@ HRESULT CGame::Init(void)
 	// ポーズマネージャー初期化処理
 	m_pPausemanager->Init();
 
+	// ブロックマネージャーの生成
+	m_pBlockManager = new CBlockManager;
+
+	// ブロックマネージャーの初期化
+	m_pBlockManager->Init();
+
+	// JSONの読み込み
+	m_pBlockManager->LoadFromJson("data/test_01.json");
+
 	// 通常進行状態
 	m_nGametype = GAMESTATE_NORMAL;
 
-	// ui生成
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "game.jpg", false);
+	//// ui生成
+	//CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "game.jpg", false);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -67,6 +77,15 @@ HRESULT CGame::Init(void)
 //==================================
 void CGame::Uninit(void)
 {
+	// ブロックマネージャーの破棄
+	if (m_pBlockManager != nullptr)
+	{
+		m_pBlockManager->Uninit();
+
+		delete m_pBlockManager;
+		m_pBlockManager = nullptr;
+	}
+
 	// nullチェック
 	if (m_pPausemanager != nullptr)
 	{
@@ -92,6 +111,9 @@ void CGame::Update(void)
 	// ポーズの更新処理
 	m_pPausemanager->Update();
 	
+	// ブロックマネージャーの更新処理
+	m_pBlockManager->Update();
+
 	// フェード取得
 	CFade* pFade = CManager::GetFade();
 

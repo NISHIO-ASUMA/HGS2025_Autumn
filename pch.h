@@ -23,6 +23,7 @@
 #include <assert.h>					// アサート関数ヘッダー
 #include <stdlib.h>
 #include <cstdio>
+#include <fstream>
 
 //**************************
 // ライブラリのリンク宣言

@@ -83,7 +83,7 @@ HRESULT CModel::Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char * pFilename)
 			CTexture* pTexture = CManager::GetTexture();
 
 			// テクスチャセット
-			m_pTexture[nCntMat] = pTexture->Register(pMat[nCntMat].pTextureFilename);
+			m_pTexture[nCntMat] = pTexture->RegisterDynamic(pMat[nCntMat].pTextureFilename);
 		}
 		else
 		{

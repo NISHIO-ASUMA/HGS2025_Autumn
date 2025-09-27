@@ -208,7 +208,7 @@ void CObject3D::SetTexture(void)
 	CTexture* pTexture = CManager::GetTexture();
 
 	// 割り当て
-	m_nIdxTexture = pTexture->Register("data\\TEXTURE\\field100.jpg");
+	m_nIdxTexture = pTexture->RegisterDynamic("data\\TEXTURE\\field100.jpg");
 }
 //===============================
 // オブジェクトの高さ取得

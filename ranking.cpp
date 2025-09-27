@@ -71,7 +71,7 @@ void CRanking::Uninit(void)
 void CRanking::Update(void)
 {
 	// 決定キー入力
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN) || CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_A) || CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_START))
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN) || CManager::GetJoyPad()->GetTrigger(CInputJoypad::JOYKEY_A) || CManager::GetJoyPad()->GetTrigger(CInputJoypad::JOYKEY_START))
 	{
 		// フェード取得
 		CFade* pFade = CManager::GetFade();
