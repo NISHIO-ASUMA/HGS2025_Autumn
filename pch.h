@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <cstdio>
 #include <fstream>
+#include <functional>
 
 //**************************
 // ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒŠƒ“ƒNéŒ¾

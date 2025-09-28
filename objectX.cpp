@@ -23,7 +23,7 @@ CObjectX::CObjectX(int nPriority) : CObject(nPriority)
 	m_pos			= VECTOR3_NULL;			// 位置
 	m_rot			= VECTOR3_NULL;			// 向き
 	m_move			= VECTOR3_NULL;			// 移動量
-	m_size			= VECTOR3_NULL;			// サイズ
+	m_size			= D3DXVECTOR3(1.0f, 1.0f, 1.0f);// サイズ : 初期は1.0にしておく
 	m_pMesh			= nullptr;				// メッシュへのポインタ
 	m_pBuffMat		= nullptr;				// マテリアルへのポインタ
 	m_dwNumMat		= NULL;					// マテリアル数

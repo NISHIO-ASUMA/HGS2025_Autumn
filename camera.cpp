@@ -12,8 +12,9 @@
 #include "renderer.h"
 #include "manager.h"
 #include "game.h"
+#include "player.h"
 
-// 名前空間の使用
+// 名前空間stdの使用
 using namespace std;
 
 //=============================================================================

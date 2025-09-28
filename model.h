@@ -1,85 +1,63 @@
-//====================================
+//=============================================================================
 //
-// モデル処理 [ model.h ]
-// Author: Asuma Nishio
+// モデル処理 [model.h]
+// Author : RIKU TANEKAWA
 //
-//=====================================
+//=============================================================================
+#ifndef _MODEL_H_// このマクロ定義がされていなかったら
+#define _MODEL_H_// 2重インクルード防止のマクロ定義
 
-#ifndef _MODEL_H_ // このマクロ定義がされてなかったら
-#define _MODEL_H_ // 2重インクルード防止のマクロ定義
+//*****************************************************************************
+// インクルードファイル
+//*****************************************************************************
+#include "object.h"
 
-//**********************
-// モデルクラスの定義
-//**********************
+//*****************************************************************************
+// モデルクラス
+//*****************************************************************************
 class CModel
 {
 public:
-	//*********************
-	// パーツのタイプ列挙型
-	//********************
-	enum PARTTYPE
-	{
-		PARTTYPE_NONE, // 何も種類を設定しない時
-		PARTTYPE_HEAD, // 頭
-		PARTTYPE_CHEST, // 体
-		PARTTYPE_LEFT_HAND, // 左腕
-		PARTTYPE_RIGHT_HAND,// 右腕
-		PARTTYPE_LEFT_LEG, //左足
-		PARTTYPE_RIGHT_LEG,// 右足
-		PARTTYPE_WEAPON,   // 武器
-		PARTTYPE_FOOT,
-		PARTTYPE_MAX
-	};
-
-	// コンストラクタ・デストラクタ
 	CModel();
 	~CModel();
 
-	// メンバ関数
-	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
+	static CModel* Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot);
+	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	// セッター
-	void SetParent(CModel* pModel);
+	//*****************************************************************************
+	// setter関数
+	//*****************************************************************************
+	void SetParent(CModel* pModel) { m_pParent = pModel; }
+	void SetOffsetPos(const D3DXVECTOR3& pos) { m_OffsetPos = pos; }
+	void SetOffsetRot(const D3DXVECTOR3& rot) { m_OffsetRot = rot; }
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
-	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
-	void OffSetPos(D3DXVECTOR3 offpos) { m_offPos = offpos; }
-	void OffSetRot(D3DXVECTOR3 offrot) { m_offRot = offrot; }
-	void SetPartType(PARTTYPE nDestPartType) { m_parttype = nDestPartType; }
-	void SetColorChange(bool isFlags) { m_isColorChange = isFlags; }
+	void SetRot(D3DXVECTOR3 rot) { m_rot = D3DXToRadian(rot); }
 
-	// ゲッター
-	D3DXMATRIX GetMtxWorld(void) { return m_mtxworld; }
-	PARTTYPE GetPartType(void) const { return m_parttype; }
-
-	// フラグメント
-	bool IsPlayer() const { return m_isPlayer; }
-	bool IsBoss() const { return m_isBoss; }
-	void SetIsBoss(bool flag) { m_isBoss = flag; }
-	void SetIsPlayer(bool flag) { m_isPlayer = flag; }
-
-	// 静的メンバ関数
-	static CModel* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
+	//*****************************************************************************
+	// getter関数
+	//*****************************************************************************
+	D3DXMATRIX GetMtxWorld(void) { return m_mtxWorld; }
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
+	D3DXVECTOR3 GetRot(void) { return m_rot; }
+	D3DXVECTOR3 GetOffsetPos(void) const { return m_OffsetPos; }
+	D3DXVECTOR3 GetOffsetRot(void) const { return m_OffsetRot; }
 
 private:
-
-	D3DXVECTOR3 m_pos, m_rot,m_offPos,m_offRot; // 座標,角度
-
-	D3DXMATRIX m_mtxworld;	  // ワールドマトリックス
-	CModel* m_pParent;		  // 親モデル
-
-	LPD3DXMESH m_pMesh;	   // メッシュ情報
-	LPD3DXBUFFER m_pBuffMat; // マテリアル情報
-	DWORD m_dwNumMat;		// マテリアル数
-	int* m_pTexture;		// テクスチャポインタ
-
-	PARTTYPE m_parttype;    // モデルの種類
-
-	bool m_isPlayer; // プレイヤーに対応したモデルかどうか
-	bool m_isBoss;
-	bool m_isColorChange;
+	int* m_nIdxTexture;
+	D3DXVECTOR3 m_pos;					// 位置
+	D3DXVECTOR3 m_rot;					// 向き
+	D3DXVECTOR3 m_move;					// 移動量
+	LPD3DXMESH m_pMesh;					// メッシュへのポインタ
+	LPD3DXBUFFER m_pBuffMat;			// マテリアルへのポインタ
+	DWORD m_dwNumMat;					// マテリアル数
+	D3DXMATRIX m_mtxWorld;				// ワールドマトリックス
+	CModel* m_pParent;					// 親モデルへのポインタ
+	char m_Path[MAX_PATH];				// ファイルパス
+	D3DXVECTOR3 m_OffsetPos;			// オフセット
+	D3DXVECTOR3 m_OffsetRot;			// オフセット
 };
 
 #endif

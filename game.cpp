@@ -14,6 +14,7 @@
 #include "title.h"
 #include "result.h"
 #include "ui.h"
+#include "player.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -66,6 +67,12 @@ HRESULT CGame::Init(void)
 	// 通常進行状態
 	m_nGametype = GAMESTATE_NORMAL;
 
+	// プレイヤーの生成
+	CPlayer* player = CCharacterManager::GetInstance().AddCharacter<CPlayer>();
+
+	// キャラクターの初期化処理
+	CCharacterManager::GetInstance().InitAll();
+
 	//// ui生成
 	//CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "game.jpg", false);
 
@@ -77,6 +84,9 @@ HRESULT CGame::Init(void)
 //==================================
 void CGame::Uninit(void)
 {
+	// キャラクターの終了処理
+	CCharacterManager::GetInstance().Uninit();
+
 	// ブロックマネージャーの破棄
 	if (m_pBlockManager != nullptr)
 	{

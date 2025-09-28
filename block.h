@@ -45,4 +45,9 @@ private:
 	CBoxCollider* m_pCollider;	// ボックスコライダー
 };
 
+class CRockBlock : public CBlock
+{
+
+};
+
 #endif

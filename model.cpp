@@ -1,53 +1,72 @@
-//====================================
+//=============================================================================
 //
-// モデル処理 [ model.cpp ]
-// Author: Asuma Nishio
+// モデル処理 [model.cpp]
+// Author : RIKU TANEKAWA
 //
-//=====================================
+//=============================================================================
 
-//**********************
+//*****************************************************************************
 // インクルードファイル
-//**********************
+//*****************************************************************************
 #include "model.h"
-#include "manager.h"
 #include "texture.h"
+#include "renderer.h"
+#include "manager.h"
+#include <cstdio>
 
-//=================================
+//=============================================================================
 // コンストラクタ
-//=================================
+//=============================================================================
 CModel::CModel()
 {
 	// 値のクリア
-	m_dwNumMat = NULL;
-	m_pBuffMat = nullptr;
-	m_pMesh = nullptr;
-	m_pos = VECTOR3_NULL;
-	m_rot = VECTOR3_NULL;
-	m_pTexture = nullptr;
-	m_offPos = VECTOR3_NULL;
-	m_offRot = VECTOR3_NULL;
-	m_parttype = PARTTYPE_NONE;
-	m_isPlayer  = false;
-	m_isBoss = false;
-	m_isColorChange = false;
+	memset(m_Path, 0, sizeof(m_Path));	// ファイルパス
+	m_nIdxTexture = 0;					// テクスチャインデックス
+	m_pos		= VECTOR3_NULL;			// 位置
+	m_rot		= VECTOR3_NULL;			// 向き
+	m_move		= VECTOR3_NULL;			// 移動量
+	m_pMesh		= nullptr;				// メッシュへのポインタ
+	m_pBuffMat	= nullptr;				// マテリアルへのポインタ
+	m_dwNumMat	= NULL;					// マテリアル数
+	m_mtxWorld	= {};					// ワールドマトリックス
+	m_pParent	= nullptr;				// 親モデルへのポインタ
 }
-//=================================
+//=============================================================================
 // デストラクタ
-//=================================
+//=============================================================================
 CModel::~CModel()
 {
-	// 無し
+	// なし
 }
-//=================================
-// 初期化処理
-//=================================
-HRESULT CModel::Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char * pFilename)
+//=============================================================================
+// 生成処理
+//=============================================================================
+CModel* CModel::Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
-	// デバイスポインタを宣言
+	CModel* pModel = new CModel;
+
+	pModel->m_pos = pos;
+	pModel->m_rot = D3DXToRadian(rot);
+	strcpy_s(pModel->m_Path, pFilepath); // パス保存
+
+	// 初期化処理
+	pModel->Init();
+
+	return pModel;
+}
+//=============================================================================
+// 初期化処理
+//=============================================================================
+HRESULT CModel::Init(void)
+{
+	// テクスチャの取得
+	CTexture* pTexture = CManager::GetTexture();
+
+	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// Xファイルの読み込み
-	D3DXLoadMeshFromX(pFilename,
+	D3DXLoadMeshFromX(m_Path,
 		D3DXMESH_SYSTEMMEM,
 		pDevice,
 		NULL,
@@ -56,49 +75,60 @@ HRESULT CModel::Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char * pFilename)
 		&m_dwNumMat,
 		&m_pMesh);
 
-	// 位置の設定
-	m_pos = pos;
-	m_rot = rot;
+	int nNumVtx;		// 頂点数
+	DWORD sizeFVF;		// 頂点フォーマットのサイズ
+	BYTE* pVtxBuff;		// 頂点バッファへのポインタ
 
-	// オフセットを代入
-	m_offPos = pos;
-	m_offRot = rot;
+	// 頂点数の取得
+	nNumVtx = m_pMesh->GetNumVertices();
 
-	// マテリアルデータへのポインタ
-	D3DXMATERIAL* pMat;
+	// 頂点フォーマットの取得
+	sizeFVF = D3DXGetFVFVertexSize(m_pMesh->GetFVF());
+
+	// 頂点バッファのロック
+	m_pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&pVtxBuff);
+
+
+	// 最大値とかはいったんなし
+
+
+	// 頂点バッファのアンロック
+	m_pMesh->UnlockVertexBuffer();
+
+	D3DXMATERIAL* pMat;// マテリアルへのポインタ
 
 	// マテリアルデータへのポインタを取得
 	pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 
-	// テクスチャインデックス配列の動的確保
-	m_pTexture = new int[m_dwNumMat];
+	m_nIdxTexture = new int[m_dwNumMat];
 
-	// マテリアル数だけ回す
 	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
 	{
-		// テクスチャが読み込めたら
-		if (pMat[nCntMat].pTextureFilename != NULL)
-		{
-			// テクスチャポインタ取得
-			CTexture* pTexture = CManager::GetTexture();
-
-			// テクスチャセット
-			m_pTexture[nCntMat] = pTexture->RegisterDynamic(pMat[nCntMat].pTextureFilename);
+		if (pMat[nCntMat].pTextureFilename != nullptr)
+		{// テクスチャファイルが存在する
+			// テクスチャの登録
+			m_nIdxTexture[nCntMat] = pTexture->RegisterDynamic(pMat[nCntMat].pTextureFilename);
 		}
 		else
-		{
-			m_pTexture[nCntMat] = -1; // テクスチャなし
+		{// テクスチャが存在しない
+			m_nIdxTexture[nCntMat] = -1;
 		}
 	}
 
-	// 結果を返す
 	return S_OK;
 }
-//=================================
+//=============================================================================
 // 終了処理
-//=================================
+//=============================================================================
 void CModel::Uninit(void)
 {
+	// テクスチャインデックスの破棄
+	if (m_nIdxTexture != nullptr)
+	{
+		delete[] m_nIdxTexture;
+		m_nIdxTexture = nullptr;
+	}
+
 	// メッシュの破棄
 	if (m_pMesh != nullptr)
 	{
@@ -112,143 +142,91 @@ void CModel::Uninit(void)
 		m_pBuffMat->Release();
 		m_pBuffMat = nullptr;
 	}
-
-	// テクスチャポインタの破棄
-	if (m_pTexture != nullptr)
-	{
-		delete[] m_pTexture;
-
-		m_pTexture = nullptr;
-	}
 }
-//=================================
+//=============================================================================
 // 更新処理
-//=================================
+//=============================================================================
 void CModel::Update(void)
 {
-	// 無し
+	// 位置を更新
+	m_pos.x += m_move.x;
+	m_pos.z += m_move.z;
+	m_pos.y += m_move.y;
 }
-//=================================
+//=============================================================================
 // 描画処理
-//=================================
+//=============================================================================
 void CModel::Draw(void)
 {
-	// デバイスポインタを宣言
+	// テクスチャの取得
+	CTexture* pTexture = CManager::GetTexture();
+
+	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// 計算用のマトリックスを宣言
+	// 計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
 
-	// 現在のマテリアルを保存
-	D3DMATERIAL9 matDef;
+	D3DMATERIAL9 matDef;	// 現在のマテリアル保存用
 
-	// マテリアルデータへのポインタ
-	D3DXMATERIAL* pMat;
+	D3DXMATERIAL* pMat;		// マテリアルデータへのポインタ
 
 	// ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&m_mtxworld);
+	D3DXMatrixIdentity(&m_mtxWorld);
 
 	// 向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y + m_offRot.y, m_rot.x + m_offRot.x, m_rot.z + m_offRot.z);
-	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxRot);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y + m_OffsetRot.y, m_rot.x + m_OffsetRot.x, m_rot.z + m_OffsetRot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	// 位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x + m_offPos.x, m_pos.y + m_offPos.y, m_pos.z + m_offPos.z);
-	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxTrans);
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x + m_OffsetPos.x, m_pos.y + m_OffsetPos.y, m_pos.z + m_OffsetPos.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-	// 親のペアネント格納用変数
 	D3DXMATRIX mtxParent;
 
 	if (m_pParent != nullptr)
 	{// 親が存在する
-		// ワールドマトリックス取得
+		// 親モデルのマトリックスを取得
 		mtxParent = m_pParent->GetMtxWorld();
 	}
 	else
 	{// 親が存在しない
-		// マトリックス取得
+		// 現在(最新)のマトリックスを取得する
 		pDevice->GetTransform(D3DTS_WORLD, &mtxParent);
 	}
 
-	// 親のマトリックスとかけ合わせる
-	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxParent);
+	// 親のマトリックスと掛け合わせる
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
 
-	// ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxworld);
+	// ワールドマトリックスを設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-	// 現在のマトリックスの取得
+	// 現在のマテリアルの取得
 	pDevice->GetMaterial(&matDef);
 
 	// マテリアルデータへのポインタを取得
 	pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 
-	// マテリアル数だけ回す
 	for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
 	{
-		// カラー変更マテリアル
-		if (m_isColorChange)
+		// マテリアルの設定
+		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+
+		if (m_nIdxTexture[nCntMat] == -1)
 		{
-			D3DXMATERIAL Col = pMat[nCntMat];
-
-			Col.MatD3D.Diffuse.a = 0.5f;
-
-			// マテリアル設定
-			pDevice->SetMaterial(&Col.MatD3D);
+			// テクスチャの設定
+			pDevice->SetTexture(0, nullptr);
 		}
 		else
 		{
-			// マテリアル設定
-			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-		}
-
-		// インデックスに応じて変更する
-		if (m_pTexture[nCntMat] != -1)
-		{
-			// テクスチャ取得
-			CTexture* pTexture = CManager::GetTexture();
-
-			// テクスチャセット
-			pDevice->SetTexture(0, pTexture->GetAddress(m_pTexture[nCntMat]));
-		}
-		else
-		{
-			// テクスチャなし
-			pDevice->SetTexture(0, NULL); 
+			// テクスチャの設定
+			pDevice->SetTexture(0, pTexture->GetAddress(m_nIdxTexture[nCntMat]));
 		}
 
 		// モデル(パーツ)の描画
 		m_pMesh->DrawSubset(nCntMat);
 	}
 
-	// マテリアルを戻す
+	// 保存していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
-}
-//=================================
-// 生成処理
-//=================================
-CModel* CModel::Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot, const char* pFilename)
-{
-	// インスタンス生成
-	CModel* pModel = new CModel;
-
-	// nullだったら
-	if (pModel == nullptr) return nullptr;
-
-	// 初期化失敗時
-	if (FAILED(pModel->Init(pos, rot,pFilename)))
-	{
-		// nullptrセット
-		return  nullptr;
-	}
-
-	// ポインタを返す
-	return pModel;
-}
-//=================================
-// 親パーツ設定処理
-//=================================
-void CModel::SetParent(CModel* pModel)
-{
-	// 設定
-	m_pParent = pModel;
 }
