@@ -29,7 +29,7 @@ class CPlayer_JumpState;
 #define PLAYER_SPEED	(5.0f)					// 移動スピード
 #define MAX_JUMP_POWER	(330.3f)				// ジャンプ初速
 #define CAPSULE_RADIUS (18.5f)					// カプセルコライダーの半径
-#define CAPSULE_HEIGHT (55.5f)					// カプセルコライダーの高さ
+#define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
 
 // 入力データ構造体
 struct InputData

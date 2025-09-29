@@ -52,7 +52,7 @@ public:
 	//*****************************************************************************
 	TYPE GetType(void) const { return m_Type; }											// ƒ^ƒCƒv‚ÌŽæ“¾
 	D3DXMATRIX GetWorldMatrix(void);
-	CCollider* GetCollider(void) { return m_pCollider; }
+	CBoxCollider* GetCollider(void) { return m_pCollider; }
 
 private:
 	TYPE m_Type;				// Ží—Þ

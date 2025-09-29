@@ -386,6 +386,7 @@ void CCollision::PushCapsuleOutOfOBB(CCapsuleCollider* capsule, const CBoxCollid
 
 	// プレイヤー取得
 	CPlayer* pPlayer = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
+
 	if (!pPlayer)
 	{
 		return;
@@ -395,12 +396,14 @@ void CCollision::PushCapsuleOutOfOBB(CCapsuleCollider* capsule, const CBoxCollid
 	D3DXVECTOR3 capCenter = capsule->GetPosition();
 	float h = capsule->GetHeight() * 0.5f;
 	float radius = capsule->GetRadius();
+
 	D3DXVECTOR3 capA = capCenter + D3DXVECTOR3(0, h, 0); // 上端
 	D3DXVECTOR3 capB = capCenter - D3DXVECTOR3(0, h, 0); // 下端
 
 	// OBBのローカル空間に変換
 	D3DXVECTOR3 obbCenter = obb->GetPosition();
 	D3DXVECTOR3 halfSize = obb->GetSize() * 0.5f;
+
 	D3DXMATRIX invRot;
 	D3DXMatrixTranspose(&invRot, &obb->GetRotation());
 
@@ -415,7 +418,11 @@ void CCollision::PushCapsuleOutOfOBB(CCapsuleCollider* capsule, const CBoxCollid
 	// 線分上で最近接している点
 	D3DXVECTOR3 ab = localB - localA;
 	float len2 = D3DXVec3LengthSq(&ab);
-	if (len2 < 1e-6f) return; // 線分が極端に短い場合は無視
+	if (len2 < 1e-6f)
+	{
+		return; // 線分が極端に短い場合は無視
+	}
+
 	D3DXVECTOR3 dir = closest - localA;
 	float t = D3DXVec3Dot(&dir, &ab) / len2;
 	t = max(0.0f, min(1.0f, t));
