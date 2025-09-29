@@ -14,6 +14,7 @@
 #include "input.h"
 #include "title.h"
 #include "game.h"
+#include "pause.h"
 
 //***************************
 // 名前空間
@@ -28,7 +29,6 @@ namespace PAUSEMANAGEINFO
 	constexpr float UPPERWIDTH = 180.0f;		// 拡大した横幅
 	constexpr float UPPERHEIGHT = 50.0f;		// 拡大した高さ
 	constexpr float SPACEHEIGHT = 160.0f;		// ポリゴン同士の間隔
-
 };
 
 //***************************
@@ -203,7 +203,6 @@ void CPauseManager::Update(void)
 		case CPause::MENU_RETRY:	// リトライ時
 			if (pFade != nullptr) pFade->SetFade(new CGame());	// ゲームシーンに遷移
 			SetEnablePause(false);	// ポーズ終了
-			//pCamera->SetAnim(false); // アニメーション起動
 
 			// 画面クリアをして前の描画情報をなしにする
 			CManager::GetRenderer()->GetDevice()->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL), D3DCOLOR_RGBA(0, 0, 0, 225), 1.0f, 0);
@@ -218,11 +217,6 @@ void CPauseManager::Update(void)
 			if (pFade != nullptr) pFade->SetFade(new CTitle(true));	// タイトルシーンに遷移
 			SetEnablePause(false);	// ポーズ終了
 
-			//// カメラの設定を初期化する
-			//pCamera->SetFinishRotation(false);
-			//pCamera->SetIsRotation(false);
-			//pCamera->SetKey(false);
-
 			break;
 		}
 	}
@@ -232,20 +226,12 @@ void CPauseManager::Update(void)
 //===========================
 void CPauseManager::SetEnablePause(void)
 {
-	// カメラ取得
-	CCamera * pCamera = CManager::GetCamera();
-
-	//// アニメ―ション中なら処理を通さない
-	//if (pCamera->GetMode() == CCamera::MODE_ANIM) return;
-
 	// Pキー or Start が押された
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_P) ||
 		CManager::GetJoyPad()->GetTrigger(CInputJoypad::JOYKEY_START))
 	{
-		//if (CManager::GetCamera()->GetShake() == false)
-		//{
-			// フラグ変更
-			m_isPause = m_isPause ? false : true;
-		//}
+		// フラグ変更
+		m_isPause = m_isPause ? false : true;
+		
 	}
 }
