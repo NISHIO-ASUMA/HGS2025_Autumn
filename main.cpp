@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "resource.h"
 
 //******************************
 // ウィンドウプロシージャを定義
@@ -47,12 +48,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE /*hInstancePrev
 		0,								 // 0にする
 		0,								 // 0にする
 		hInstance,						 // インスタンスハンドル
-		LoadIcon(NULL,IDI_APPLICATION),  // タスクバーアイコン
+		LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1)),  // タスクバーアイコン
 		LoadCursor(NULL,IDC_ARROW),      // マウスカーソル
 		(HBRUSH)(COLOR_WINDOW + 1),      // クライアント領域の背景色
 		NULL,                            // メニューバー
 		CLASS_NAME,                      // ウインドウクラスの名前
-		LoadIcon(NULL,IDI_APPLICATION),  // ファイルアイコン
+		LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1)),  // ファイルアイコン
 	};
 
 	HWND hWnd;  // ウインドウハンドル(識別子)
