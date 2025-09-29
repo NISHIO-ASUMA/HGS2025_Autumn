@@ -157,6 +157,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collisionUtils.cpp" />
     <ClCompile Include="debugproc.cpp" />
+    <ClCompile Include="effect.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -169,7 +170,9 @@
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="object3D.cpp" />
+    <ClCompile Include="objectBillboard.cpp" />
     <ClCompile Include="objectX.cpp" />
+    <ClCompile Include="particle.cpp" />
     <ClCompile Include="pause.cpp" />
     <ClCompile Include="pausemanager.cpp" />
     <ClCompile Include="pch.cpp">
@@ -195,6 +198,7 @@
     <ClInclude Include="characterManager.h" />
     <ClInclude Include="collisionUtils.h" />
     <ClInclude Include="debugproc.h" />
+    <ClInclude Include="effect.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="input.h" />
@@ -208,7 +212,9 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
+    <ClInclude Include="objectBillboard.h" />
     <ClInclude Include="objectX.h" />
+    <ClInclude Include="particle.h" />
     <ClInclude Include="pause.h" />
     <ClInclude Include="pausemanager.h" />
     <ClInclude Include="pch.h" />
