@@ -164,6 +164,9 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="meshcylinder.cpp" />
+    <ClCompile Include="meshfield.cpp" />
+    <ClCompile Include="meshimpact.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="number.cpp" />
@@ -207,6 +210,9 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
+    <ClInclude Include="meshcylinder.h" />
+    <ClInclude Include="meshfield.h" />
+    <ClInclude Include="meshimpact.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="number.h" />
