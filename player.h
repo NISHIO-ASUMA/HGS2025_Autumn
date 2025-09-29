@@ -81,6 +81,7 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_rot; };
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 	D3DXVECTOR3 GetMove(void) const { return m_move; }
+	CCapsuleCollider* GetCollider(void) { return m_pCollider; }
 	InputData GatherInput(void);
 
 private:
@@ -97,6 +98,7 @@ private:
 	CMotion* m_pMotion;					// モーションへのポインタ
 	int m_currentMotion;				// 現在のモーション
 	int m_nNumModel;					// モデル(パーツ)の総数
+	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;

@@ -10,6 +10,8 @@
 //*****************************************************************************
 #include "block.h"
 #include "manager.h"
+#include "player.h"
+#include "characterManager.h"
 
 // 名前空間の使用
 using namespace std;
@@ -38,7 +40,7 @@ CBlock* CBlock::Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot, 
 	pBlock->Init();
 
 	// ボックスコライダーの生成
-	pBlock->m_pCollider = new CBoxCollider(size);
+	pBlock->m_pCollider = pBlock->CreateCollider();
 
 	return pBlock;
 }
@@ -78,18 +80,18 @@ void CBlock::Update(void)
 		m_pCollider->UpdateTransform(GetPos(), GetRot(), GetSize());
 	}
 
-	//// プレイヤー取得
-	//CPlayer* pPlayer = CGame::GetPlayer();
+	// プレイヤーの取得
+	CPlayer* pPlayer = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
 
-	//if (pPlayer && pPlayer->GetCollider())
-	//{
-	//	// カプセルとOBBの当たり判定
-	//	if (CCollision::CheckCapsuleOBBCollision(pPlayer->GetCollider(),m_pCollider))
-	//	{
-
-
-	//	}
-	//}
+	// カプセルとOBBの当たり判定
+	if (CCollision::CheckCapsuleOBBCollision(
+		(CCapsuleCollider*)pPlayer->GetCollider(),
+		(CBoxCollider*)m_pCollider))
+	{
+		// カプセルの押し戻し処理
+		CCollision::PushCapsuleOutOfOBB((CCapsuleCollider*)pPlayer->GetCollider(),
+			(CBoxCollider*)m_pCollider);
+	}
 
 	// オブジェクトXの更新処理
 	CObjectX::Update();

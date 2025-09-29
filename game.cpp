@@ -55,12 +55,6 @@ HRESULT CGame::Init(void)
 	// ポーズマネージャー初期化処理
 	m_pPausemanager->Init();
 
-	// ブロックマネージャーの生成
-	m_pBlockManager = new CBlockManager;
-
-	// ブロックマネージャーの初期化
-	m_pBlockManager->Init();
-
 	// JSONの読み込み
 	m_pBlockManager->LoadFromJson("data/test_01.json");
 
@@ -72,6 +66,12 @@ HRESULT CGame::Init(void)
 
 	// キャラクターの初期化処理
 	CCharacterManager::GetInstance().InitAll();
+
+	// ブロックマネージャーの生成
+	m_pBlockManager = new CBlockManager;
+
+	// ブロックマネージャーの初期化
+	m_pBlockManager->Init();
 
 	//// ui生成
 	//CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "game.jpg", false);

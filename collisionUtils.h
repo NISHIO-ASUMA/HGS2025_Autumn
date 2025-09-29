@@ -45,6 +45,14 @@ public:
 	// カプセルとOBBの当たり判定
 	static bool CheckCapsuleOBBCollision(const CCapsuleCollider* capsule, const CBoxCollider* obb);
 
+	// カプセル押し戻し処理
+	static void PushCapsuleOutOfOBB(CCapsuleCollider* capsule, const CBoxCollider* obb);
+
+	static float DistanceSqPointSegment(const D3DXVECTOR3& p, const D3DXVECTOR3& a, const D3DXVECTOR3& b);
+
+	static D3DXVECTOR3 ClosestPointSegmentAABB(const D3DXVECTOR3& a, const D3DXVECTOR3& b,
+		const D3DXVECTOR3& minVal, const D3DXVECTOR3& maxVal);
+
 private:
 	//*************************************************************************
 	// 補助関数
@@ -57,11 +65,6 @@ private:
 	// 2つのOBBが指定軸上で重なるか判定する関数
 	static bool OverlapOnAxis(const CBoxCollider* obb1, const CBoxCollider* obb2,
 		const D3DXVECTOR3& axis);
-
-	static float DistanceSqPointSegment(const D3DXVECTOR3& p, const D3DXVECTOR3& a, const D3DXVECTOR3& b);
-
-	static D3DXVECTOR3 ClosestPointSegmentAABB(const D3DXVECTOR3& a, const D3DXVECTOR3& b,
-		const D3DXVECTOR3& minVal, const D3DXVECTOR3& maxVal);
 };
 
 
@@ -76,12 +79,14 @@ public:
 		TYPE_BOX,		// ボックスコライダー
 		TYPE_CAPSULE,	// カプセルコライダー
 		TYPE_CYLINDER,	// シリンダーコライダー
+		TYPE_SPHERE,	// スフィアコライダー
 	};
 
 	CCollider(TYPE type) : m_Type(type) {}
 	virtual ~CCollider() {}
 
 	TYPE GetType(void) const { return m_Type; }
+	virtual void UpdateTransform(const D3DXVECTOR3& pos, const D3DXVECTOR3& rotRad, const D3DXVECTOR3& scale) {}
 
 	// ワールド位置を更新する
 	virtual void SetPosition(const D3DXVECTOR3& pos) { m_Position = pos; }
@@ -102,7 +107,7 @@ public:
 	: CCollider(TYPE_BOX), m_Size(size) {}
 
 	// 位置と回転の反映
-	void UpdateTransform(const D3DXVECTOR3& pos, const D3DXVECTOR3& rotRad, const D3DXVECTOR3& scale)
+	void UpdateTransform(D3DXVECTOR3 pos, D3DXVECTOR3 rotRad, D3DXVECTOR3 scale)
 	{
 		// 実サイズ = モデル元サイズ × スケール
 		m_ScaledSize.x = m_Size.x * scale.x;
@@ -116,7 +121,7 @@ public:
 		D3DXMatrixRotationYawPitchRoll(&m_Rotation, rotRad.y, rotRad.x, rotRad.z);
 	}
 
-	const D3DXVECTOR3& GetSize(void) const { return m_Size; }
+	const D3DXVECTOR3& GetSize(void) const { return m_ScaledSize; }// 拡大率反映済みのサイズ
 	const D3DXMATRIX& GetRotation(void) const { return m_Rotation; }
 
 private:
@@ -133,6 +138,9 @@ class CCapsuleCollider : public CCollider
 public:
 	CCapsuleCollider(float radius, float height)
 	: CCollider(TYPE_CAPSULE), m_fRadius(radius), m_fHeight(height) {}
+
+	// 位置の反映
+	void UpdateTransform(D3DXVECTOR3 pos, D3DXVECTOR3 rotRad, D3DXVECTOR3 scale) { m_Position = pos; }		// 位置
 
 	float GetRadius(void) const { return m_fRadius; }
 	float GetHeight(void) const { return m_fHeight; }
@@ -159,6 +167,24 @@ private:
 	float m_fRadius;
 	float m_fHeight;
 	D3DXVECTOR3 m_Dir;  // 軸方向
+};
+
+//*****************************************************************************
+// スフィアコライダークラス
+//*****************************************************************************
+class CSphereCollider : public CCollider
+{
+public:
+	CSphereCollider(float radius)
+		: CCollider(TYPE_SPHERE), m_fRadius(radius) {}
+
+	// 位置の反映
+	void UpdateTransform(D3DXVECTOR3 pos, D3DXVECTOR3 rotRad, D3DXVECTOR3 scale) { m_Position = pos; }
+
+	float GetRadius(void) const { return m_fRadius; }
+
+private:
+	float m_fRadius;
 };
 
 #endif

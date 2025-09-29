@@ -34,6 +34,7 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 	m_pShadowS			= nullptr;						// ステンシルシャドウへのポインタ
 	m_pMotion			= nullptr;						// モーションへのポインタ
 	m_currentMotion		= PLAYER_MOTION::NEUTRAL;		// 現在のモーション
+	m_pCollider			= nullptr;						// カプセルコライダー
 	for (int nCnt = 0; nCnt < MAX_PARTS; nCnt++)
 	{
 		m_apModel[nCnt] = {};							// モデル(パーツ)へのポインタ
@@ -85,7 +86,7 @@ HRESULT CPlayer::Init(void)
 	m_nNumModel = nNumModels;
 
 	// 変数の初期化
-	m_pos = D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, -100.0f);
 	m_rot = D3DXVECTOR3(0.0f, -D3DX_PI, 0.0f);
 
 	// ステンシルシャドウの生成
@@ -97,6 +98,9 @@ HRESULT CPlayer::Init(void)
 	// 初期状態のステートをセット
 	m_stateMachine.ChangeState<CPlayer_StandState>();
 
+	// カプセルコライダーの生成
+	m_pCollider = new CCapsuleCollider(18.5f, 55.5f);
+
 	return S_OK;
 }
 //=============================================================================
@@ -104,6 +108,14 @@ HRESULT CPlayer::Init(void)
 //=============================================================================
 void CPlayer::Uninit(void)
 {
+	// コライダーの破棄
+	if (m_pCollider != nullptr)
+	{
+		delete m_pCollider;
+		m_pCollider = nullptr;
+	}
+
+	// モデルの破棄
 	for (int nCnt = 0; nCnt < MAX_PARTS; nCnt++)
 	{
 		if (m_apModel[nCnt] != nullptr)
@@ -114,6 +126,7 @@ void CPlayer::Uninit(void)
 		}
 	}
 
+	// モーションの破棄
 	if (m_pMotion != nullptr)
 	{
 		delete m_pMotion;
@@ -142,6 +155,14 @@ void CPlayer::Update(void)
 
 	// ステートマシン更新
 	m_stateMachine.Update();
+
+	if (m_pCollider)
+	{
+		D3DXVECTOR3 offpos = m_pos + D3DXVECTOR3(0, 20.0f, 0);
+
+		// コライダーの更新
+		m_pCollider->UpdateTransform(offpos, VECTOR3_NULL, VECTOR3_NULL);
+	}
 
 	D3DXVECTOR3 targetMove = input.moveDir * PLAYER_SPEED;
 

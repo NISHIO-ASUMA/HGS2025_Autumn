@@ -11,6 +11,8 @@
 #include "blockmanager.h"
 #include "json.hpp"
 #include "manager.h"
+#include "player.h"
+#include "characterManager.h"
 
 // JSONの使用
 using json = nlohmann::json;
@@ -73,15 +75,6 @@ void CBlockManager::Uninit(void)
 //=============================================================================
 void CBlockManager::Update(void)
 {
-
-	//// プレイヤーの取得
-	//CPlayer* pPlayer = CGame::GetPlayer();
-
-	//// カプセルとOBBの当たり判定
-	//if (CCollision::CheckCapsuleOBBCollision(pPlayer->GetCollider(), m_pCollider))
-	//{
-
-	//}
 
 }
 //=============================================================================

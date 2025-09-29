@@ -9,6 +9,8 @@
 // インクルードファイル
 //*****************************************************************************
 #include "collisionUtils.h"
+#include "player.h"
+#include "characterManager.h"
 
 //=============================================================================
 // シリンダーとAABBの当たり判定(その距離を返す)
@@ -371,6 +373,93 @@ bool CCollision::CheckCapsuleOBBCollision(const CCapsuleCollider* capsule, const
 	float distSq = DistanceSqPointSegment(closest, localA, localB);
 
 	return distSq <= (capsule->GetRadius() * capsule->GetRadius());
+}
+//=============================================================================
+// カプセルの押し戻し処理(OBB)
+//=============================================================================
+void CCollision::PushCapsuleOutOfOBB(CCapsuleCollider* capsule, const CBoxCollider* obb)
+{
+	if (!capsule || !obb)
+	{
+		return;
+	}
+
+	// プレイヤー取得
+	CPlayer* pPlayer = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
+	if (!pPlayer)
+	{
+		return;
+	}
+
+	// カプセル中心を取得
+	D3DXVECTOR3 capCenter = capsule->GetPosition();
+	float radius = capsule->GetRadius();
+
+	// OBBの情報
+	D3DXVECTOR3 obbCenter = obb->GetPosition();
+	D3DXVECTOR3 halfSize = obb->GetSize() * 0.5f;
+
+	// カプセル中心をOBBのローカル空間に変換
+	D3DXMATRIX invRot;
+	D3DXMatrixTranspose(&invRot, &obb->GetRotation()); // 転置 = 逆回転
+	D3DXVECTOR3 localCap = capCenter - obbCenter;
+	D3DXVec3TransformNormal(&localCap, &localCap, &invRot);
+
+	// 各軸の重なり量を計算
+	D3DXVECTOR3 overlap(0, 0, 0);
+
+	float dx = (halfSize.x + radius) - fabsf(localCap.x);
+	if (dx > 0)
+	{
+		overlap.x = dx * (localCap.x > 0 ? 1 : -1);
+	}
+	float dy = (halfSize.y + radius) - fabsf(localCap.y);
+
+	if (dy > 0)
+	{
+		overlap.y = dy * (localCap.y > 0 ? 1 : -1);
+	}
+
+	float dz = (halfSize.z + radius) - fabsf(localCap.z);
+	if (dz > 0)
+	{
+		overlap.z = dz * (localCap.z > 0 ? 1 : -1);
+	}
+
+	// 重なっていない場合は処理しない
+	if (overlap.x == 0 && overlap.y == 0 && overlap.z == 0)
+	{
+		return;
+	}
+
+	// 最小重なり軸を選んで押し戻す
+	float absX = fabsf(overlap.x);
+	float absY = fabsf(overlap.y);
+	float absZ = fabsf(overlap.z);
+
+	D3DXVECTOR3 push(0, 0, 0);
+	if (absX <= absY && absX <= absZ)
+	{
+		push.x = overlap.x;
+	}
+	else if (absY <= absX && absY <= absZ)
+	{
+		push.y = overlap.y;
+	}
+	else
+	{
+		push.z = overlap.z;
+	}
+
+	// ワールド空間に変換
+	D3DXVECTOR3 worldPush;
+	D3DXMatrixRotationYawPitchRoll(&invRot, 0, 0, 0); // 念のため初期化
+	D3DXVec3TransformNormal(&worldPush, &push, &obb->GetRotation());
+
+	// プレイヤーとカプセルの位置を更新
+	D3DXVECTOR3 newPos = pPlayer->GetPos() + worldPush;
+	pPlayer->SetPos(newPos);
+	capsule->SetPosition(newPos);
 }
 
 

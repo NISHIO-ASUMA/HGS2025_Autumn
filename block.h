@@ -28,6 +28,12 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	// コライダー生成（デフォルトはボックス）
+	virtual CBoxCollider* CreateCollider(void)
+	{
+		return new CBoxCollider(GetModelSize());
+	}
+
 	//*****************************************************************************
 	// setter関数
 	//*****************************************************************************
@@ -38,15 +44,17 @@ public:
 	//*****************************************************************************
 	TYPE GetType(void) const { return m_Type; }											// タイプの取得
 	D3DXMATRIX GetWorldMatrix(void);
-	CBoxCollider* GetCollider(void) { return m_pCollider; }
+	CCollider* GetCollider(void) { return m_pCollider; }
 
 private:
 	TYPE m_Type;				// 種類
 	CBoxCollider* m_pCollider;	// ボックスコライダー
 };
 
+// 岩ブロック
 class CRockBlock : public CBlock
 {
+public:
 
 };
 
