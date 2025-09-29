@@ -22,7 +22,15 @@ public:
 	CBlock(int nPriority = 3);
 	virtual ~CBlock() = default;
 
+	// ブロックの種類
+	typedef enum
+	{
+		TYPE_WOODBOX = 0,
+		TYPE_MAX
+	}TYPE;
+
 	static CBlock* Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);	// ブロックの生成
+	void InitFactry(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -49,13 +57,17 @@ public:
 private:
 	TYPE m_Type;				// 種類
 	CBoxCollider* m_pCollider;	// ボックスコライダー
+	static std::unordered_map<std::string, std::function<CBlock* ()>> blockFactory;
 };
 
-// 岩ブロック
-class CRockBlock : public CBlock
+//木箱ブロック
+class CWoodBoxBlock : public CBlock
 {
 public:
+	CWoodBoxBlock();
+	~CWoodBoxBlock();
 
+	void Update(void);
 };
 
 #endif

@@ -391,75 +391,53 @@ void CCollision::PushCapsuleOutOfOBB(CCapsuleCollider* capsule, const CBoxCollid
 		return;
 	}
 
-	// カプセル中心を取得
+	// カプセル線分の端点（ワールド座標）
 	D3DXVECTOR3 capCenter = capsule->GetPosition();
+	float h = capsule->GetHeight() * 0.5f;
 	float radius = capsule->GetRadius();
+	D3DXVECTOR3 capA = capCenter + D3DXVECTOR3(0, h, 0); // 上端
+	D3DXVECTOR3 capB = capCenter - D3DXVECTOR3(0, h, 0); // 下端
 
-	// OBBの情報
+	// OBBのローカル空間に変換
 	D3DXVECTOR3 obbCenter = obb->GetPosition();
 	D3DXVECTOR3 halfSize = obb->GetSize() * 0.5f;
-
-	// カプセル中心をOBBのローカル空間に変換
 	D3DXMATRIX invRot;
-	D3DXMatrixTranspose(&invRot, &obb->GetRotation()); // 転置 = 逆回転
-	D3DXVECTOR3 localCap = capCenter - obbCenter;
-	D3DXVec3TransformNormal(&localCap, &localCap, &invRot);
+	D3DXMatrixTranspose(&invRot, &obb->GetRotation());
 
-	// 各軸の重なり量を計算
-	D3DXVECTOR3 overlap(0, 0, 0);
+	D3DXVECTOR3 localA = capA - obbCenter;
+	D3DXVECTOR3 localB = capB - obbCenter;
+	D3DXVec3TransformNormal(&localA, &localA, &invRot);
+	D3DXVec3TransformNormal(&localB, &localB, &invRot);
 
-	float dx = (halfSize.x + radius) - fabsf(localCap.x);
-	if (dx > 0)
+	// カプセル線分とAABBの最近接点
+	D3DXVECTOR3 closest = ClosestPointSegmentAABB(localA, localB, -halfSize, halfSize);
+
+	// 線分上で最近接している点
+	D3DXVECTOR3 ab = localB - localA;
+	float len2 = D3DXVec3LengthSq(&ab);
+	if (len2 < 1e-6f) return; // 線分が極端に短い場合は無視
+	D3DXVECTOR3 dir = closest - localA;
+	float t = D3DXVec3Dot(&dir, &ab) / len2;
+	t = max(0.0f, min(1.0f, t));
+	D3DXVECTOR3 nearestOnCapsule = localA + ab * t;
+
+	// 押し戻しベクトル = 線分の最近接点 → AABB最近接点
+	D3DXVECTOR3 push = nearestOnCapsule - closest;
+	float pushLen = D3DXVec3Length(&push);
+
+	if (pushLen < radius && pushLen > 1e-6f)
 	{
-		overlap.x = dx * (localCap.x > 0 ? 1 : -1);
-	}
-	float dy = (halfSize.y + radius) - fabsf(localCap.y);
+		push *= (radius - pushLen) / pushLen;
 
-	if (dy > 0)
-	{
-		overlap.y = dy * (localCap.y > 0 ? 1 : -1);
-	}
+		// ワールド空間に変換
+		D3DXVECTOR3 worldPush;
+		D3DXVec3TransformNormal(&worldPush, &push, &obb->GetRotation());
 
-	float dz = (halfSize.z + radius) - fabsf(localCap.z);
-	if (dz > 0)
-	{
-		overlap.z = dz * (localCap.z > 0 ? 1 : -1);
+		// プレイヤーとカプセルの位置を更新
+		D3DXVECTOR3 newPos = pPlayer->GetPos() + worldPush;
+		pPlayer->SetPos(newPos);
+		capsule->SetPosition(newPos);
 	}
-
-	// 重なっていない場合は処理しない
-	if (overlap.x == 0 && overlap.y == 0 && overlap.z == 0)
-	{
-		return;
-	}
-
-	// 最小重なり軸を選んで押し戻す
-	float absX = fabsf(overlap.x);
-	float absY = fabsf(overlap.y);
-	float absZ = fabsf(overlap.z);
-
-	D3DXVECTOR3 push(0, 0, 0);
-	if (absX <= absY && absX <= absZ)
-	{
-		push.x = overlap.x;
-	}
-	else if (absY <= absX && absY <= absZ)
-	{
-		push.y = overlap.y;
-	}
-	else
-	{
-		push.z = overlap.z;
-	}
-
-	// ワールド空間に変換
-	D3DXVECTOR3 worldPush;
-	D3DXMatrixRotationYawPitchRoll(&invRot, 0, 0, 0); // 念のため初期化
-	D3DXVec3TransformNormal(&worldPush, &push, &obb->GetRotation());
-
-	// プレイヤーとカプセルの位置を更新
-	D3DXVECTOR3 newPos = pPlayer->GetPos() + worldPush;
-	pPlayer->SetPos(newPos);
-	capsule->SetPosition(newPos);
 }
 
 

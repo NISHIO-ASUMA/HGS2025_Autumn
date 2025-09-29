@@ -86,6 +86,7 @@ public:
 
 private:
 	D3DXVECTOR3 m_pos;					// 位置
+	D3DXVECTOR3 m_colliderPos;			// カプセル中心
 	D3DXVECTOR3 m_rot;					// 向き
 	D3DXVECTOR3 m_rotDest;				// 向き
 	D3DXVECTOR3 m_move;					// 移動量

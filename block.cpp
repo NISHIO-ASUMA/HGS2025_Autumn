@@ -12,9 +12,15 @@
 #include "manager.h"
 #include "player.h"
 #include "characterManager.h"
+#include "particle.h"
 
 // 名前空間の使用
 using namespace std;
+
+//*****************************************************************************
+// 静的メンバ変数宣言
+//*****************************************************************************
+std::unordered_map<std::string, std::function<CBlock* ()>> CBlock::blockFactory;
 
 //=============================================================================
 // コンストラクタ
@@ -29,7 +35,23 @@ CBlock::CBlock(int nPriority) : CObjectX(nPriority)
 //=============================================================================
 CBlock* CBlock::Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
-	CBlock* pBlock = new CBlock();
+	CBlock* pBlock = nullptr;
+
+	if (blockFactory.empty())
+	{
+		// ファクトリー
+		pBlock->InitFactry();
+	}
+
+	auto it = blockFactory.find(pFilepath);
+	if (it != blockFactory.end())
+	{
+		pBlock = it->second(); // ラムダで派生クラスを生成
+	}
+	else
+	{
+		pBlock = new CBlock(); // デフォルト
+	}
 
 	pBlock->SetPos(pos);
 	pBlock->SetRot(rot);
@@ -43,6 +65,13 @@ CBlock* CBlock::Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot, 
 	pBlock->m_pCollider = pBlock->CreateCollider();
 
 	return pBlock;
+}
+//=============================================================================
+// ファクトリー処理
+//=============================================================================
+void CBlock::InitFactry(void)
+{
+	blockFactory["data/MODELS/woodbox_003.x"] = []() { return new CWoodBoxBlock(); };
 }
 //=============================================================================
 // 初期化処理
@@ -127,4 +156,33 @@ D3DXMATRIX CBlock::GetWorldMatrix(void)
 	D3DXMATRIX world = matScale * matRot * matTrans;
 
 	return world;
+}
+
+CWoodBoxBlock::CWoodBoxBlock()
+{
+	// タイプを設定
+	SetType(TYPE_WOODBOX);
+}
+
+CWoodBoxBlock::~CWoodBoxBlock()
+{
+	// なし
+}
+
+void CWoodBoxBlock::Update(void)
+{
+	CBlock::Update();
+
+	// オフセット
+	D3DXVECTOR3 localOffset(0.0f, 60.0f, 0.0f); // 松明の先端（ローカル）
+	D3DXVECTOR3 worldOffset;
+
+	// ブロックのワールドマトリックスを取得
+	D3DXMATRIX worldMtx = GetWorldMatrix();
+
+	D3DXVec3TransformCoord(&worldOffset, &localOffset, &worldMtx);
+
+	// パーティクル生成
+	CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(0.8f, 0.5f, 0.1f, 0.8f), 8, 1);
+	CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(1.0f, 0.5f, 0.0f, 0.8f), 15, 1);
 }

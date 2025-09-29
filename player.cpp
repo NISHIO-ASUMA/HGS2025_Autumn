@@ -23,6 +23,7 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 {
 	// 値のクリア
 	m_pos				= VECTOR3_NULL;					// 位置
+	m_colliderPos		= VECTOR3_NULL;					// カプセル中心
 	m_rot				= VECTOR3_NULL;					// 向き
 	m_rotDest			= VECTOR3_NULL;					// 向き
 	m_move				= VECTOR3_NULL;					// 移動量
@@ -99,7 +100,10 @@ HRESULT CPlayer::Init(void)
 	m_stateMachine.ChangeState<CPlayer_StandState>();
 
 	// カプセルコライダーの生成
-	m_pCollider = new CCapsuleCollider(18.5f, 55.5f);
+	m_pCollider = new CCapsuleCollider(18.5f, 70.5f);
+
+	// カプセルの中心 = 足元 + オフセット
+	m_colliderPos = m_pos + D3DXVECTOR3(0, m_pCollider->GetHeight() * 0.5f, 0);
 
 	return S_OK;
 }
@@ -156,12 +160,12 @@ void CPlayer::Update(void)
 	// ステートマシン更新
 	m_stateMachine.Update();
 
+	m_colliderPos = m_pos + D3DXVECTOR3(0, 50.0f, 0);
+
 	if (m_pCollider)
 	{
-		D3DXVECTOR3 offpos = m_pos + D3DXVECTOR3(0, 20.0f, 0);
-
 		// コライダーの更新
-		m_pCollider->UpdateTransform(offpos, VECTOR3_NULL, VECTOR3_NULL);
+		m_pCollider->UpdateTransform(m_colliderPos, VECTOR3_NULL, VECTOR3_NULL);
 	}
 
 	D3DXVECTOR3 targetMove = input.moveDir * PLAYER_SPEED;
