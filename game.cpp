@@ -182,6 +182,7 @@ void CGame::Update(void)
 	// falseの時に更新
 	if (m_pPausemanager->GetPause() == false)
 	{
+#ifdef _DEBUG
 		// キー入力
 		if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
 		{
@@ -192,6 +193,8 @@ void CGame::Update(void)
 				return;
 			}
 		}
+#endif // _DEBUG
+
 	}
 }
 //==================================
