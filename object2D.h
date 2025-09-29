@@ -92,7 +92,7 @@ private:
 	int m_nDrawType;	// 描画タイプ
 	float m_fWidth;		// 横幅
 	float m_fHeight;	// 高さ
-	int m_nIdxTexture; // テクスチャインデックス
+	int m_nIdxTexture;	// テクスチャインデックス
 };
 
 #endif
