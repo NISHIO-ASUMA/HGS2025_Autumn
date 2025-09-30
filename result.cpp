@@ -9,16 +9,17 @@
 // インクルードファイル宣言
 //**************************
 #include "result.h"
-#include "ui.h"
 #include "manager.h"
 #include "ranking.h"
+#include "resultmanager.h"
 
 //=================================
 // オーバーロードコンストラクタ
 //=================================
 CResult::CResult() : CScene(CScene::MODE_RESULT)
 {
-	// 無し
+	// 値のクリア
+	m_pResultManager = nullptr;
 }
 //=================================
 // デストラクタ
@@ -52,8 +53,12 @@ CResult* CResult::Create(void)
 //=================================
 HRESULT CResult::Init(void)
 {
-	// ui生成
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "result.jpg", false);
+	// ポインタ生成
+	m_pResultManager = new CResultManager;
+	if (m_pResultManager == nullptr) return E_FAIL;
+
+	// 初期化処理
+	m_pResultManager->Init();
 
 	// 初期化結果を返す
 	return S_OK;
@@ -63,25 +68,29 @@ HRESULT CResult::Init(void)
 //=================================
 void CResult::Uninit(void)
 {
-	// 無し
+	// nullチェック
+	if (m_pResultManager != nullptr)
+	{
+		// 終了処理
+		m_pResultManager->Uninit();
+
+		// ポインタの破棄
+		delete m_pResultManager;
+
+		// nullにする
+		m_pResultManager = nullptr;
+	}
 }
 //=================================
 // 更新処理
 //=================================
 void CResult::Update(void)
 {
-	// キー入力
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
+	// nullチェック
+	if (m_pResultManager != nullptr)
 	{
-		CFade* pFade = CManager::GetFade();
-
-		if (pFade != nullptr)
-		{
-			// ランキング遷移
-			pFade->SetFade(new CRanking());
-
-			return;
-		}
+		// 更新処理
+		m_pResultManager->Update();
 	}
 }
 //=================================

@@ -63,7 +63,7 @@ CPauseManager::~CPauseManager()
 HRESULT CPauseManager::Init(void)
 {
 	// 初期セレクト番号設定
-	m_nSelectIdx = CPause::MENU_RETRY;
+	m_nSelectIdx = CPause::MENU_CONTINUE;
 
 	// 基準座標を設定
 	D3DXVECTOR3 Bacepos = PAUSEMANAGEINFO::BACEPOS;
@@ -200,6 +200,10 @@ void CPauseManager::Update(void)
 		case CPause::MENU_BACK:	// 背景
 			break;
 
+		case CPause::MENU_CONTINUE:	// コンテニュー時
+			SetEnablePause(false);	// ポーズ終了
+			break;
+
 		case CPause::MENU_RETRY:	// リトライ時
 			if (pFade != nullptr) pFade->SetFade(new CGame());	// ゲームシーンに遷移
 			SetEnablePause(false);	// ポーズ終了
@@ -207,10 +211,6 @@ void CPauseManager::Update(void)
 			// 画面クリアをして前の描画情報をなしにする
 			CManager::GetRenderer()->GetDevice()->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL), D3DCOLOR_RGBA(0, 0, 0, 225), 1.0f, 0);
 
-			break;
-
-		case CPause::MENU_CONTINUE:	// コンテニュー時
-			SetEnablePause(false);	// ポーズ終了
 			break;
 
 		case CPause::MENU_QUIT:		// 退出時
