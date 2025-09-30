@@ -118,6 +118,7 @@ HRESULT CPlayer::Init(void)
 
 	m_nCntHitTime = 0;
 	m_nCntCharge = 0;
+	m_pCharge = CChargeGauge::Create(D3DXVECTOR3(SCREEN_WIDTH / 2 - (BULLET_COUNT_SIZE * 7.5f), SCREEN_HEIGHT / 1.25f, 0.0f), 0, 50.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
 
 	// オブジェクトの種類設定
 	SetObjType(TYPE_PLAYER);
