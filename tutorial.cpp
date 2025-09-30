@@ -61,8 +61,10 @@ void CTutorial::Uninit(void)
 //===============================
 void CTutorial::Update(void)
 {
+	CInputJoypad* pJoypad = CManager::GetJoyPad();			// ジョイパッドの取得
+
 	// キー入力
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN) || pJoypad->GetTrigger(pJoypad->JOYKEY_A))
 	{
 		CFade* pFade = CManager::GetFade();
 
