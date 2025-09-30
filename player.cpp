@@ -116,6 +116,8 @@ HRESULT CPlayer::Init(void)
 	
 	m_pBulletCnt = CBulletCnt::Create(D3DXVECTOR3(SCREEN_WIDTH / 2 + (BULLET_COUNT_SIZE * 3.0f), SCREEN_HEIGHT / 1.35f, 0.0f), 100.0f, 50.0f);
 
+	m_nCntHitTime = 0;
+
 	// オブジェクトの種類設定
 	SetObjType(TYPE_PLAYER);
 
@@ -181,6 +183,12 @@ void CPlayer::Update(void)
 
 	// 弾数UI
 	m_pBulletCnt->SetScore(m_nCntBullet);
+
+	m_nCntHitTime++;
+	if (m_nCntHitTime >= PLAYER_HITTIME)
+	{
+		m_nCntHitTime = 0;
+	}
 
 	// 入力判定の取得
 	InputData input = GatherInput();
@@ -269,12 +277,15 @@ void CPlayer::Draw(void)
 //============================================
 void CPlayer::Hit(int nDamage)
 {
-	m_nLife -= nDamage;
-	
-	if (m_nLife <= 0)
+	if (m_nCntHitTime <= 0)
 	{
-		m_nLife = 0;
+		m_nLife -= nDamage;
 
+		if (m_nLife <= 0)
+		{
+			m_nLife = 0;
+
+		}
 	}
 }
 //=============================================================================

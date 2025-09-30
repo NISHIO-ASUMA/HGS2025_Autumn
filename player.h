@@ -35,6 +35,7 @@ class CPlayer_JumpState;
 #define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
 #define PLAYER_LIFE (10)
 #define PLAYER_BULLET (100)
+#define PLAYER_HITTIME (60)
 
 // 入力データ構造体
 struct InputData
@@ -106,6 +107,7 @@ private:
 	int m_nNumModel;					// モデル(パーツ)の総数
 	int m_nLife;						// ライフ
 	int m_nCntBullet;
+	int m_nCntHitTime;
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
 	CBulletCnt* m_pBulletCnt;

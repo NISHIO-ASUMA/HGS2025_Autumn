@@ -169,7 +169,7 @@ CConveniBlock::CConveniBlock()
 	// タイプを設定
 	SetType(TYPE_CONVENI);
 
-	m_nCntSpan = ENEMY_SPAN;
+	m_nCntSpan = 0;
 }
 //=============================================================================
 // コンビニブロックのデストラクタ
