@@ -25,6 +25,7 @@
 CPauseManager* CGame::m_pPausemanager = nullptr; // ポーズマネージャーのポインタ
 CBlockManager* CGame::m_pBlockManager = nullptr; // ブロックマネージャーのポインタ
 CTime* CGame::m_pTime = nullptr;				 // タイムクラスのポインタ
+CCasleBlock* CGame::m_pCasle = nullptr;			 // 城クラス
 
 //==================================
 // コンストラクタ

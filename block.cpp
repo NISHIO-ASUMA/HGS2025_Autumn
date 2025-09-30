@@ -74,6 +74,7 @@ CBlock* CBlock::Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot, 
 void CBlock::InitFactry(void)
 {
 	blockFactory["data/MODELS/convenience_store00.x"] = []() { return new CConveniBlock(); };
+	blockFactory["data/MODELS/convenience_store02.x"] = []() { return new CCasleBlock(); };
 }
 //=============================================================================
 // 初期化処理
@@ -228,9 +229,6 @@ CCasleBlock::CCasleBlock()
 
 	// 体力値
 	m_nLife = 100;
-
-	// オブジェクトのタイプ
-	SetObjType(CObject::TYPE_CASLE);
 }
 //=============================================================================
 // デストラクタ
@@ -244,13 +242,15 @@ CCasleBlock::~CCasleBlock()
 //=============================================================================
 void CCasleBlock::Update(void)
 {
-	// 無し
+	CBlock::Update();
+
 }
 //=============================================================================
 // 当たり判定
 //=============================================================================
 bool CCasleBlock::Collision(float fHItRange,D3DXVECTOR3 *pHitPos)
 {
+#if 0
 	// 半径設定
 	const float fCasleRadius = 30.0f;
 
@@ -275,6 +275,7 @@ bool CCasleBlock::Collision(float fHItRange,D3DXVECTOR3 *pHitPos)
 		return true;
 	}
 
+#endif
 	// 当たらないとき
 	return false;
 }
