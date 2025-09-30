@@ -12,8 +12,6 @@
 #include "texture.h"
 #include "model.h"
 #include "game.h"
-#include "bullet.h"
-#include "gaugePlayer.h"
 
 // 名前空間stdの使用
 using namespace std;
@@ -269,13 +267,13 @@ InputData CPlayer::GatherInput(void)
 	D3DXVECTOR3 CamRot = pCamera->GetRot();						// カメラ角度の取得
 	CCamera::MODE camMode = pCamera->GetMode();					// カメラモードの取得
 
-	// ---------------------------
-	// 弾発射
-	// ---------------------------
-	if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
-	{
-		CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
-	}
+	//// ---------------------------
+	//// 弾発射
+	//// ---------------------------
+	//if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
+	//{
+	//	CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
+	//}
 
 	// ---------------------------
 	// ゲームパッド入力

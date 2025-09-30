@@ -14,7 +14,7 @@
 #include "object.h"
 
 // マクロ定義
-#define GAUGE_X (50)
+#define GAUGE_X (40)
 #define GAUGE_Y (20)
 
 // ゲージクラス
