@@ -111,6 +111,7 @@ HRESULT CPlayer::Init(void)
 	m_nLife = PLAYER_LIFE;
 	// ＨＰゲージ生成
 	m_pHpGauge = CHpGauge::Create(D3DXVECTOR3(50.0f, 40.0f, 0.0f), PLAYER_LIFE, GAUGE_Y, D3DCOLOR_RGBA(1, 255, 1, 255));
+	m_nCntBullet = PLAYER_BULLET;
 
 	// オブジェクトの種類設定
 	SetObjType(TYPE_PLAYER);

@@ -33,6 +33,7 @@ class CPlayer_JumpState;
 #define CAPSULE_RADIUS (18.5f)					// カプセルコライダーの半径
 #define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
 #define PLAYER_LIFE (10)
+#define PLAYER_BULLET (100)
 
 // 入力データ構造体
 struct InputData
@@ -72,6 +73,7 @@ public:
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
 	void SetLife(int nLife) { m_nLife = nLife; }
+	void SetBullet(int nBullet) { m_nCntBullet = nBullet; }
 
 	//*****************************************************************************
 	// getter関数
@@ -83,6 +85,7 @@ public:
 	CCapsuleCollider* GetCollider(void) { return m_pCollider; }
 	InputData GatherInput(void);
 	int GetLife(void) { return m_nLife; }
+	int GetBullet(void) { return m_nCntBullet; }
 
 private:
 	D3DXVECTOR3 m_pos;					// 位置
@@ -100,6 +103,7 @@ private:
 	int m_currentMotion;				// 現在のモーション
 	int m_nNumModel;					// モデル(パーツ)の総数
 	int m_nLife;						// ライフ
+	int m_nCntBullet;
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
 
@@ -134,7 +138,17 @@ public:
 		// ---------------------------
 		if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
 		{
-			CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
+			int nBullet = pPlayer->GetBullet();
+			if (nBullet > 0)
+			{
+				CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
+				nBullet--;
+				if (nBullet <= 0)
+				{
+					nBullet = 0;
+				}
+			}
+			pPlayer->SetBullet(nBullet);
 		}
 		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
 		{
@@ -186,7 +200,17 @@ public:
 		// ---------------------------
 		if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
 		{
-			CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
+			int nBullet = pPlayer->GetBullet();
+			if (nBullet > 0)
+			{
+				CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
+				nBullet--;
+				if (nBullet <= 0)
+				{
+					nBullet = 0;
+				}
+			}
+			pPlayer->SetBullet(nBullet);
 		}
 
 #ifdef _DEBUG
