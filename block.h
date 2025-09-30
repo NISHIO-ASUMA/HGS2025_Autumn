@@ -26,6 +26,7 @@ public:
 	typedef enum
 	{
 		TYPE_CONVENI = 0,
+		TYPE_CASLE,
 		TYPE_MAX
 	}TYPE;
 
@@ -76,5 +77,21 @@ private:
 	int m_nCntSpan;
 };
 
+//*****************************************************************************
+// ‹’“_ƒNƒ‰ƒX
+//*****************************************************************************
+class CCasleBlock : public CBlock
+{
+public:
+	CCasleBlock();
+	~CCasleBlock();
+
+	void Update(void);
+	bool Collision(float fHItRange, D3DXVECTOR3* pHitPos);
+	void Hit(int nDamage);
+
+private:
+	int m_nLife; // ‘Ì—Í
+};
 
 #endif

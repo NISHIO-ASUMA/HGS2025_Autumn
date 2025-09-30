@@ -14,6 +14,7 @@
 #include "characterManager.h"
 #include "particle.h"
 #include "enemy.h"
+#include "particle.h"
 
 // 名前空間の使用
 using namespace std;
@@ -215,4 +216,79 @@ void CConveniBlock::Update(void)
 	//// パーティクル生成
 	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(0.8f, 0.5f, 0.1f, 0.8f), 8, 1);
 	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(1.0f, 0.5f, 0.0f, 0.8f), 15, 1);
+}
+
+//=============================================================================
+// 拠点ブロッククラスのコンストラクタ
+//=============================================================================
+CCasleBlock::CCasleBlock()
+{
+	// タイプを設定
+	SetType(TYPE_CASLE);
+
+	// 体力値
+	m_nLife = 100;
+}
+//=============================================================================
+// デストラクタ
+//=============================================================================
+CCasleBlock::~CCasleBlock()
+{
+	// 無し
+}
+//=============================================================================
+// 更新処理
+//=============================================================================
+void CCasleBlock::Update(void)
+{
+	// 無し
+}
+//=============================================================================
+// 当たり判定
+//=============================================================================
+bool CCasleBlock::Collision(float fHItRange,D3DXVECTOR3 *pHitPos)
+{
+	// 半径設定
+	const float fCasleRadius = 30.0f;
+
+	// 判定先との距離差分
+	float fDisX = pHitPos->x - GetPos().x;
+	float fDisY = pHitPos->y - GetPos().y;
+	float fDisZ = pHitPos->z - GetPos().z;
+
+	// 半径のサイズを計算
+	float fradX = fCasleRadius + fHItRange;
+	float fradY = fCasleRadius + fHItRange;
+	float fradZ = fCasleRadius + fHItRange;
+
+	// 差分計算
+	float fDissAll = (fDisX * fDisX) + (fDisY * fDisY) + (fDisZ * fDisZ);
+	float fRadAll = (fradX + fradY + fradZ) * (fradX + fradY + fradZ);
+
+	// 半径内に入っていたら
+	if (fDissAll <= fRadAll)
+	{
+		// コリジョン判定を返す
+		return true;
+	}
+
+	// 当たらないとき
+	return false;
+}
+//=============================================================================
+// ダメージ処理
+//=============================================================================
+void CCasleBlock::Hit(int nDamage)
+{
+	// ダメージ減らす
+	m_nLife -= nDamage;
+
+	if (m_nLife <= NULL)
+	{
+		// 破棄
+		Uninit();
+
+		// 処理返す
+		return;
+	}
 }
