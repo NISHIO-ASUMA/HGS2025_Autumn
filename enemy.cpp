@@ -264,6 +264,12 @@ void CEnemy::Hit(const int nDamage)
 	CParticle::Create<CWaterParticle>(VECTOR3_NULL, GetPos(), D3DXCOLOR(0.3f, 0.6f, 1.0f, 0.8f), 50, 10);
 	CParticle::Create<CWaterParticle>(VECTOR3_NULL, GetPos(), D3DXCOLOR(0.3f, 0.5f, 1.0f, 0.5f), 50, 10);
 	CScore::AddScore(20000);
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
+	// サウンド再生
+	pSound->PlaySound(CSound::SOUND_LABEL_DAMAGE);
 }
 //=================
 // 状態遷移処理

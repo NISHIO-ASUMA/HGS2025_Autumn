@@ -205,6 +205,13 @@ void CTime::Update(void)
 		m_isCreate = true;
 
 		CConveniBlock::AddSpan();
+
+		// サウンド取得
+		CSound* pSound = CManager::GetSound();
+
+		// サウンド再生
+		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
+
 	}
 
 	// 桁計算

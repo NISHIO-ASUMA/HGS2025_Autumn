@@ -101,6 +101,15 @@ HRESULT CGame::Init(void)
 	//// 竜巻の生成
 	//CGimmick::Create(D3DXVECTOR3(380.0f, 0.0f, 330.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmick::TYPE_TORNADO);
 
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
+	// nullだったら
+	if (pSound == nullptr) return E_FAIL;
+
+	// サウンド再生
+	pSound->PlaySound(CSound::SOUND_LABEL_GAMEBGM);
+
 	// 初期化結果を返す
 	return S_OK;
 }
