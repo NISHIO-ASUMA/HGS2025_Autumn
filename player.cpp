@@ -41,6 +41,8 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 	{
 		m_apModel[nCnt] = {};							// モデル(パーツ)へのポインタ
 	}
+	m_pHpGauge = nullptr;								// ＨＰゲージへのポインタ
+	m_nLife = 0;										// ライフ
 }
 //=============================================================================
 // デストラクタ
@@ -105,6 +107,11 @@ HRESULT CPlayer::Init(void)
 
 	// カプセルの中心 = 足元 + オフセット
 	m_colliderPos = m_pos + D3DXVECTOR3(0, m_pCollider->GetHeight() * 0.5f, 0);
+
+	// ライフ
+	m_nLife = 10;
+	// ＨＰゲージ
+	m_pHpGauge = CGauge::Create(D3DXVECTOR3(50.0f, 40.0f, 0.0f), m_nLife, 20, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
 
 	return S_OK;
 }

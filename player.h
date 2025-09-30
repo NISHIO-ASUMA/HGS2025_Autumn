@@ -16,6 +16,7 @@
 #include "shadowS.h"
 #include "state.h"
 #include "manager.h"
+#include "gauge.h"
 
 // 前方宣言
 class CPlayer_StandState;
@@ -94,7 +95,9 @@ private:
 	CMotion* m_pMotion;					// モーションへのポインタ
 	int m_currentMotion;				// 現在のモーション
 	int m_nNumModel;					// モデル(パーツ)の総数
+	int m_nLife;						// ライフ
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
+	CGauge* m_pHpGauge;					// ＨＰゲージへのポインタ
 
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;
