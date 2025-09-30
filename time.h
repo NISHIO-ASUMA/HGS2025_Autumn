@@ -49,7 +49,7 @@ private:
 	void Minute(void);
 
 	static constexpr int DIGIT_TIME = 2;		// 桁数
-	static constexpr int NUMTIME = 150;			// 最大タイマー
+	static constexpr int NUMTIME = 60;			// 最大タイマー
 	static constexpr int CARVETIME = 60;		// カウント上限
 	static constexpr int DIVIDE = 10;			// 桁分割の値
 	static constexpr int REDTIMEZONE = 10;		// 赤く点滅させる時間
