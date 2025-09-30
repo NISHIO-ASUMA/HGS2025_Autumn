@@ -40,7 +40,6 @@ CResultScore::CResultScore(int nPriority) : CObject(nPriority)
 	m_nIdxTexture = NULL;
 	m_nDestLastScore = NULL;
 	m_nDestTimeScore = NULL;
-	m_nLastScore = NULL;
 
 	m_fScale = NULL;		// Å‰‚Í‘å‚«‚­
 	m_fTargetScale = NULL;	// ’ÊíƒTƒCƒY

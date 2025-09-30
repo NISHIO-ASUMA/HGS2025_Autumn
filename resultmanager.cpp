@@ -53,15 +53,14 @@ HRESULT CResultManager::Init(void)
 	Load();
 
 	// スコアを生成する ( 敵,時間,弾,合計 )
-	m_pResultScore[0] = CResultScore::Create(D3DXVECTOR3(1190.0f, 200.0f, 0.0f), 300.0f, 60.0f, 0, m_nGameScore);
-	m_pResultScore[1] = CResultScore::Create(D3DXVECTOR3(1190.0f, 350.0f, 0.0f), 300.0f, 60.0f, 0, m_nLastTime);
-	m_pResultScore[2] = CResultScore::Create(D3DXVECTOR3(1190.0f, 500.0f, 0.0f), 300.0f, 60.0f, 0, m_nBulletScore);
+	m_pResultScore[0] = CResultScore::Create(D3DXVECTOR3(1190.0f, 220.0f, 0.0f), 300.0f, 60.0f, 0, m_nGameScore);
+	m_pResultScore[1] = CResultScore::Create(D3DXVECTOR3(1190.0f, 370.0f, 0.0f), 300.0f, 60.0f, 0, m_nLastTime);
 
 	// 先に計算
-	m_nAllScore = m_nGameScore + m_nLastTime + m_nBulletScore;
+	m_nAllScore = m_nGameScore + m_nLastTime;
 
 	// 最終スコアをセット
-	m_pResultScore[3] = CResultScore::Create(D3DXVECTOR3(1190.0f, 650.0f, 0.0f), 400.0f, 100.0f, 0, m_nAllScore);
+	m_pResultScore[2] = CResultScore::Create(D3DXVECTOR3(1190.0f, 640.0f, 0.0f), 400.0f, 100.0f, 0, m_nAllScore);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -111,7 +110,7 @@ void CResultManager::Update(void)
 		if (pFade != nullptr)
 		{
 			// 最後のスコアを書き出す
-			m_pResultScore[3]->Save();
+			m_pResultScore[2]->Save();
 
 			// シーン遷移
 			pFade->SetFade(new CRanking());
