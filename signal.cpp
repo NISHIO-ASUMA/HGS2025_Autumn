@@ -15,9 +15,10 @@
 //**********************
 namespace SIGNINFO
 {
-	inline constexpr int LIFE = 60; // 最大寿命
-	inline constexpr float UISIZE = 50.0f;	// UIサイズ
-	const D3DXVECTOR3 ACTIVEPOS = { 640.0f,60.0f,0.0f }; // UI座標
+	inline constexpr int LIFE = 120; // 最大寿命
+	inline constexpr float UIHEIGHT = 50.0f;	// UIサイズ
+	inline constexpr float UIWIDTH = 250.0f;	// UIサイズ
+	const D3DXVECTOR3 ACTIVEPOS = { 640.0f,360.0f,0.0f }; // UI座標
 };
 
 //==============================
@@ -46,9 +47,9 @@ CSignal* CSignal::Create(void)
 
 	// オブジェクト設定
 	pSign->SetPos(SIGNINFO::ACTIVEPOS);
-	pSign->SetSize(SIGNINFO::UISIZE, SIGNINFO::UISIZE);
+	pSign->SetSize(SIGNINFO::UIWIDTH, SIGNINFO::UIHEIGHT);
 	pSign->SetAnchor(ANCHORTYPE_CENTER);
-	pSign->SetTexture("alert.png");
+	pSign->SetTexture("warning.png");
 
 	// 初期化失敗時
 	if (FAILED(pSign->Init()))
@@ -87,7 +88,7 @@ void CSignal::Uninit(void)
 void CSignal::Update(void)
 {
 	// 点滅処理を実行
-	SetFlash(2, 5, COLOR_WHITE);
+	SetFlash(15, 30, COLOR_WHITE);
 
 	// 体力を減らす
 	m_nLife--;
