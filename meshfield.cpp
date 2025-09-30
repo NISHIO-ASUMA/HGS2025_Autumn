@@ -88,7 +88,7 @@ void CMeshField::SetTexture(void)
 	CTexture* pTexture = CManager::GetTexture();
 
 	// 割り当て
-	m_nTexIdx = pTexture->Register("data\\TEXTURE\\field100.jpg");
+	m_nTexIdx = pTexture->RegisterDynamic("data\\TEXTURE\\MeshField.jpeg");
 }
 //============================================
 // 初期化処理
@@ -267,4 +267,7 @@ void CMeshField::Draw(void)
 
 	// テクスチャを戻す
 	pDevice->SetTexture(0, NULL);
+
+	CDebugproc::Print("メッシュ座標 [ %.2f,%.2f,%.2f ]", m_pos.x, m_pos.y, m_pos.z);
+	CDebugproc::Draw(0,40);
 }

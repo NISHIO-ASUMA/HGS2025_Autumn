@@ -161,11 +161,18 @@ void CTime::Update(void)
 	// カウンターを加算
 	m_nCount++;
 
+	// 0以下なら
+	if (m_nAllTime <= NULL)
+	{
+		m_nAllTime = NULL;
+		return;
+	}
+
 	// 1秒経過後 ( 秒減少 )
 	if (m_nCount >= CARVETIME)
 	{
 		// カウンターを初期化する
-		m_nCount = 0;
+		m_nCount = NULL;
 
 		// 全体時間を減らす
 		m_nAllTime--;
@@ -175,12 +182,6 @@ void CTime::Update(void)
 
 		// 秒を減らす
 		m_nSecond = m_nAllTime % CARVETIME;
-
-		// 0以下なら
-		if (m_nAllTime <= 0) m_nAllTime = 0;
-
-		// 減少していった時間を加算
-		m_nDecTime++;
 	}
 
 	// 桁計算

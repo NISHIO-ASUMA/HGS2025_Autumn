@@ -16,6 +16,7 @@
 #include "ui.h"
 #include "player.h"
 #include "score.h"
+#include "meshfield.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -84,6 +85,12 @@ HRESULT CGame::Init(void)
 	// スコア生成
 	CScore::Create(D3DXVECTOR3(1240.0f, 660.0f, 0.0f), 180.0f, 60.0f);
 
+	// フィールド生成
+	CMeshField::Create(VECTOR3_NULL, 1500.0f);
+
+	// 初期化
+	CScore::DeleteScore();
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -150,6 +157,9 @@ void CGame::Update(void)
 			// 1秒経過
 			m_nGametype = GAMESTATE_NONE;//何もしていない状態
 
+			// スコアを書き出す
+			CScore::SaveScore();
+
 			// フェードが取得できたら
 			if (pFade != nullptr)
 			{
@@ -183,6 +193,12 @@ void CGame::Update(void)
 				return;
 			}
 		}
+
+		if (CManager::GetInputKeyboard()->GetTrigger(DIK_J))
+		{
+			CScore::AddScore(10000);
+		}
+
 #endif // _DEBUG
 	}
 }

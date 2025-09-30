@@ -190,7 +190,7 @@ void CRankingScore::Load(void)
 		{
 			if (!(LoadFile >> m_aRankScore[nCnt]))
 			{
-				m_aRankScore[nCnt] = 0; // ‘«‚è‚È‚©‚Á‚½‚ç0“_
+				m_aRankScore[nCnt] = 0; // ‘«‚è‚È‚©‚Á‚½‚ç0“_‚ð’Ç‰Á
 			}
 		}
 
