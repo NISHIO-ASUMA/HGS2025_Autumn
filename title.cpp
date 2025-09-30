@@ -61,7 +61,7 @@ HRESULT CTitle::Init(void)
 		D3DPOOL_MANAGED,
 		&m_pVtxBuff,
 		NULL);
-
+	 
 	VERTEX_2D* pVtx;// 頂点情報へのポインタ
 
 	// 頂点バッファをロックし、頂点情報へのポインタを取得
@@ -69,7 +69,7 @@ HRESULT CTitle::Init(void)
 
 	ImageInfo images[2] =
 	{
-		   { D3DXVECTOR3(420.0f, 270.0f, 0.0f), 280.0f, 180.0f },	// タイトルロゴ
+		   { D3DXVECTOR3(640.0f, 270.0f, 0.0f), 400.0f, 150.0f },	// タイトルロゴ
 		   { D3DXVECTOR3(640.0f, 600.0f, 0.0f), 280.0f, 40.0f }		// PRESS
 	};
 
