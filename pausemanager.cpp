@@ -190,7 +190,7 @@ void CPauseManager::Update(void)
 	}
 
 	// Enterキー or Bボタン入力
-	if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_B))
+	if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A))
 	{
 		// サウンド再生
 		// pSound->PlaySound(pSound->SOUND_LABEL_RETURN);

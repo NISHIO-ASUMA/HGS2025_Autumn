@@ -35,7 +35,7 @@ class CPlayer_JumpState;
 #define CAPSULE_RADIUS (18.5f)					// カプセルコライダーの半径
 #define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
 #define PLAYER_LIFE (10)
-#define PLAYER_BULLET (100)
+#define PLAYER_BULLET (80)
 #define PLAYER_HITTIME (60)
 #define PLAYER_CHARGETIME (90)
 #define CHARGE_VEC (8)

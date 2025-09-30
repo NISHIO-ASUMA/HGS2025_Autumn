@@ -45,7 +45,7 @@
 #define SCREEN_WIDTH (1280)		// ウインドウの幅
 #define SCREEN_HEIGHT (720)		// ウインドウの高さ
 #define CLASS_NAME "WindowClass"		// ウインドウクラスの名前
-#define WINDOW_NAME "HGS2025"		// ウインドウの名前
+#define WINDOW_NAME "CANCANサバイバル!"		// ウインドウの名前
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)				// 頂点フォーマット[2D]
 #define FVF_VERTEX_3D (D3DFVF_XYZ | D3DFVF_NORMAL |  D3DFVF_DIFFUSE | D3DFVF_TEX1)  // 座標,法線,カラー,テクスチャ
 #define FVF_VERTEX_3D_MULTI (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX2) // 座標,法線,カラー,マルチテクスチャ

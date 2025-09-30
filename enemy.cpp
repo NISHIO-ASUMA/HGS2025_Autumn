@@ -263,7 +263,7 @@ void CEnemy::Hit(const int nDamage)
 	// パーティクル生成
 	CParticle::Create<CWaterParticle>(VECTOR3_NULL, GetPos(), D3DXCOLOR(0.3f, 0.6f, 1.0f, 0.8f), 50, 10);
 	CParticle::Create<CWaterParticle>(VECTOR3_NULL, GetPos(), D3DXCOLOR(0.3f, 0.5f, 1.0f, 0.5f), 50, 10);
-	CScore::AddScore(31000);
+	CScore::AddScore(20000);
 }
 //=================
 // 状態遷移処理
@@ -364,7 +364,7 @@ bool CEnemy::CollRadius(CObject* pObj, CObject::TYPE type)
 		if (bUse == true)
 		{
 			D3DXVECTOR3 BulletSize = pBullet->GetModel()->GetModelSize();
-			float BulletRadius = max(BulletSize.x, max(BulletSize.y, BulletSize.z)) * 0.5f;
+			float BulletRadius = max(BulletSize.x, max(BulletSize.y, BulletSize.z)) * 0.8f;
 
 			D3DXVECTOR3 BulletPos = pBullet->GetPos();//位置取得
 
