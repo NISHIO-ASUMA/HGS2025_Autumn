@@ -13,6 +13,7 @@
 #include "player.h"
 #include "characterManager.h"
 #include "particle.h"
+#include "enemy.h"
 
 // 名前空間の使用
 using namespace std;
@@ -166,6 +167,8 @@ CConveniBlock::CConveniBlock()
 {
 	// タイプを設定
 	SetType(TYPE_CONVENI);
+
+	m_nCntSpan = ENEMY_SPAN;
 }
 //=============================================================================
 // コンビニブロックのデストラクタ
@@ -180,6 +183,25 @@ CConveniBlock::~CConveniBlock()
 void CConveniBlock::Update(void)
 {
 	CBlock::Update();
+
+	//敵生成
+	m_nCntSpan--;
+	if (m_nCntSpan <= 0)
+	{
+		m_nCntSpan = ENEMY_SPAN;
+
+		auto now = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+		size_t seed = static_cast<size_t>(now) ^ reinterpret_cast<size_t>(this);
+
+		std::mt19937 mt((unsigned int)seed);
+		std::uniform_int_distribution<int> dist(0, CEnemy::TYPE_MAX - 1);
+
+		int nType = dist(mt);
+
+		D3DXVECTOR3 pos = D3DXVECTOR3(GetPos().x, GetPos().y - 100.0f, GetPos().z);
+		CEnemy::Create(pos, VECTOR3_NULL, (CEnemy::TYPE)nType);
+	}
+
 
 	//// オフセット
 	//D3DXVECTOR3 localOffset(0.0f, 60.0f, 0.0f); // 松明の先端（ローカル）

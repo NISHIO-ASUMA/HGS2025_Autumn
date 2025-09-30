@@ -87,6 +87,7 @@ HRESULT CBullet::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, USER user)
 	m_pModel = CModel::Create(pFilename, m_pos, m_rot);
 	//サイズを設定
 
+
 	// オブジェクトの種類設定
 	SetObjType(TYPE_BULLET);
 	

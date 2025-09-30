@@ -70,6 +70,10 @@ public:
 	~CConveniBlock();
 
 	void Update(void);
+
+private:
+
+	int m_nCntSpan;
 };
 
 

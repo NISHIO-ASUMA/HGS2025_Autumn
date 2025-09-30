@@ -25,6 +25,8 @@
 #include <cstdio>
 #include <fstream>
 #include <functional>
+#include <chrono>
+#include <random>
 
 //**************************
 // ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒŠƒ“ƒNéŒ¾
