@@ -80,11 +80,11 @@ private:
 		{"data/SE/keyselect.wav",0},		 // 選択キーSE
 		{"data/SE/keyenter.wav",0},			 // 決定キーSE
 		{"data/SE/Itemse.wav",0},			 // アイテムSE
-		{"data/SE/Alart.wav",0},			 // 警告音SE
-		{"data/SE/BulletSe.wav",0},			 // 通常弾
+		{"data/SE/arrat.wav",0},			 // 警告音SE
+		{"data/SE/shot00.wav",0},			 // 通常弾
 		{"data/SE/LaserBullet.wav",0},		 // レーザー弾
 		{"data/SE/LifeSe.wav",0},			 // 回復SE
-		{"data/SE/Damage.wav",0},			 // ダメージSE
+		{"data/SE/Damage00.wav",0},			 // ダメージSE
 		{"data/SE/MeshCircle.wav",0},		 // メッシュ攻撃SE
 		{"data/SE/TutoClear.wav",0},		 // タスク完了SE
 		{"data/SE/Guard.wav",0},			 // ガード音SE
