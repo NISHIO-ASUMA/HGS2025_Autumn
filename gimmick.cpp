@@ -184,7 +184,6 @@ void CGimmick::Move(void)
 	m_tornadoDir = GetPos() - playerPos;
 	float distTornade = D3DXVec3Length(&m_tornadoDir);
 
-
 	m_pos += m_move;
 
 	m_rot.y += 0.08f;
