@@ -43,7 +43,8 @@ HRESULT CTutorial::Init(void)
 	// pSound->PlaySound(CSound::SOUND_LABEL_TUTORIALBGM);
 
 	// uiê∂ê¨
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "tutorial.jpg", false);
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, "tutorial00.jpg", false);
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.75f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, "tutorial03.jpg", false);
 
 	// èâä˙âªåãâ Çï‘Ç∑
 	return S_OK;
@@ -53,7 +54,7 @@ HRESULT CTutorial::Init(void)
 //===============================
 void CTutorial::Uninit(void)
 {
-
+	// ñ≥Çµ
 }
 //===============================
 // çXêVèàóù

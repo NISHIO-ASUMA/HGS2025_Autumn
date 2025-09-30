@@ -197,6 +197,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadowS.cpp" />
+    <ClCompile Include="signal.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="time.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shadowS.h" />
+    <ClInclude Include="signal.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="template.h" />
