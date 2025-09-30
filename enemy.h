@@ -11,7 +11,7 @@
 
 // インクルード
 #include "main.h"
-#include "object.h"
+#include "objectX.h"
 #include "model.h"
 //#include "gauge_enemy.h"
 
@@ -19,18 +19,20 @@
 class CShadow;
 
 // マクロ定義
-#define ENEMY_LIFE (30)
+#define ENEMY_LIFE (3)
 #define ENEMY_ACTIONSTATE (300)
 #define ENEMY_SPEED (1.35f)
+#define ENEMY_SPAN (420)
 
 // 敵クラス
-class CEnemy :public CObject
+class CEnemy :public CObjectX
 {
 public:
 	// 種類
 	typedef enum
 	{
 		TYPE_NONE = 0,
+		TYPE_TORNADO,
 		TYPE_MAX
 	}TYPE;
 	// 状態
@@ -73,10 +75,12 @@ private:
 	void Move(void);
 	void Move_Normal(void);
 	
-
-	void State(STATE state);
-	bool Collision(void);
+	void State(STATE state);	
 	void ItemSet();
+	
+	bool Collision(void);
+	bool CollRadius(CObject* pObj, CObject::TYPE type);
+	bool Radius(D3DXVECTOR3 pos0, float radius0, D3DXVECTOR3 pos1, float radius1);
 
 	// メンバ変数
 	D3DXVECTOR3 m_pos;			// 位置

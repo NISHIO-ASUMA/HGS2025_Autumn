@@ -56,6 +56,7 @@ public:
 	TYPE GetType(void) { return m_type; }
 	bool GetUse(void) { return m_bUse; }
 	bool GetSkill(void) { return m_bSkill; }
+	CModel* GetModel(void) { return m_pModel; }
 	// ê›íË
 	void SetUser(USER user) { m_user = user; };
 	void SetUse(bool bUse) { m_bUse = bUse; }

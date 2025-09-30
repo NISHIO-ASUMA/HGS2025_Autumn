@@ -112,6 +112,9 @@ HRESULT CPlayer::Init(void)
 	// ＨＰゲージ生成
 	m_pHpGauge = CHpGauge::Create(D3DXVECTOR3(50.0f, 40.0f, 0.0f), PLAYER_LIFE, GAUGE_Y, D3DCOLOR_RGBA(1, 255, 1, 255));
 
+	// オブジェクトの種類設定
+	SetObjType(TYPE_PLAYER);
+
 	return S_OK;
 }
 //=============================================================================
