@@ -295,17 +295,11 @@ void CPlayer::Hit(int nDamage)
 //=======================
 void CPlayer::ChargeShot(void)
 {
-	m_nCntCharge++;
-	if (m_nCntCharge >= PLAYER_CHARGETIME)
+	float rot = D3DX_PI / (CHARGE_VEC / 2);
+	for (int nCnt = 0; nCnt < CHARGE_VEC; nCnt++)
 	{
-		m_nCntCharge = 0;
-
-		float rot = D3DX_PI / (CHARGE_VEC / 2);
-		for (int nCnt = 0; nCnt < CHARGE_VEC; nCnt++)
-		{
-			CBullet::Create(m_pos, { m_rot.x,m_rot.y + (rot * nCnt),m_rot.z }, CBullet::USER_PLAYER);
-			m_nCntBullet--;
-		}
+		CBullet::Create(m_pos, { m_rot.x,m_rot.y + (rot * nCnt),m_rot.z }, CBullet::USER_PLAYER);
+		m_nCntBullet--;
 	}
 }
 //=============================================================================

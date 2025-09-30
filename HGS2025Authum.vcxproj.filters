@@ -168,6 +168,9 @@
     <ClCompile Include="bullet_counter.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="moveui.cpp">
+		<Filter>ソース ファイル</Filter>
+	</ClCompile>
     <ClCompile Include="gauge_charge.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -341,6 +344,9 @@
     <ClInclude Include="bullet_counter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="moveui.h">
+		<Filter>ヘッダー ファイル</Filter>
+	</ClInclude>
     <ClInclude Include="gauge_charge.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

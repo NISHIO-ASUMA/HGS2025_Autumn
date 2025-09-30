@@ -86,8 +86,6 @@ void CChargeGauge::Update(void)
 
 	if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
 	{
-		pPlayer->ChargeShot();
-
 		m_bUse = true;
 		m_nCntReset++;
 		m_Base += 0.05f;
