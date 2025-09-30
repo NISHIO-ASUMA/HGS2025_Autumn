@@ -172,18 +172,8 @@ public:
 				pSound->PlaySound(CSound::SOUND_LABEL_BULLET);
 			}
 		}
-		//if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
-		//{
-		//	pPlayer->ChargeShot();
-		//}
-		pPlayer->SetBullet(nBullet);
 
-		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
-		{
-			int nLife = pPlayer->GetLife();
-			nLife--;
-			pPlayer->SetLife(nLife);
-		}
+		pPlayer->SetBullet(nBullet);
 
 		// ˆÚ“®“ü—Í‚ª‚ ‚éê‡
 		if (input.moveDir.x != 0.0f || input.moveDir.z != 0.0f)
@@ -245,20 +235,6 @@ public:
 			}
 			pPlayer->SetBullet(nBullet);
 		}
-		//if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
-		//{
-		//	pPlayer->ChargeShot();
-		//}
-
-#ifdef _DEBUG
-		// HP‚ðŒ¸‚ç‚·
-		if (pKeyboard->GetTrigger(DIK_1))
-		{
-			int nLife = pPlayer->GetLife();
-			nLife--;
-			pPlayer->SetLife(nLife);
-		}
-#endif
 
 		pPlayer->SetMove(input.moveDir * PLAYER_SPEED);
 
