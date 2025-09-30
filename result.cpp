@@ -18,7 +18,7 @@
 //=================================
 CResult::CResult() : CScene(CScene::MODE_RESULT)
 {
-
+	// 無し
 }
 //=================================
 // デストラクタ
@@ -77,12 +77,12 @@ void CResult::Update(void)
 
 		if (pFade != nullptr)
 		{
+			// ランキング遷移
 			pFade->SetFade(new CRanking());
 
 			return;
 		}
 	}
-
 }
 //=================================
 // 描画処理

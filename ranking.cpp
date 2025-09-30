@@ -14,6 +14,7 @@
 #include "fade.h"
 #include "title.h"
 #include "ui.h"
+#include "rankingmanager.h"
 
 //===================================
 // オーバーロードコンストラクタ
@@ -55,6 +56,15 @@ HRESULT CRanking::Init(void)
 	// ui生成
 	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "ranking.jpg", false);
 
+	// マネージャー生成
+	m_pRanking = new CRankingManager;
+
+	// 初期化処理
+	if (m_pRanking != nullptr)
+	{
+		m_pRanking->Init();
+	}
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -63,7 +73,16 @@ HRESULT CRanking::Init(void)
 //===================================
 void CRanking::Uninit(void)
 {
-	// 無し
+	// nullチェック
+	if (m_pRanking != nullptr)
+	{
+		// ランキングマネージャーの破棄
+		m_pRanking->Uninit();
+
+		delete m_pRanking;
+
+		m_pRanking = nullptr;
+	}
 }
 //===================================
 // 更新処理

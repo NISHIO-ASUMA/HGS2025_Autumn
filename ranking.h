@@ -14,6 +14,11 @@
 #include "scene.h"
 
 //******************************
+// 前方宣言
+//******************************
+class CRankingManager;
+
+//******************************
 // ランキングシーンクラスを定義
 //******************************
 class CRanking : public CScene
@@ -33,6 +38,7 @@ public:
 	static CRanking* Create(void);
 
 private:
+	CRankingManager* m_pRanking; // ランキングマネージャー
 };
 
 #endif
