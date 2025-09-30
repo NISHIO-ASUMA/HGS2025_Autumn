@@ -12,7 +12,8 @@
 #include "player.h"
 #include "debugproc.h"
 #include "game.h"
-//
+#include "score.h"
+
 int CEnemy::m_nCntKill = 0;
 //==================
 // コンストラクタ
@@ -259,6 +260,10 @@ void CEnemy::Hit(const int nDamage)
 {
 	m_nLife -= nDamage;
 
+	// パーティクル生成
+	CParticle::Create<CWaterParticle>(VECTOR3_NULL, GetPos(), D3DXCOLOR(0.3f, 0.6f, 1.0f, 0.8f), 50, 10);
+	CParticle::Create<CWaterParticle>(VECTOR3_NULL, GetPos(), D3DXCOLOR(0.3f, 0.5f, 1.0f, 0.5f), 50, 10);
+	CScore::AddScore(31000);
 }
 //=================
 // 状態遷移処理
