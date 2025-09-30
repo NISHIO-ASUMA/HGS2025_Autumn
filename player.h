@@ -52,12 +52,7 @@ public:
 	{
 		NEUTRAL = 0,		// 待機
 		MOVE,				// 移動
-		BESIDEMOVE,			// 横移動
 		JUMP,				// ジャンプ
-		HOLD_NEUTRAL,		// 掴み待機
-		HOLD_MOVE,			// 掴み移動
-		HOLD_BESIDEMOVE,	// 掴み横移動
-		HOLD_JUMP,			// 掴みジャンプ
 		MAX
 	}PLAYER_MOTION;
 

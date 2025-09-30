@@ -201,7 +201,7 @@ void CPlayer::Update(void)
 		m_pShadowS->SetPosition(m_pos);
 	}
 
-	int nNumModels = 10;
+	int nNumModels = 1;
 
 	// モーションの更新処理
 	m_pMotion->Update(m_apModel, nNumModels);

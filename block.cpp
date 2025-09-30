@@ -71,7 +71,7 @@ CBlock* CBlock::Create(const char* pFilepath, D3DXVECTOR3 pos, D3DXVECTOR3 rot, 
 //=============================================================================
 void CBlock::InitFactry(void)
 {
-	blockFactory["data/MODELS/woodbox_003.x"] = []() { return new CWoodBoxBlock(); };
+	blockFactory["data/MODELS/convenience_store00.x"] = []() { return new CConveniBlock(); };
 }
 //=============================================================================
 // 初期化処理
@@ -158,31 +158,39 @@ D3DXMATRIX CBlock::GetWorldMatrix(void)
 	return world;
 }
 
-CWoodBoxBlock::CWoodBoxBlock()
+
+//=============================================================================
+// コンビニブロックのコンストラクタ
+//=============================================================================
+CConveniBlock::CConveniBlock()
 {
 	// タイプを設定
-	SetType(TYPE_WOODBOX);
+	SetType(TYPE_CONVENI);
 }
-
-CWoodBoxBlock::~CWoodBoxBlock()
+//=============================================================================
+// コンビニブロックのデストラクタ
+//=============================================================================
+CConveniBlock::~CConveniBlock()
 {
 	// なし
 }
-
-void CWoodBoxBlock::Update(void)
+//=============================================================================
+// コンビニブロックの更新処理
+//=============================================================================
+void CConveniBlock::Update(void)
 {
 	CBlock::Update();
 
-	// オフセット
-	D3DXVECTOR3 localOffset(0.0f, 60.0f, 0.0f); // 松明の先端（ローカル）
-	D3DXVECTOR3 worldOffset;
+	//// オフセット
+	//D3DXVECTOR3 localOffset(0.0f, 60.0f, 0.0f); // 松明の先端（ローカル）
+	//D3DXVECTOR3 worldOffset;
 
-	// ブロックのワールドマトリックスを取得
-	D3DXMATRIX worldMtx = GetWorldMatrix();
+	//// ブロックのワールドマトリックスを取得
+	//D3DXMATRIX worldMtx = GetWorldMatrix();
 
-	D3DXVec3TransformCoord(&worldOffset, &localOffset, &worldMtx);
+	//D3DXVec3TransformCoord(&worldOffset, &localOffset, &worldMtx);
 
-	// パーティクル生成
-	CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(0.8f, 0.5f, 0.1f, 0.8f), 8, 1);
-	CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(1.0f, 0.5f, 0.0f, 0.8f), 15, 1);
+	//// パーティクル生成
+	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(0.8f, 0.5f, 0.1f, 0.8f), 8, 1);
+	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(1.0f, 0.5f, 0.0f, 0.8f), 15, 1);
 }

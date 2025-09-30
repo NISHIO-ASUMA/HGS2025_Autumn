@@ -62,7 +62,7 @@ HRESULT CGame::Init(void)
 	m_pBlockManager->Init();
 
 	// JSON‚Ì“Ç‚İ‚İ
-	m_pBlockManager->LoadFromJson("data/test_01.json");
+	m_pBlockManager->LoadFromJson("data/stage_01.json");
 
 	// ’Êíisó‘Ô
 	m_nGametype = GAMESTATE_NORMAL;

@@ -25,7 +25,7 @@ public:
 	// ブロックの種類
 	typedef enum
 	{
-		TYPE_WOODBOX = 0,
+		TYPE_CONVENI = 0,
 		TYPE_MAX
 	}TYPE;
 
@@ -60,14 +60,17 @@ private:
 	static std::unordered_map<std::string, std::function<CBlock* ()>> blockFactory;
 };
 
-//木箱ブロック
-class CWoodBoxBlock : public CBlock
+//*****************************************************************************
+// コンビニブロッククラス
+//*****************************************************************************
+class CConveniBlock : public CBlock
 {
 public:
-	CWoodBoxBlock();
-	~CWoodBoxBlock();
+	CConveniBlock();
+	~CConveniBlock();
 
 	void Update(void);
 };
+
 
 #endif
