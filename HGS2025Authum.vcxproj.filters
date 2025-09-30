@@ -132,6 +132,7 @@
     <ClCompile Include="meshimpact.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="rankingmanager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -139,6 +140,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="score.cpp">
+=======
+    <ClCompile Include="bullet.cpp">
+>>>>>>> dc8c0a2d9f2dcd7846d21c7dcf4d77f443210171
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -275,6 +279,7 @@
     <ClInclude Include="meshimpact.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="rankingmanager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -282,6 +287,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="score.h">
+=======
+    <ClInclude Include="bullet.h">
+>>>>>>> dc8c0a2d9f2dcd7846d21c7dcf4d77f443210171
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

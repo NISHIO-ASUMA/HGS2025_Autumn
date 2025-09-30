@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="blockmanager.cpp" />
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collisionUtils.cpp" />
     <ClCompile Include="debugproc.cpp" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="blockmanager.h" />
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="characterManager.h" />
     <ClInclude Include="collisionUtils.h" />
