@@ -215,30 +215,19 @@ void CResultManager::MathScore(void)
 //===============================
 void CResultManager::MathBulletScore(void)
 {
-	// 読み込んだ値
-	float fValue = static_cast<float>(m_nBulletScore);
+	// 使用した弾数が m_nBulletScore に入っている
+	int nUsedBullet = m_nBulletScore;
 
-	// 残り数を計算
-	int nMathBullet = MAXBULLET - m_nBulletScore;
+	// 残弾数を計算
+	int nRemainBullet = MAXBULLET - nUsedBullet;
 
-	// もし最大値なら
-	if (nMathBullet == MAXBULLET)
-	{
-		// 最大値をセットする  ( 50万 )
-		m_nBulletScore = MAX_VALUESCORE;
-		return;
-	}
+	// 範囲内に収める
+	if (nRemainBullet < 0) nRemainBullet = 0;
+	if (nRemainBullet > MAXBULLET) nRemainBullet = MAXBULLET;
 
-	// 比率を算出
-	float fRatio = 1.0f - (fValue / MAX_VALUESCORE);
+	// 割合
+	float fRatio = static_cast<float>(nRemainBullet) / static_cast<float>(MAXBULLET);
 
-	// 範囲内で割合を算出
-	if (fRatio < 0.0f) fRatio = 0.0f;
-	if (fRatio > 1.0f) fRatio = 1.0f;
-
-	// スコア計算
-	int nMathscore = (int)(MAX_VALUESCORE * fRatio);
-
-	// 最後にセットする
-	m_nBulletScore = nMathscore;
+	// 最終スコア
+	m_nBulletScore = static_cast<int>(MAX_VALUESCORE * fRatio);
 }
