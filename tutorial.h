@@ -33,6 +33,7 @@ public:
 	static CTutorial* Create(void);
 
 private:
+	bool m_bFin;
 };
 
 #endif

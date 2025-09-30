@@ -11,6 +11,8 @@
 #include "rankingmanager.h"
 #include "rankingscore.h"
 #include "ui.h"
+#include "sound.h"
+#include "manager.h"
 
 //================================
 // コンストラクタ
@@ -37,6 +39,15 @@ HRESULT CRankingManager::Init(void)
 
 	// ランキングスコア生成
 	CRankingScore::Create(D3DXVECTOR3(900.0f, 200.0f, 0.0f), 250.0f, 40.0f);
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
+	// nullだったら
+	if (pSound == nullptr) return E_FAIL;
+
+	// サウンド再生
+	pSound->PlaySound(CSound::SOUND_LABEL_RESULTBGM);
 
 	// 初期化結果を返す
 	return S_OK;

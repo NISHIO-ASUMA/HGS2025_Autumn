@@ -11,6 +11,7 @@
 #include "texture.h"
 #include "game.h"
 #include "object2D.h"
+#include "ui.h"
 //==================
 // コンストラクタ
 //==================
@@ -48,8 +49,9 @@ CHpGauge* CHpGauge::Create(D3DXVECTOR3 pos, float base, float fHeight, D3DXCOLOR
 	pGause->m_col = col;
 	pGause->m_fHeight = fHeight;
 	pGause->m_pos = pos;
-
 	pGause->m_pGauge = CGauge::Create(pos, base, fHeight, col);
+	
+	CUi::Create(D3DXVECTOR3(pos.x + (base * GAUGE_X / 2.2f) + 10.0f, pos.y, pos.z), 0, (float)(base * GAUGE_X) / 1.93f, (fHeight * 2), "gauge_frame00.png", false);
 
 	return pGause;
 }
