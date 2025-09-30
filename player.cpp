@@ -289,6 +289,11 @@ void CPlayer::Hit(int nDamage)
 	{
 		m_nLife -= nDamage;
 
+		// サウンド取得
+		CSound* pSound = CManager::GetSound();
+		//サウンド再生
+		pSound->PlaySound(CSound::SOUND_LABEL_GUARD);
+
 		if (m_nLife <= 0)
 		{
 			m_nLife = 0;

@@ -165,6 +165,11 @@ public:
 				{
 					nBullet = 0;
 				}
+				// サウンド取得
+				CSound* pSound = CManager::GetSound();
+
+				// サウンド再生
+				pSound->PlaySound(CSound::SOUND_LABEL_BULLET);
 			}
 		}
 		//if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
@@ -232,6 +237,11 @@ public:
 				{
 					nBullet = 0;
 				}
+				// サウンド取得
+				CSound* pSound = CManager::GetSound();
+
+				// サウンド再生
+				pSound->PlaySound(CSound::SOUND_LABEL_BULLET);
 			}
 			pPlayer->SetBullet(nBullet);
 		}

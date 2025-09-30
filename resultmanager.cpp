@@ -178,8 +178,8 @@ void CResultManager::Load(void)
 		MessageBox(NULL, "GameScore.txt が開けませんでした", "エラー", MB_OK);
 	}
 
-	// 計算する
-	m_nBulletScore = m_nBulletScore * 10000;
+	// 計算
+	MathBulletScore();
 }
 //===============================
 // スコア計算
@@ -209,4 +209,36 @@ void CResultManager::MathScore(void)
 
 	// 最後にセットする
 	m_nLastTime = nMathscore;
+}
+//===============================
+// 残弾数スコア計算
+//===============================
+void CResultManager::MathBulletScore(void)
+{
+	// 読み込んだ値
+	float fValue = static_cast<float>(m_nBulletScore);
+
+	// 残り数を計算
+	int nMathBullet = MAXBULLET - m_nBulletScore;
+
+	// もし最大値なら
+	if (nMathBullet == MAXBULLET)
+	{
+		// 最大値をセットする  ( 50万 )
+		m_nBulletScore = MAX_VALUESCORE;
+		return;
+	}
+
+	// 比率を算出
+	float fRatio = 1.0f - (fValue / MAX_VALUESCORE);
+
+	// 範囲内で割合を算出
+	if (fRatio < 0.0f) fRatio = 0.0f;
+	if (fRatio > 1.0f) fRatio = 1.0f;
+
+	// スコア計算
+	int nMathscore = (int)(MAX_VALUESCORE * fRatio);
+
+	// 最後にセットする
+	m_nBulletScore = nMathscore;
 }

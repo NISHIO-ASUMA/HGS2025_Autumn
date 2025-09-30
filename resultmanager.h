@@ -29,10 +29,12 @@ public:
 	void Update(void);
 	void Load(void);
 	void MathScore(void);
+	void MathBulletScore(void);
 
 private:
 	static constexpr int MAX_VALUESCORE = 500000;
 	static constexpr int ADDSCORETIME = 60;
+	static constexpr int MAXBULLET = 80;
 
 	bool m_isKeyDown; // キー入力フラグ
 	int m_nGameScore; // スコアを格納

@@ -39,13 +39,14 @@ HRESULT CTutorial::Init(void)
 	// nullだったら
 	if (pSound == nullptr) return E_FAIL;
 
-	// サウンド再生
-	// pSound->PlaySound(CSound::SOUND_LABEL_TUTORIALBGM);
+	 //サウンド再生
+	 pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
 
 	// ui生成
 	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "tutorial05.jpg", false);
 
 	m_bFin = false;
+
 
 	// 初期化結果を返す
 	return S_OK;
