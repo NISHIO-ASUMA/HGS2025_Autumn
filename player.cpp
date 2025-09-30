@@ -155,8 +155,8 @@ void CPlayer::Update(void)
 	// カメラモードの取得
 	CCamera::MODE camMode = pCamera->GetMode();
 
-	// 入力判定の取得
-	InputData input = GatherInput();
+	//// 入力判定の取得
+	//InputData input = GatherInput();
 
 	// ステートマシン更新
 	m_stateMachine.Update();
@@ -169,14 +169,14 @@ void CPlayer::Update(void)
 		m_pCollider->UpdateTransform(m_colliderPos, VECTOR3_NULL, VECTOR3_NULL);
 	}
 
-	D3DXVECTOR3 targetMove = input.moveDir * PLAYER_SPEED;
+	//D3DXVECTOR3 targetMove = input.moveDir * PLAYER_SPEED;
 
-	// 徐々に m_currentMove を targetMove に近づける
-	float accel = 0.08f; // 加速度係数
-	m_currentMove += (targetMove - m_currentMove) * accel;
+	//// 徐々に m_currentMove を targetMove に近づける
+	//float accel = 0.08f; // 加速度係数
+	//m_currentMove += (targetMove - m_currentMove) * accel;
 
-	// 移動量を反映
-	m_pos += m_currentMove;
+	//// 移動量を反映
+	//m_pos += m_currentMove;
 
 	// 向きの正規化
 	if (m_rotDest.y - m_rot.y > D3DX_PI)
@@ -190,11 +190,11 @@ void CPlayer::Update(void)
 
 	m_rot.y += (m_rotDest.y - m_rot.y) * 0.09f;
 
-	// 移動入力があればプレイヤー向きを入力方向に
-	if (input.moveDir.x != 0.0f || input.moveDir.z != 0.0f)
-	{
-		m_rotDest.y = atan2f(-input.moveDir.x, -input.moveDir.z);
-	}
+	//// 移動入力があればプレイヤー向きを入力方向に
+	//if (input.moveDir.x != 0.0f || input.moveDir.z != 0.0f)
+	//{
+	//	m_rotDest.y = atan2f(-input.moveDir.x, -input.moveDir.z);
+	//}
 
 	if (m_pShadowS != nullptr)
 	{
