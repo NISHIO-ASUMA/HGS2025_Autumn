@@ -18,6 +18,7 @@
 #include "score.h"
 #include "meshfield.h"
 #include "enemy.h"
+#include "signal.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -94,6 +95,9 @@ HRESULT CGame::Init(void)
 
 	// スコアを初期化
 	CScore::DeleteScore();
+	
+	// 警告サイン生成
+	// CSignal::Create();
 
 	// 初期化結果を返す
 	return S_OK;
@@ -151,6 +155,7 @@ void CGame::Update(void)
 		break;
 
 	case GAMESTATE_END:
+
 		m_nStateCount++;
 
 		if (m_nStateCount >= 60)
@@ -197,12 +202,6 @@ void CGame::Update(void)
 				return;
 			}
 		}
-
-		if (CManager::GetInputKeyboard()->GetTrigger(DIK_J))
-		{
-			CScore::AddScore(10000);
-		}
-
 #endif // _DEBUG
 	}
 }
