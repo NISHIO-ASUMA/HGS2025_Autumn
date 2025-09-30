@@ -12,6 +12,7 @@
 #include "player.h"
 #include "debugproc.h"
 #include "enemy.h"
+#include "characterManager.h"
 //==================
 // コンストラクタ
 //==================
@@ -26,7 +27,7 @@ CGimmick::CGimmick(int nPriority) :CObject(nPriority)
 	m_pModel = NULL;
 
 
-	m_type = TYPE_TORNADE;
+	m_type = TYPE_TORNADO;
 
 	m_bUse = true;
 
@@ -36,6 +37,8 @@ CGimmick::CGimmick(int nPriority) :CObject(nPriority)
 	m_pathPoints = {};
 	m_currentTargetIndex = 0;
 	m_dir = VECTOR3_NULL;
+	m_tornadoDir = VECTOR3_NULL;
+	m_nTimer = 0;
 }
 //================
 // デストラクタ
@@ -58,10 +61,11 @@ CGimmick* CGimmick::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 	pGimmick->m_type = type;
 
 	// 通過ポイントの設定
-	pGimmick->AddPathPoint(D3DXVECTOR3(245.0f, 0.0f, 210.0f));
-	pGimmick->AddPathPoint(D3DXVECTOR3(-415.0f, 0.0f, 170.0f));
-	pGimmick->AddPathPoint(D3DXVECTOR3(-360.0f, 0.0f, -390.0f));
-	pGimmick->AddPathPoint(D3DXVECTOR3(360.0f, 0.0f, -300.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(380.0f, 0.0f, 330.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(-550.0f, 0.0f, 170.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(-430.0f, 0.0f, -390.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(-50.0f, 0.0f, -555.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(350.0f, 0.0f, -390.0f));
 
 
 	if (FAILED(pGimmick->Init()))
@@ -81,7 +85,7 @@ HRESULT CGimmick::Init()
 
 	m_bUse = true;
 	m_posOffSet = m_pos;
-	if (m_type == TYPE_TORNADE)
+	if (m_type == TYPE_TORNADO)
 	{
 		m_pModel = CModel::Create("data/MODELS/tornado00.x", m_pos, m_rot);
 	}
@@ -151,6 +155,36 @@ void CGimmick::AddPathPoint(const D3DXVECTOR3& point)
 //===========
 void CGimmick::Move(void)
 {
+	// プレイヤー情報取得
+	CPlayer* pPlayer = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
+
+	D3DXVECTOR3 playerPos = pPlayer->GetPos();
+
+	D3DXVECTOR3 disPos = playerPos - GetPos();
+	float distance = D3DXVec3Length(&disPos);
+
+	const float kTriggerDistance = 60.0f; // 反応距離
+
+	if (distance < kTriggerDistance)
+	{
+		m_nTimer++;
+
+		if (m_nTimer >= 120)
+		{// 持続ダメージ
+			pPlayer->Hit(1);
+		}
+	}
+	else
+	{
+		// タイマーリセット
+		m_nTimer = 0;
+	}
+
+	// 竜巻の方向にプレイヤーをひきつける
+	m_tornadoDir = GetPos() - playerPos;
+	float distTornade = D3DXVec3Length(&m_tornadoDir);
+
+
 	m_pos += m_move;
 
 	m_rot.y += 0.08f;
@@ -174,7 +208,7 @@ void CGimmick::Move(void)
 
 	if (dist < 100.0f)  // ある程度近づいたら次のポイントへ
 	{
-		if (m_currentTargetIndex >= 3)
+		if (m_currentTargetIndex >= 4)
 		{
 			m_currentTargetIndex = 0;
 		}
@@ -187,10 +221,15 @@ void CGimmick::Move(void)
 
 	// 正規化
 	D3DXVec3Normalize(&m_dir, &m_dir);
+	D3DXVec3Normalize(&m_tornadoDir, &m_tornadoDir);
 
-	// Z軸中心で転がす
+	// 移動量の設定
 	m_move = D3DXVECTOR3(m_dir.x * GIMMICK_SPEED, 0.0f, m_dir.z * GIMMICK_SPEED);
+	D3DXVECTOR3 moveDis = D3DXVECTOR3(m_tornadoDir.x * 2.0f, 0.0f, m_tornadoDir.z * 2.0f);
 
+	playerPos += moveDis;
+
+	pPlayer->SetPos(playerPos);
 	m_pModel->SetPos(m_pos);
 	m_pModel->SetRot(m_rot);
 }
