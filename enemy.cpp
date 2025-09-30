@@ -78,7 +78,7 @@ HRESULT CEnemy::Init(void)
 	m_fRandomAngle = D3DXToRadian(rand() % 360);
 
 	//ƒ‚ƒfƒ‹¶¬
-	const char* pFilename = "data/MODELS/tornado00.x";
+	const char* pFilename = "data/MODELS/pot00.x";
 
 	m_pModel = CModel::Create(pFilename, m_pos, m_rot);
 
@@ -227,11 +227,6 @@ void CEnemy::Move(void)
 	{
 		m_pos.y = 0.0f;
 		m_move.y = 0.0f;
-	}
-
-	//if (m_type == TYPE_TORNADO)
-	{
-		m_rot.y += 0.5f;
 	}
 
 	m_pModel->SetPos(m_pos);

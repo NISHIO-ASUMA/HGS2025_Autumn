@@ -18,6 +18,7 @@
 #include "manager.h"
 #include "gaugePlayer.h"
 #include "bullet.h"
+#include "bullet_counter.h"
 
 // 前方宣言
 class CPlayer_StandState;
@@ -106,7 +107,7 @@ private:
 	int m_nCntBullet;
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
-
+	CBulletCnt* m_pBulletCnt;
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;
 };
