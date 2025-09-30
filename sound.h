@@ -87,7 +87,7 @@ private:
 		{"data/SE/Damage00.wav",0},			 // ダメージSE
 		{"data/SE/MeshCircle.wav",0},		 // メッシュ攻撃SE
 		{"data/SE/TutoClear.wav",0},		 // タスク完了SE
-		{"data/SE/Guard.wav",0},			 // ガード音SE
+		{"data/SE/Damage.wav",0},			 // ガード音SE
 		{"data/SE/Explosion.wav",0},
 		{"data/SE/BossShout.wav",0},
 		{"data/SE/Break.wav",0},
