@@ -19,7 +19,7 @@
 #define BULET_SIZE (30)
 #define BULLET_LIFE (200)
 #define BULLET_ATTACK (10)
-#define BULLET_SPEED (3.5f)
+#define BULLET_SPEED (7.5f)
 
 // ’eƒNƒ‰ƒX
 class CBullet:public CObjectX
@@ -66,6 +66,7 @@ public:
 
 private:
 	void Move(void);
+	void MoveBounce(void);
 	bool Collision(void);
 
 	// ƒƒ“ƒo•Ï”

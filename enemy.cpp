@@ -118,81 +118,81 @@ void CEnemy::Uninit(void)
 //============
 void CEnemy::Update(void)
 {
-		if (m_bUse == true)
+	if (m_bUse == true)
+	{
+		float rate = (float)m_nLife / (float)ENEMY_LIFE;
+		rate = max(0.0f, min(rate, 1.0f));
+
+		//m_pGauge->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y * 1.5f), m_pos.z));
+		//m_pGauge->SetRate(rate);
+
+		switch (m_State)
 		{
-			float rate = (float)m_nLife / (float)ENEMY_LIFE;
-			rate = max(0.0f, min(rate, 1.0f));
+		case STATE_STAY:
+			//移動
+			Move();
+			break;
+		case STATE_MOVE:
+			//移動
+			Move();
+			break;
+		case STATE_HIT:
 
-			//m_pGauge->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y * 1.5f), m_pos.z));
-			//m_pGauge->SetRate(rate);
+			break;
 
-			switch (m_State)
-			{
-			case STATE_STAY:
-				//移動
-				Move();
-				break;
-			case STATE_MOVE:
-				//移動
-				Move();
-				break;
-			case STATE_HIT:
-
-				break;
-
-			default:
-				break;
-			}
-
-			//if (m_State != STATE_HIT)
-			//{
-			//}
-			//if (m_State == STATE_STAY)
-			//{
-			//	m_pGauge->SetDraw(false);
-			//}
-			//else
-			//{
-			//	m_pGauge->SetDraw(true);
-			//}
-
-			//当たり判定
-			Collision();
-
-			//寿命
-			if (m_nLife <= 0)
-			{
-				m_bUse = false;
-				//m_pGauge->SetDraw(false);
-			}
+		default:
+			break;
 		}
-		else if (m_bUse == false)
-		{//使っていないなら
-			Uninit();
+
+		//if (m_State != STATE_HIT)
+		//{
+		//}
+		//if (m_State == STATE_STAY)
+		//{
+		//	m_pGauge->SetDraw(false);
+		//}
+		//else
+		//{
+		//	m_pGauge->SetDraw(true);
+		//}
+
+		//当たり判定
+		Collision();
+
+		//寿命
+		if (m_nLife <= 0)
+		{
+			m_bUse = false;
+			//m_pGauge->SetDraw(false);
 		}
+	}
+	else if (m_bUse == false)
+	{//使っていないなら
+		Uninit();
+	}
 }
 //============
 // 描画処理
 //============
 void CEnemy::Draw(void)
 {
-		if (m_bUse == true)
-		{
-			//デバイスの取得
-			CRenderer* pRenderer = CManager::GetRenderer();
-			LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();
+	if (m_bUse == true)
+	{
+		//デバイスの取得
+		CRenderer* pRenderer = CManager::GetRenderer();
+		LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();
 
-			//計算用マトリックス
-			D3DXMATRIX mtxRot, mtxTrans;
-			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&m_mtxWorld);
+		//計算用マトリックス
+		D3DXMATRIX mtxRot, mtxTrans;
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld);
 
-			//ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-			//モデル描画
-			m_pModel->Draw();
-		}
+		//モデル描画
+		m_pModel->Draw();
+	}
 }
 //===========
 // 移動処理
