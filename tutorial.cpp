@@ -43,8 +43,9 @@ HRESULT CTutorial::Init(void)
 	// pSound->PlaySound(CSound::SOUND_LABEL_TUTORIALBGM);
 
 	// ui¶¬
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, "tutorial00.jpg", false);
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.75f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.25f, SCREEN_HEIGHT * 0.5f, "tutorial03.jpg", false);
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "tutorial05.jpg", false);
+
+	m_bFin = false;
 
 	// ‰Šú‰»Œ‹‰Ê‚ð•Ô‚·
 	return S_OK;
@@ -66,13 +67,22 @@ void CTutorial::Update(void)
 	// ƒL[“ü—Í
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN) || pJoypad->GetTrigger(pJoypad->JOYKEY_A))
 	{
-		CFade* pFade = CManager::GetFade();
-
-		if (pFade != nullptr)
+		if (m_bFin == false)
 		{
-			pFade->SetFade(new CGame());
-
+			CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "alert01.jpg", false);
+			m_bFin = true;
 			return;
+		}
+		else
+		{
+			CFade* pFade = CManager::GetFade();
+
+			if (pFade != nullptr)
+			{
+				pFade->SetFade(new CGame());
+
+				return;
+			}
 		}
 	}
 }
