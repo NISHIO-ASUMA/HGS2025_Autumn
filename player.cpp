@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "model.h"
 #include "game.h"
+#include "bullet.h"
 
 // ñºëOãÛä‘stdÇÃégóp
 using namespace std;
@@ -315,6 +316,11 @@ InputData CPlayer::GatherInput(void)
 	if (pKeyboard->GetPress(DIK_D))
 	{
 		input.moveDir += D3DXVECTOR3(-cosf(CamRot.y), 0, sinf(CamRot.y));
+	}
+
+	if (pKeyboard->GetTrigger(DIK_SPACE))
+	{
+		CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
 	}
 
 	// ê≥ãKâª
