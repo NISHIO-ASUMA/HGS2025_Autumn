@@ -21,7 +21,7 @@ public:
 	//種類
 	typedef enum
 	{
-		TYPE_TORNADE = 0,
+		TYPE_TORNADO = 0,
 		TYPE_POLE,
 
 		TYPE_MAX
@@ -69,7 +69,8 @@ private:
 	std::vector<D3DXVECTOR3> m_pathPoints;		// チェックポイントの配列 (代入用)
 	int m_currentTargetIndex;					// 今の目標地点インデックス
 	D3DXVECTOR3 m_dir;							// 進行方向ベクトル
-
+	D3DXVECTOR3 m_tornadoDir;					// 進行方向ベクトル
+	int m_nTimer;								// 持続ダメージタイマー
 };
 
 #endif

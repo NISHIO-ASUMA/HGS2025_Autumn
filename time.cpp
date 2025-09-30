@@ -195,7 +195,7 @@ void CTime::Update(void)
 		CSignal::Create();
 
 		// —³Šª‚Ì¶¬
-		CGimmick::Create(D3DXVECTOR3(245.0f, 0.0f, 210.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmick::TYPE_TORNADE);
+		CGimmick::Create(D3DXVECTOR3(380.0f, 0.0f, 330.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmick::TYPE_TORNADO);
 
 		// ¶¬Š®—¹ƒtƒ‰ƒO‚ğ—LŒø‰»
 		m_isCreate = true;

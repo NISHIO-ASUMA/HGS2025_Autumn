@@ -165,6 +165,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gauge.cpp" />
     <ClCompile Include="gaugePlayer.cpp" />
+    <ClCompile Include="gauge_charge.cpp" />
     <ClCompile Include="gimmick.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gauge.h" />
     <ClInclude Include="gaugePlayer.h" />
+    <ClInclude Include="gauge_charge.h" />
     <ClInclude Include="gimmick.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="json.hpp" />

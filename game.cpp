@@ -18,6 +18,7 @@
 #include "score.h"
 #include "meshfield.h"
 #include "enemy.h"
+#include "gimmick.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -93,6 +94,9 @@ HRESULT CGame::Init(void)
 	// スコアを初期化
 	CScore::DeleteScore();
 	
+	//// 竜巻の生成
+	//CGimmick::Create(D3DXVECTOR3(380.0f, 0.0f, 330.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmick::TYPE_TORNADO);
+
 	// 初期化結果を返す
 	return S_OK;
 }

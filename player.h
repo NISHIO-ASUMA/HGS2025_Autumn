@@ -19,6 +19,7 @@
 #include "gaugePlayer.h"
 #include "bullet.h"
 #include "bullet_counter.h"
+#include "gauge_charge.h"
 
 // 前方宣言
 class CPlayer_StandState;
@@ -115,6 +116,7 @@ private:
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
 	CBulletCnt* m_pBulletCnt;
+	CChargeGauge* m_pCharge;
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;
 };
@@ -157,10 +159,10 @@ public:
 				}
 			}
 		}
-		if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
-		{
-			pPlayer->ChargeShot();
-		}
+		//if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
+		//{
+		//	pPlayer->ChargeShot();
+		//}
 		pPlayer->SetBullet(nBullet);
 
 		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
@@ -225,10 +227,10 @@ public:
 			}
 			pPlayer->SetBullet(nBullet);
 		}
-		if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
-		{
-			pPlayer->ChargeShot();
-		}
+		//if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
+		//{
+		//	pPlayer->ChargeShot();
+		//}
 
 #ifdef _DEBUG
 		// HPを減らす
