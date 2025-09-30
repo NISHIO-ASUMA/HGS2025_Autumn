@@ -253,6 +253,9 @@ void CPlayer::Draw(void)
 			m_apModel[nCntMat]->Draw();
 		}
 	}
+
+	CDebugproc::Print("プレイヤーの位置 [ %.2f,%.2f,%.2f ] ", m_pos.x, m_pos.y, m_pos.z);
+	CDebugproc::Draw(0, 80);
 }
 //=============================================================================
 // 入力判定取得関数

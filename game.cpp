@@ -18,7 +18,6 @@
 #include "score.h"
 #include "meshfield.h"
 #include "enemy.h"
-#include "signal.h"
 
 //**************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
