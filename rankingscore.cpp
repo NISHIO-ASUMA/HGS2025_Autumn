@@ -152,7 +152,7 @@ void CRankingScore::Update(void)
 			m_apNumber[rank][digit]->SetDigit(num);
 
 			// 該当スコアがランクインしてたら
-			if (rank == m_nNewRankingScore)
+			if (rank == m_nNewRankingScore && score > 0)
 			{
 				// 点滅処理を実行
 				m_apNumber[rank][digit]->SetFlash(10,20,D3DCOLOR_RGBA(255, 255, 255,120));

@@ -117,7 +117,7 @@ HRESULT CResultScore::Init(void)
 		m_apNumber[nCnt]->SetSize(fTexPos, m_fHeight);
 
 		// テクスチャセット
-		m_apNumber[nCnt]->SetTexture("score000.png");
+		m_apNumber[nCnt]->SetTexture("number.png");
 	}
 
 	m_fScale = RESULTSCOREINFO::SCALE;			// 最初は大きく
