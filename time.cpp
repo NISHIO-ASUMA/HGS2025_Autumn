@@ -117,6 +117,8 @@ HRESULT CTime::Init(void)
 		m_pNumberSecond[nCnt]->SetTexture("number.png");
 	}
 
+	m_nDecTime = NULL;
+
 	// Œ‹‰Ê‚ð•Ô‚·
 	return S_OK;
 }

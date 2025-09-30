@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "particle.h"
 #include "tutorial.h"
+#include "ui.h"
 
 //=============================================================================
 // コンストラクタ
@@ -113,6 +114,8 @@ HRESULT CTitle::Init(void)
 
 	// サウンド再生
 	pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
+
+	CUi::Create(D3DXVECTOR3(1080.0f, 460.0f, 0.0f), 0, 200.0f, 60.0f, "teamnumber.png", false);
 
 	return S_OK;
 }
