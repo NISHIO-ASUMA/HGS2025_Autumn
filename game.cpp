@@ -19,6 +19,7 @@
 #include "meshfield.h"
 #include "enemy.h"
 #include "gimmick.h"
+#include "meshdome.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -87,6 +88,9 @@ HRESULT CGame::Init(void)
 
 	// スコア生成
 	CScore::Create(D3DXVECTOR3(1240.0f, 660.0f, 0.0f), 180.0f, 60.0f);
+
+	// ドーム生成
+	CMeshDome::Create(VECTOR3_NULL, 1200);
 
 	// フィールド生成
 	CMeshField::Create(D3DXVECTOR3(-20.0f,0.0f,27.0f), 1600.0f);
