@@ -114,7 +114,7 @@ void CCamera::SetCamera(void)
 		D3DXToRadian(80.0f),						// 視野角
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, // アスペクト比
 		1.0f,										// 近クリップ面
-		2500.0f);									// 遠クリップ面
+		3000.0f);									// 遠クリップ面
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProjection);
