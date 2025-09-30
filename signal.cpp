@@ -15,7 +15,7 @@
 //**********************
 namespace SIGNINFO
 {
-	inline constexpr int LIFE = 120; // 最大寿命
+	inline constexpr int LIFE = 180; // 最大寿命
 	inline constexpr float UIHEIGHT = 50.0f;	// UIサイズ
 	inline constexpr float UIWIDTH = 250.0f;	// UIサイズ
 	const D3DXVECTOR3 ACTIVEPOS = { 640.0f,360.0f,0.0f }; // UI座標
@@ -88,7 +88,7 @@ void CSignal::Uninit(void)
 void CSignal::Update(void)
 {
 	// 点滅処理を実行
-	SetFlash(15, 30, COLOR_WHITE);
+	SetFlash(30, 80, COLOR_WHITE);
 
 	// 体力を減らす
 	m_nLife--;
