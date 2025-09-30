@@ -161,7 +161,8 @@ D3DXMATRIX CBlock::GetWorldMatrix(void)
 	return world;
 }
 
-
+int CConveniBlock::m_nNumSpan = 0;
+int CConveniBlock::m_nSpanTime = 0;
 //=============================================================================
 // コンビニブロックのコンストラクタ
 //=============================================================================
@@ -171,6 +172,8 @@ CConveniBlock::CConveniBlock()
 	SetType(TYPE_CONVENI);
 
 	m_nCntSpan = 0;
+	m_nSpanTime = ENEMY_SPAN;
+	m_nNumSpan = 1;
 }
 //=============================================================================
 // コンビニブロックのデストラクタ
@@ -190,18 +193,21 @@ void CConveniBlock::Update(void)
 	m_nCntSpan--;
 	if (m_nCntSpan <= 0)
 	{
-		m_nCntSpan = ENEMY_SPAN;
+		m_nCntSpan = m_nSpanTime;
 
-		auto now = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-		size_t seed = static_cast<size_t>(now) ^ reinterpret_cast<size_t>(this);
+		for (int nCnt = 0; nCnt < m_nNumSpan; nCnt++)
+		{
+			auto now = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+			size_t seed = static_cast<size_t>(now) ^ reinterpret_cast<size_t>(this);
 
-		std::mt19937 mt((unsigned int)seed);
-		std::uniform_int_distribution<int> dist(0, CEnemy::TYPE_MAX - 1);
+			std::mt19937 mt((unsigned int)seed);
+			std::uniform_int_distribution<int> dist(0, CEnemy::TYPE_MAX - 1);
 
-		int nType = dist(mt);
+			int nType = dist(mt);
 
-		D3DXVECTOR3 pos = D3DXVECTOR3(GetPos().x, GetPos().y - 100.0f, GetPos().z);
-		CEnemy::Create(pos, VECTOR3_NULL, (CEnemy::TYPE)nType);
+			D3DXVECTOR3 pos = D3DXVECTOR3(GetPos().x, GetPos().y - 100.0f, GetPos().z);
+			CEnemy::Create(pos, VECTOR3_NULL, (CEnemy::TYPE)nType);
+		}
 	}
 
 
@@ -217,6 +223,11 @@ void CConveniBlock::Update(void)
 	//// パーティクル生成
 	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(0.8f, 0.5f, 0.1f, 0.8f), 8, 1);
 	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(1.0f, 0.5f, 0.0f, 0.8f), 15, 1);
+}
+
+void CConveniBlock::AddSpan(void)
+{
+	m_nSpanTime /= 2;
 }
 
 //=============================================================================

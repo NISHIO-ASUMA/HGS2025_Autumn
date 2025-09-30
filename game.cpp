@@ -193,6 +193,15 @@ void CGame::Update(void)
 			m_nGametype = GAMESTATE_END;
 		}
 
+		// プレイヤーの取得
+		CPlayer* player = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
+
+		// 死んだ または 残弾数が0になった
+		if (player->GetDeath() || player->GetBullet() <= 0)
+		{
+			m_nGametype = GAMESTATE_END;
+		}
+
 #ifdef _DEBUG
 		// キー入力
 		if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))

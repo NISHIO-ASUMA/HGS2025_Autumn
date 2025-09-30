@@ -163,13 +163,13 @@ void CGimmick::Move(void)
 	D3DXVECTOR3 disPos = playerPos - GetPos();
 	float distance = D3DXVec3Length(&disPos);
 
-	const float kTriggerDistance = 60.0f; // îΩâûãóó£
+	const float kTriggerDistance = 150.0f; // îΩâûãóó£
 
 	if (distance < kTriggerDistance)
 	{
 		m_nTimer++;
 
-		if (m_nTimer >= 120)
+		if (m_nTimer >= 60)
 		{// éùë±É_ÉÅÅ[ÉW
 			pPlayer->Hit(1);
 		}
@@ -225,7 +225,7 @@ void CGimmick::Move(void)
 
 	// à⁄ìÆó ÇÃê›íË
 	m_move = D3DXVECTOR3(m_dir.x * GIMMICK_SPEED, 0.0f, m_dir.z * GIMMICK_SPEED);
-	D3DXVECTOR3 moveDis = D3DXVECTOR3(m_tornadoDir.x * 2.0f, 0.0f, m_tornadoDir.z * 2.0f);
+	D3DXVECTOR3 moveDis = D3DXVECTOR3(m_tornadoDir.x * 2.5f, 0.0f, m_tornadoDir.z * 2.5f);
 
 	playerPos += moveDis;
 

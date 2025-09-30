@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "signal.h"
 #include "gimmick.h"
+#include "block.h"
 
 //===============================
 // オーバーロードコンストラクタ
@@ -199,6 +200,8 @@ void CTime::Update(void)
 
 		// 生成完了フラグを有効化
 		m_isCreate = true;
+
+		CConveniBlock::AddSpan();
 	}
 
 	// 桁計算

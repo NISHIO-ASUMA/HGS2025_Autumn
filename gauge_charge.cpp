@@ -83,18 +83,55 @@ void CChargeGauge::Update(void)
 
 	//プレイヤー情報取得
 	CPlayer* pPlayer = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
+	D3DXVECTOR3 playerPos(pPlayer->GetPos().x, pPlayer->GetPos().y + 30.0f, pPlayer->GetPos().z);
+
+	CModelEffect* pModelEffect = nullptr;
 
 	if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
 	{
 		m_bUse = true;
 		m_nCntReset++;
-		m_Base += 0.05f;
-		if (m_nCntReset >= PLAYER_CHARGETIME)
-		{//一定時間経過で中身を０に
-			pPlayer->ChargeShot();
-			m_nCntReset = 0;
-			m_bUse = false;
-			m_Base = 0;
+		if (m_nCntReset >= 60)
+		{
+			// 半径を決めてランダム位置にスポーン
+			float radius = 40.0f; // この範囲から出す
+			float angle = ((rand() % 360) / 180.0f) * D3DX_PI;
+			float height = (rand() % 60) - 30.0f; // -30～30の高さ
+
+			D3DXVECTOR3 spawnPos;
+			D3DXVECTOR3 offPos = playerPos;
+			offPos.y = playerPos.y + 50.0f;
+
+			spawnPos.x = offPos.x + cosf(angle) * radius;
+			spawnPos.z = offPos.z + sinf(angle) * radius;
+			spawnPos.y = offPos.y + height;
+
+			// ターゲットに向かう方向ベクトル
+			D3DXVECTOR3 dir = playerPos - spawnPos;
+			D3DXVec3Normalize(&dir, &dir);
+
+			// 速度
+			float speed = (rand() % 3) + 0.5f;
+			D3DXVECTOR3 move = dir * speed;
+
+			// 向き
+			D3DXVECTOR3 rot;
+			rot.x = ((rand() % 360) / 180.0f) * D3DX_PI;
+			rot.y = ((rand() % 360) / 180.0f) * D3DX_PI;
+			rot.z = ((rand() % 360) / 180.0f) * D3DX_PI;
+
+			// モデルエフェクトの生成
+			pModelEffect = CModelEffect::Create("data/MODELS/effectModel_power.x", spawnPos, rot,
+				move, D3DXVECTOR3(0.3f, 0.3f, 0.3f), 60, 0.0f, 0.01f);
+
+			m_Base += 0.1f;
+			if (m_nCntReset >= PLAYER_CHARGETIME + 60)
+			{//一定時間経過で中身を０に
+				pPlayer->ChargeShot();
+				m_nCntReset = 0;
+				m_bUse = false;
+				m_Base = 0;
+			}
 		}
 	}
 	else
