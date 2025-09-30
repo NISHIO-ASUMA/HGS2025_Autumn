@@ -93,7 +93,8 @@ public:
 	InputData GatherInput(void);
 	int GetLife(void) { return m_nLife; }
 	int GetBullet(void) { return m_nCntBullet; }
-	
+	bool GetDeath(void) { return m_isDeath; }
+
 private:
 	D3DXVECTOR3 m_pos;					// 位置
 	D3DXVECTOR3 m_colliderPos;			// カプセル中心
@@ -113,6 +114,8 @@ private:
 	int m_nCntBullet;
 	int m_nCntHitTime;
 	int m_nCntCharge;
+
+	bool m_isDeath;
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
 	CBulletCnt* m_pBulletCnt;

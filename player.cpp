@@ -42,6 +42,7 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 	}
 	m_pHpGauge = nullptr;								// ＨＰゲージへのポインタ
 	m_nLife = 0;										// ライフ
+	m_isDeath = false;
 }
 //=============================================================================
 // デストラクタ
@@ -123,6 +124,8 @@ HRESULT CPlayer::Init(void)
 	// オブジェクトの種類設定
 	SetObjType(TYPE_PLAYER);
 
+	m_isDeath = false;
+
 	return S_OK;
 }
 //=============================================================================
@@ -163,6 +166,9 @@ void CPlayer::Uninit(void)
 //=============================================================================
 void CPlayer::Update(void)
 {
+	// 死んでいるなら
+	if (m_isDeath) return;
+
 	// カメラの取得
 	CCamera* pCamera = CManager::GetCamera();
 
@@ -287,6 +293,7 @@ void CPlayer::Hit(int nDamage)
 		{
 			m_nLife = 0;
 
+			m_isDeath = true;
 		}
 	}
 }

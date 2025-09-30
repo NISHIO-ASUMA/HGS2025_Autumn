@@ -72,11 +72,12 @@ public:
 
 	void Update(void);
 
-	void AddSpan(void);
+	static void AddSpan(void);
 private:
 
 	int m_nCntSpan;
-	int m_nSpanTime;
+	static int m_nSpanTime;
+	static int m_nNumSpan;
 };
 
 //*****************************************************************************
