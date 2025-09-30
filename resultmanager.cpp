@@ -41,13 +41,13 @@ CResultManager::~CResultManager()
 HRESULT CResultManager::Init(void)
 {	
 	// UI生成
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "resultback.jpg", false);
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "ResultBack.jpg", false);
 
 	// データの読み込み
 	Load();
 
 	// スコアを生成する
-	m_pResultScore = CResultScore::Create(D3DXVECTOR3(800.0f, 450.0f, 0.0f), 270.0f, 50.0f,0,m_nGameScore);
+	m_pResultScore = CResultScore::Create(D3DXVECTOR3(1190.0f, 400.0f, 0.0f), 400.0f, 100.0f,0,m_nGameScore);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
