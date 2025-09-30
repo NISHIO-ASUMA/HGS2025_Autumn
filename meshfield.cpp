@@ -136,8 +136,8 @@ HRESULT CMeshField::Init(void)
 		{
 			// 頂点座標の設定
 			pVtx[nCnt].pos = D3DXVECTOR3(
-				(0.0f + (m_fRadius / MESHFIELD::XVTX) * nCntX) - (m_fRadius * 0.5f),
-				 0.0f,
+				(m_pos.x + (m_fRadius / MESHFIELD::XVTX) * nCntX) - (m_fRadius * 0.5f),
+				 m_pos.y,
 				 m_fRadius - ((m_fRadius / MESHFIELD::XVTX) * nCntZ) - (m_fRadius * 0.5f));
 
 			// 法線ベクトルの設定

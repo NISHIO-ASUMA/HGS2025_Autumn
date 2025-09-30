@@ -13,6 +13,11 @@
 //**************************
 #include "scene.h"
 
+//**************************
+// 前方宣言
+//**************************
+class CResultManager;
+
 //*****************************
 // リザルトシーンクラスを定義
 //*****************************
@@ -33,6 +38,7 @@ public:
 	static CResult* Create(void);
 
 private:
+	CResultManager* m_pResultManager; // クラスポインタ
 };
 
 #endif

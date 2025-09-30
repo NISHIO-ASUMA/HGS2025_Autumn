@@ -189,6 +189,8 @@
     <ClCompile Include="rankingscore.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="resultmanager.cpp" />
+    <ClCompile Include="resultscore.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadowS.cpp" />
@@ -237,6 +239,8 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="resultmanager.h" />
+    <ClInclude Include="resultscore.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shadowS.h" />

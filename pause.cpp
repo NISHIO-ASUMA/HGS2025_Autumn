@@ -129,13 +129,14 @@ void CPause::SetTexture(void)
 		m_nIdxTexture = pTexture->RegisterDynamic("data\\TEXTURE\\PauseBack.png"); 		// テクスチャ割り当て
 		break;
 
-	case MENU_RETRY: // リトライ選択時
-		m_nIdxTexture = pTexture->RegisterDynamic("data\\TEXTURE\\pausemenu_retry.png"); 		// テクスチャ割り当て
-		break;
-
 	case MENU_CONTINUE: // コンテニュー選択時
 		m_nIdxTexture = pTexture->RegisterDynamic("data\\TEXTURE\\pausemenu_continue.png"); 	// テクスチャ割り当て
 		break;
+
+	case MENU_RETRY: // リトライ選択時
+		m_nIdxTexture = pTexture->RegisterDynamic("data\\TEXTURE\\pausemenu_retry.png"); 	// テクスチャ割り当て
+		break;
+
 
 	case MENU_QUIT: // クイット選択時
 		m_nIdxTexture = pTexture->RegisterDynamic("data\\TEXTURE\\pausemenu_quit.png"); 		// テクスチャ割り当て
