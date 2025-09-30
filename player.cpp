@@ -117,6 +117,7 @@ HRESULT CPlayer::Init(void)
 	m_pBulletCnt = CBulletCnt::Create(D3DXVECTOR3(SCREEN_WIDTH / 2 + (BULLET_COUNT_SIZE * 3.0f), SCREEN_HEIGHT / 1.35f, 0.0f), 100.0f, 50.0f);
 
 	m_nCntHitTime = 0;
+	m_nCntCharge = 0;
 
 	// オブジェクトの種類設定
 	SetObjType(TYPE_PLAYER);
@@ -285,6 +286,24 @@ void CPlayer::Hit(int nDamage)
 		{
 			m_nLife = 0;
 
+		}
+	}
+}
+//=======================
+// チャージショット
+//=======================
+void CPlayer::ChargeShot(void)
+{
+	m_nCntCharge++;
+	if (m_nCntCharge >= PLAYER_CHARGETIME)
+	{
+		m_nCntCharge = 0;
+
+		float rot = D3DX_PI / (CHARGE_VEC / 2);
+		for (int nCnt = 0; nCnt < CHARGE_VEC; nCnt++)
+		{
+			CBullet::Create(m_pos, { m_rot.x,m_rot.y + (rot * nCnt),m_rot.z }, CBullet::USER_PLAYER);
+			m_nCntBullet--;
 		}
 	}
 }
