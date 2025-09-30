@@ -93,7 +93,7 @@ HRESULT CTime::Init(void)
 		m_pNumberMinute[nCnt]->SetPos(m_pos);
 		m_pNumberMinute[nCnt]->Init(D3DXVECTOR3(m_pos.x + (fTexPos * 2.0f * nCnt), m_pos.y, 0.0f), fTexPos, m_fHeight);
 		m_pNumberMinute[nCnt]->SetSize(fTexPos, m_fHeight);
-		m_pNumberMinute[nCnt]->SetTexture("number003.png");
+		m_pNumberMinute[nCnt]->SetTexture("number.png");
 	}
 
 	// ‚¸‚ç‚·’l
@@ -109,7 +109,7 @@ HRESULT CTime::Init(void)
 		m_pNumberSecond[nCnt]->SetPos(m_pos);
 		m_pNumberSecond[nCnt]->Init(D3DXVECTOR3(m_pos.x + (fTexPos * 2.0f * nCnt), m_pos.y, 0.0f), fTexPos, m_fHeight);
 		m_pNumberSecond[nCnt]->SetSize(fTexPos, m_fHeight);
-		m_pNumberSecond[nCnt]->SetTexture("number003.png");
+		m_pNumberSecond[nCnt]->SetTexture("number.png");
 	}
 
 	// Œ‹‰Ê‚ð•Ô‚·

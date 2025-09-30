@@ -16,6 +16,7 @@
 #include "blockmanager.h"
 #include "characterManager.h"
 #include "player.h"
+#include "time.h"
 
 //****************************
 // ゲームクラスを定義
@@ -52,9 +53,13 @@ public:
 	static CGame* Create(void);
 	static CPauseManager* GetPause(void) { return m_pPausemanager; }
 	static CBlockManager* GetBlockManager(void) { return m_pBlockManager; }
+	static CTime* GetTime(void) { return m_pTime; }
+
 private:
 	static CPauseManager* m_pPausemanager;		// ポーズマネージャーポインタ
 	static CBlockManager* m_pBlockManager;		// ブロックマネージャーへのポインタ
+	static CTime* m_pTime;						// タイムクラスのポインタ
+
 	int m_nGametype;
 	int m_nStateCount;
 };

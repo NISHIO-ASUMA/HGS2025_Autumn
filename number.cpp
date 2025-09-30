@@ -147,7 +147,7 @@ void CNumber::SetTexture(const char* pTexName)
 	TexPath += pTexName;
 
 	// テクスチャ割り当て
-	m_nIdxTexture = pTexture->Register(TexPath.c_str());
+	m_nIdxTexture = pTexture->RegisterDynamic(TexPath.c_str());
 }
 //==================================
 // サイズ処理

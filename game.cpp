@@ -15,12 +15,14 @@
 #include "result.h"
 #include "ui.h"
 #include "player.h"
+#include "score.h"
 
 //**************************
 // 静的メンバ変数宣言
 //**************************
 CPauseManager* CGame::m_pPausemanager = nullptr; // ポーズマネージャーのポインタ
 CBlockManager* CGame::m_pBlockManager = nullptr; // ブロックマネージャーのポインタ
+CTime* CGame::m_pTime = nullptr;				 // タイムクラスのポインタ
 
 //==================================
 // コンストラクタ
@@ -73,8 +75,14 @@ HRESULT CGame::Init(void)
 	// キャラクターの初期化処理
 	CCharacterManager::GetInstance().InitAll();
 
-	//// ui生成
-	//CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "game.jpg", false);
+	// タイマー生成
+	m_pTime = CTime::Create(D3DXVECTOR3(560.0f, 40.0f, 0.0f), 60.0f, 40.0f);
+	
+	// コロン生成
+	CUi::Create(D3DXVECTOR3(665.0f, 40.0f, 0.0f), 0, 15.0f, 25.0f, "coron.png", false);
+
+	// スコア生成
+	CScore::Create(D3DXVECTOR3(1240.0f, 660.0f, 0.0f), 180.0f, 60.0f);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -108,7 +116,6 @@ void CGame::Uninit(void)
 		// nullptrにする
 		m_pPausemanager = nullptr;
 	}
-
 }
 //==================================
 // 更新処理
@@ -135,34 +142,11 @@ void CGame::Update(void)
 	case GAMESTATE_END:
 		m_nStateCount++;
 
-		if (m_nStateCount >= 30)
+		if (m_nStateCount >= 60)
 		{
 			// カウンターを初期化
 			m_nStateCount = 0;
 			
-			// 1秒経過
-			m_nGametype = GAMESTATE_NONE;//何もしていない状態
-
-			// フェードが取得できたら
-			if (pFade != nullptr)
-			{
-				// リザルトシーンに遷移
-				pFade->SetFade(new CResult());
-
-				// ここで処理を返す
-				return;
-			}
-		}
-		break;
-
-	case GAMESTATE_LOSEEND:
-		m_nStateCount++;
-
-		if (m_nStateCount >= 30)
-		{
-			// カウンターを初期化
-			m_nStateCount = 0;
-
 			// 1秒経過
 			m_nGametype = GAMESTATE_NONE;//何もしていない状態
 
@@ -182,6 +166,12 @@ void CGame::Update(void)
 	// falseの時に更新
 	if (m_pPausemanager->GetPause() == false)
 	{
+		// タイムが0以下の時
+		if (m_pTime->GetAllTime() == NULL)
+		{
+			m_nGametype = GAMESTATE_END;
+		}
+
 #ifdef _DEBUG
 		// キー入力
 		if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
@@ -194,7 +184,6 @@ void CGame::Update(void)
 			}
 		}
 #endif // _DEBUG
-
 	}
 }
 //==================================

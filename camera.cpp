@@ -45,12 +45,12 @@ CCamera::~CCamera()
 //=============================================================================
 HRESULT CCamera::Init(void)
 {
-	m_posV = D3DXVECTOR3(0.0f, 80.0f, -240.0f);
+	m_posV = D3DXVECTOR3(0.0f, 300.0f, -240.0f);
 	m_posR = D3DXVECTOR3(0.0f, 80.0f, 0.0f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);// 固定でいい
 	m_rot = D3DXVECTOR3(0.0f, D3DX_PI, 0.0f);
 
-	m_Mode = MODE_EDIT;									// カメラのモード
+	m_Mode = MODE_GAME;									// カメラのモード
 
 	m_fDistance = sqrtf(
 		((m_posV.x - m_posR.x) * (m_posV.x - m_posR.x)) +
@@ -79,6 +79,9 @@ void CCamera::Update(void)
 		EditCamera();
 		break;
 	case MODE_GAME:
+
+		// プレイ中のカメラ処理
+		PlayCamera();
 		break;
 	}
 }
@@ -243,4 +246,100 @@ void CCamera::EditCamera(void)
 	m_posR.x = m_posV.x - sinf(m_rot.y) * cosf(m_rot.x) * m_fDistance;
 	m_posR.y = m_posV.y - sinf(m_rot.x) * m_fDistance;
 	m_posR.z = m_posV.z - cosf(m_rot.y) * cosf(m_rot.x) * m_fDistance;
+}
+//=============================================================================
+// プレイ中のカメラの処理
+//=============================================================================
+void CCamera::PlayCamera(void)
+{
+	// キーボードの取得
+	CInputKeyboard* pInputKeyboard = CManager::GetInputKeyboard();
+
+	// マウスの取得
+	CInputMouse* pInputMouse = CManager::GetMouse();
+
+	// マウスカーソルを表示する
+	pInputMouse->SetCursorVisibility(true);
+
+	// 現在のカーソル位置を取得
+	POINT cursorPos;
+	GetCursorPos(&cursorPos);
+
+	// 前フレームからのマウス移動量を取得
+	static POINT prevCursorPos = { cursorPos.x, cursorPos.y };
+	float deltaX = (float)(cursorPos.x - prevCursorPos.x);
+	float deltaY = (float)(cursorPos.y - prevCursorPos.y);
+
+	// 現在のカーソル位置を保存（次のフレームでの比較用）
+	prevCursorPos = cursorPos;
+
+	// マウス感度
+	const float mouseSensitivity = 0.004f;
+
+	deltaX *= mouseSensitivity;
+	deltaY *= mouseSensitivity;
+
+	//====================================
+	// マウスホイールでズームイン・アウト
+	//====================================
+	int wheel = pInputMouse->GetWheel();
+	const float zoomSpeed = 15.0f;
+
+	if (wheel != 0)
+	{
+		m_fDistance -= wheel * zoomSpeed;
+
+		// カメラ距離制限
+		if (m_fDistance < 100.0f)
+		{
+			m_fDistance = 100.0f;
+		}
+		if (m_fDistance > 800.0f)
+		{
+			m_fDistance = 800.0f;
+		}
+	}
+
+
+	// プレイヤー情報取得
+	CPlayer* pPlayer = CCharacterManager::GetInstance().GetCharacter<CPlayer>();
+
+	if (pPlayer != nullptr)
+	{// NULLチェック
+		D3DXVECTOR3 pos = pPlayer->GetPos();	// プレイヤーの位置取得
+		D3DXVECTOR3 rot = pPlayer->GetRot();	// プレイヤーの向き取得
+
+		//------------------------
+		// 追従
+		//------------------------
+		// 目標
+		// 注視点
+		m_posRDest.x = pos.x + sinf(rot.x) * (pos.x - m_posR.x);
+		m_posRDest.z = pos.z + cosf(rot.z) * (pos.z - m_posR.z);
+		// 視点
+		m_posVDest.x = pos.x + sinf(m_rot.y - D3DX_PI) * m_fDistance;
+		m_posVDest.z = pos.z + cosf(m_rot.y - D3DX_PI) * m_fDistance;
+
+		// 加算
+		// 注視点
+		m_posR.x += (m_posRDest.x - m_posR.x) * 0.08f;
+		m_posR.z += (m_posRDest.z - m_posR.z) * 0.08f;
+		// 視点
+		m_posV.x += (m_posVDest.x - m_posV.x) * 0.08f;
+		m_posV.z += (m_posVDest.z - m_posV.z) * 0.08f;
+	}
+
+	//角度の正規化
+	if (m_rot.y > D3DX_PI)
+	{
+		m_rot.y -= D3DX_PI * 2.0f;
+	}
+	else if (m_rot.y < -D3DX_PI)
+	{
+		m_rot.y += D3DX_PI * 2.0f;
+	}
+
+	// 視点を更新
+	m_posV.x = m_posR.x + sinf(m_rot.y) * cosf(m_rot.x) * m_fDistance;
+	m_posV.z = m_posR.z + cosf(m_rot.y) * cosf(m_rot.x) * m_fDistance;
 }
