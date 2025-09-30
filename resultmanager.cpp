@@ -26,7 +26,13 @@ CResultManager::CResultManager()
 	m_isKeyDown = false;
 	m_nGameScore = NULL;
 	m_nLastTime = NULL;
-	m_pResultScore = nullptr;
+	m_nBulletScore = NULL;
+	m_nAllScore = NULL;
+
+	for (int nCnt = 0; nCnt < 4; nCnt++)
+	{
+		m_pResultScore[nCnt] = nullptr;
+	}
 }
 //=================================
 // デストラクタ
@@ -46,8 +52,16 @@ HRESULT CResultManager::Init(void)
 	// データの読み込み
 	Load();
 
-	// スコアを生成する
-	m_pResultScore = CResultScore::Create(D3DXVECTOR3(1190.0f, 400.0f, 0.0f), 400.0f, 100.0f,0,m_nGameScore);
+	// スコアを生成する ( 敵,時間,弾,合計 )
+	m_pResultScore[0] = CResultScore::Create(D3DXVECTOR3(1190.0f, 200.0f, 0.0f), 300.0f, 60.0f, 0, m_nGameScore);
+	m_pResultScore[1] = CResultScore::Create(D3DXVECTOR3(1190.0f, 350.0f, 0.0f), 300.0f, 60.0f, 0, m_nLastTime);
+	m_pResultScore[2] = CResultScore::Create(D3DXVECTOR3(1190.0f, 500.0f, 0.0f), 300.0f, 60.0f, 0, m_nBulletScore);
+
+	// 先に計算
+	m_nAllScore = m_nGameScore + m_nLastTime + m_nBulletScore;
+
+	// 最終スコアをセット
+	m_pResultScore[3] = CResultScore::Create(D3DXVECTOR3(1190.0f, 650.0f, 0.0f), 400.0f, 100.0f, 0, m_nAllScore);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -96,8 +110,8 @@ void CResultManager::Update(void)
 		// nullじゃないとき
 		if (pFade != nullptr)
 		{
-			// スコアを書き出す
-			m_pResultScore->Save();
+			// 最後のスコアを書き出す
+			m_pResultScore[3]->Save();
 
 			// シーン遷移
 			pFade->SetFade(new CRanking());
@@ -113,6 +127,8 @@ void CResultManager::Load(void)
 {
 	// 読み取った値を格納するメンバ変数
 	m_nGameScore = NULL;
+	m_nLastTime = NULL;
+	m_nBulletScore = NULL;
 
 	//==============================
 	// GameScore.txt
@@ -128,4 +144,69 @@ void CResultManager::Load(void)
 	{
 		MessageBox(NULL, "GameScore.txt が開けませんでした", "エラー", MB_OK);
 	}
+
+	//==============================
+	// TimeScore.txt
+	//==============================
+	std::ifstream tfile("data\\SCORE\\TimeScore.txt");
+
+	if (tfile.is_open())
+	{
+		tfile >> m_nLastTime;	// 数値1個を読み取り
+		tfile.close();
+	}
+	else
+	{
+		MessageBox(NULL, "GameScore.txt が開けませんでした", "エラー", MB_OK);
+	}
+
+	// 計算する
+	MathScore();
+
+	//==============================
+	// BulletScore.txt
+	//==============================
+	std::ifstream bfile("data\\SCORE\\BulletScore.txt");
+
+	if (bfile.is_open())
+	{
+		bfile >> m_nBulletScore;	// 数値1個を読み取り
+		bfile.close();
+	}
+	else
+	{
+		MessageBox(NULL, "GameScore.txt が開けませんでした", "エラー", MB_OK);
+	}
+
+	// 計算する
+	m_nBulletScore = m_nBulletScore * 10000;
+}
+//===============================
+// スコア計算
+//===============================
+void CResultManager::MathScore(void)
+{
+	// 読み込んだ値
+	float fValue = static_cast<float>(m_nLastTime);
+
+	// もし60なら
+	if (m_nLastTime == ADDSCORETIME)
+	{
+		// 最大値をセットする (50万)
+		m_nLastTime = MAX_VALUESCORE;
+		return;
+	}
+
+	// 比率を算出
+	float fRatio = 1.0f - (fValue /MAX_VALUESCORE);
+
+	// 範囲内で割合を算出
+	if (fRatio < 0.0f) fRatio = 0.0f;
+	if (fRatio > 1.0f) fRatio = 1.0f;
+
+	// スコア計算
+	int nMathscore = (int)(MAX_VALUESCORE * fRatio);
+
+	// 最後にセットする
+	m_nLastTime = nMathscore;
 }

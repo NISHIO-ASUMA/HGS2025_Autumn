@@ -28,14 +28,19 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Load(void);
+	void MathScore(void);
 
 private:
+	static constexpr int MAX_VALUESCORE = 500000;
+	static constexpr int ADDSCORETIME = 60;
 
 	bool m_isKeyDown; // キー入力フラグ
 	int m_nGameScore; // スコアを格納
 	int m_nLastTime; // 時間を格納
+	int m_nBulletScore; // 弾
+	int m_nAllScore;
 
-	CResultScore* m_pResultScore;	// スコアポインタ
+	CResultScore* m_pResultScore[4];	// スコアポインタ
 };
 
 #endif
