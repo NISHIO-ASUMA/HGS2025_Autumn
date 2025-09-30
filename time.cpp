@@ -187,6 +187,9 @@ void CTime::Update(void)
 
 		// 秒を減らす
 		m_nSecond = m_nAllTime % CARVETIME;
+
+		// 生存時間を加算
+		m_nDecTime++;
 	}
 
 	// 30秒以下になったら
@@ -228,9 +231,9 @@ void CTime::Draw(void)
 //===============================
 void CTime::Save(void)
 {
-#if 0
+#if 1
 	// 開くファイルを定義
-	std::ofstream File("data\\Loader\\LastTime.txt");
+	std::ofstream File("data\\SCORE\\TimeScore.txt");
 
 	// 例外処理
 	if (!File.is_open())

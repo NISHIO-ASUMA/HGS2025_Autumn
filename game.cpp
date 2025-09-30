@@ -171,6 +171,9 @@ void CGame::Update(void)
 			// スコアを書き出す
 			CScore::SaveScore();
 
+			// タイムスコアを書き出す
+			m_pTime->Save();
+
 			// フェードが取得できたら
 			if (pFade != nullptr)
 			{

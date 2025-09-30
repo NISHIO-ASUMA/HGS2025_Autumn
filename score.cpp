@@ -19,8 +19,9 @@
 //**********************
 // 静的メンバ変数宣言
 //**********************
-int CScore::m_nScore = NULL;	// 総スコアカウント用
-int CScore::m_nDecCount = NULL; // 減算スコアカウント用
+int CScore::m_nScore = NULL;	 // 総スコアカウント用
+int CScore::m_nDecCount = NULL;  // 弾数スコア
+int CScore::m_nTimeScore = NULL; // 生存スコア
 
 //==========================================
 // コンストラクタ
@@ -189,6 +190,10 @@ void CScore::DecScore(void)
 //==========================================
 void CScore::SaveScore(void)
 {
+	//================================
+	// 敵倒した分のスコア
+	//================================
+	
 	// 開くファイルを定義
 	std::ofstream File("data\\SCORE\\GameScore.txt");
 
@@ -205,6 +210,27 @@ void CScore::SaveScore(void)
 
 	// ファイルを閉じる
 	File.close();
+
+	//================================
+	// 残弾数のスコア
+	//================================
+
+	// 開くファイルを定義
+	std::ofstream ooFile("data\\SCORE\\BulletScore.txt");
+
+	// 例外処理
+	if (!ooFile.is_open())
+	{
+		MessageBox(NULL, "保存ファイルを開けませんでした", "エラー", MB_OK);
+
+		return;
+	}
+
+	// 数値を出力する
+	ooFile << m_nDecCount;
+	
+	// ファイルを閉じる
+	ooFile.close();
 }
 //==========================================
 // テクスチャ設定

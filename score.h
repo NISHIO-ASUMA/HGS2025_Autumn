@@ -41,16 +41,17 @@ public:
 	static void AddScore(int nValue);
 	static void DeleteScore(void);
 	static void DecScore(void);
-	static int GetScore(void) { return m_nScore; }
 	static void SaveScore(void);
 	static void SetScore(int nDestScore) { m_nScore = nDestScore; }
+	static int GetScore(void) { return m_nScore; }
 
 private: 
 	static constexpr int NUM_SCORE = 8; // 桁数
 	static constexpr int NUM_DIGIT = 10; // 表示する分割桁数の値
 
 	static int m_nScore;			// スコア保持用
-	static int m_nDecCount;			// 減算した回数
+	static int m_nDecCount;			// 弾を使った分のスコア
+	static int m_nTimeScore;		// 生存時間のスコア
 
 	CNumber *m_apNumber[NUM_SCORE];	// 桁数分のナンバーのポインタ
 	D3DXCOLOR m_col;				// カラー

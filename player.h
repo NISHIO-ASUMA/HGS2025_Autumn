@@ -20,6 +20,7 @@
 #include "bullet.h"
 #include "bullet_counter.h"
 #include "gauge_charge.h"
+#include "score.h"
 
 // 前方宣言
 class CPlayer_StandState;
@@ -156,6 +157,10 @@ public:
 			{
 				CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
 				nBullet--;
+
+				// 減ったカウントを加算
+				CScore::DecScore();
+
 				if (nBullet <= 0)
 				{
 					nBullet = 0;

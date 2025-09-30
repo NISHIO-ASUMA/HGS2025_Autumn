@@ -307,6 +307,9 @@ void CPlayer::ChargeShot(void)
 	{
 		CBullet::Create(m_pos, { m_rot.x,m_rot.y + (rot * nCnt),m_rot.z }, CBullet::USER_PLAYER);
 		m_nCntBullet--;
+
+		// 残弾数スコアを減らす
+		CScore::DecScore();
 	}
 }
 //=============================================================================

@@ -130,7 +130,7 @@ void CPauseManager::Update(void)
 	if (pKey->GetTrigger(DIK_UP) || pKey->GetTrigger(DIK_W) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_UP))
 	{
 		// サウンド再生
-		// pSound->PlaySound(pSound->SOUND_LABEL_SELECT);
+		pSound->PlaySound(pSound->SOUND_LABEL_SELECT);
 
 		// インデックス番号を減算
 		m_nSelectIdx--;
