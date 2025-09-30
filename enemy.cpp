@@ -330,9 +330,26 @@ bool CEnemy::Collision(void)
 
 bool CEnemy::CollRadius(CObject* pObj, CObject::TYPE type)
 {
+	bool bColl = false;
 	if (type == CObject::TYPE_PLAYER)
 	{
-		
+		CPlayer* pPlayer = (CPlayer*)pObj;
+			
+		float PlayerRadius = 30.0f;
+
+		D3DXVECTOR3 PlayerPos = pPlayer->GetPos();//ˆÊ’uæ“¾
+
+		D3DXVECTOR3 enemySize = m_pModel->GetModelSize();
+		float EnemyRadius = max(enemySize.x, max(enemySize.y, enemySize.z)) * 0.5f;
+
+		//‹…‚Å‚Ì”»’è
+		bColl = Radius(m_pos, EnemyRadius, PlayerPos, PlayerRadius);
+		if (bColl == true)
+		{//“–‚½‚Á‚½‚ç
+			//’e‚Æ“G‚Ì‘Š«‚ğ’²‚×‚é
+			//“G‚Éƒ_ƒ[ƒW
+			pPlayer->Hit(1);
+		}
 	}
 	else if (type == CObject::TYPE_BULLET)
 	{
@@ -350,8 +367,8 @@ bool CEnemy::CollRadius(CObject* pObj, CObject::TYPE type)
 			float EnemyRadius = max(enemySize.x, max(enemySize.y, enemySize.z)) * 0.5f;
 
 			//‹…‚Å‚Ì”»’è
-			bool bColl = Radius(m_pos, EnemyRadius, BulletPos, BulletRadius);
-			if (bColl == true)
+			bool bCollBullet = Radius(m_pos, EnemyRadius, BulletPos, BulletRadius);
+			if (bCollBullet == true)
 			{//“–‚½‚Á‚½‚ç
 				//’e‚Æ“G‚Ì‘Š«‚ğ’²‚×‚é
 				//“G‚Éƒ_ƒ[ƒW
@@ -360,10 +377,9 @@ bool CEnemy::CollRadius(CObject* pObj, CObject::TYPE type)
 				pBullet->SetUse(false);
 			}
 		}
-
 	}
 
-	return false;
+	return bColl;
 }
 //
 //

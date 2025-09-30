@@ -26,12 +26,16 @@ CGimmick::CGimmick(int nPriority) :CObject(nPriority)
 	m_pModel = NULL;
 
 
-	m_type = TYPE_CAR;
+	m_type = TYPE_TORNADE;
 
 	m_bUse = true;
 
 	m_fMoveDis = 0.0f;
 	m_fMaxDis = MAX_DIS;
+
+	m_pathPoints = {};
+	m_currentTargetIndex = 0;
+	m_dir = VECTOR3_NULL;
 }
 //================
 // デストラクタ
@@ -45,21 +49,28 @@ CGimmick::~CGimmick()
 //===========
 CGimmick* CGimmick::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, TYPE type)
 {
-	CGimmick* pBullet = new CGimmick;
-	if (!pBullet)
+	CGimmick* pGimmick = new CGimmick;
+	if (!pGimmick)
 		return nullptr;
 
-	pBullet->m_pos = pos;
-	pBullet->m_rot = rot;
-	pBullet->m_type = type;
+	pGimmick->m_pos = pos;
+	pGimmick->m_rot = rot;
+	pGimmick->m_type = type;
 
-	if (FAILED(pBullet->Init()))
+	// 通過ポイントの設定
+	pGimmick->AddPathPoint(D3DXVECTOR3(245.0f, 0.0f, 210.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(-415.0f, 0.0f, 170.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(-360.0f, 0.0f, -390.0f));
+	pGimmick->AddPathPoint(D3DXVECTOR3(360.0f, 0.0f, -300.0f));
+
+
+	if (FAILED(pGimmick->Init()))
 	{
-		delete pBullet;
+		delete pGimmick;
 		return nullptr;
 	}
 
-	return pBullet;
+	return pGimmick;
 }
 //===============
 // 初期化処理
@@ -70,9 +81,9 @@ HRESULT CGimmick::Init()
 
 	m_bUse = true;
 	m_posOffSet = m_pos;
-	if (m_type == TYPE_CAR)
+	if (m_type == TYPE_TORNADE)
 	{
-		m_pModel = CModel::Create("data\\MODEL\\car000.x", m_pos, m_rot);
+		m_pModel = CModel::Create("data/MODELS/tornado00.x", m_pos, m_rot);
 	}
 
 	return S_OK;
@@ -128,46 +139,74 @@ void CGimmick::Draw(void)
 		m_pModel->Draw();
 	}
 }
+//=============================================================================
+// 通過ポイント追加処理
+//=============================================================================
+void CGimmick::AddPathPoint(const D3DXVECTOR3& point)
+{
+	m_pathPoints.push_back(point);
+}
 //===========
 // 移動処理
 //===========
 void CGimmick::Move(void)
 {
-	m_posOld = m_pos;
-
 	m_pos += m_move;
 
-	m_fMoveDis += D3DXVec3Length(&m_move);
+	m_rot.y += 0.08f;
 
-	if (m_fMoveDis >= m_fMaxDis)
+	if (m_rot.y > D3DX_PI * 2.0f)
 	{
-		m_rot.y += D3DX_PI;
-		if (m_rot.y > D3DX_PI * 2.0f)
-		{
-			m_rot.y -= D3DX_PI * 2.0f;
-		}
-
-		m_fMoveDis = 0.0f;
-		m_move = D3DXVECTOR3(sinf(m_rot.y - D3DX_PI) * GIMMICK_SPEED, 0.0f, cosf(m_rot.y - D3DX_PI) * GIMMICK_SPEED);
+		m_rot.y -= D3DX_PI * 2.0f;
 	}
+
+	if (m_pathPoints.empty() || m_currentTargetIndex >= (int)m_pathPoints.size())
+	{
+		return;
+	}
+
+	D3DXVECTOR3 currentPos = m_pos;
+	D3DXVECTOR3 targetPos = m_pathPoints[m_currentTargetIndex];
+
+	// ターゲット方向ベクトル
+	m_dir = targetPos - currentPos;
+	float dist = D3DXVec3Length(&m_dir);
+
+	if (dist < 100.0f)  // ある程度近づいたら次のポイントへ
+	{
+		if (m_currentTargetIndex >= 3)
+		{
+			m_currentTargetIndex = 0;
+		}
+		else
+		{
+			m_currentTargetIndex++;
+		}
+		return;
+	}
+
+	// 正規化
+	D3DXVec3Normalize(&m_dir, &m_dir);
+
+	// Z軸中心で転がす
+	m_move = D3DXVECTOR3(m_dir.x * GIMMICK_SPEED, 0.0f, m_dir.z * GIMMICK_SPEED);
 
 	m_pModel->SetPos(m_pos);
 	m_pModel->SetRot(m_rot);
-
 }
-//=====================
-// モデル名ごとの種類
-//=====================
-CGimmick::TYPE CGimmick::SetType(const char* pFileName)
-{
-	CGimmick::TYPE type = CGimmick::TYPE_CAR;
-
-	if (strcmp(pFileName, "data\\MODEL\\bluecar.x") == 0)
-	{
-		type = CGimmick::TYPE_CAR;
-	}
-	//else if (strcmp(pFileName, "data\\MODEL\\vending_machine03.x") == 0)
-	//{
-	//}
-	return type;
-}
+////=====================
+//// モデル名ごとの種類
+////=====================
+//CGimmick::TYPE CGimmick::SetType(const char* pFileName)
+//{
+//	CGimmick::TYPE type = CGimmick::TYPE_CAR;
+//
+//	if (strcmp(pFileName, "data\\MODEL\\bluecar.x") == 0)
+//	{
+//		type = CGimmick::TYPE_CAR;
+//	}
+//	//else if (strcmp(pFileName, "data\\MODEL\\vending_machine03.x") == 0)
+//	//{
+//	//}
+//	return type;
+//}

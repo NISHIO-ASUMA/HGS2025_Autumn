@@ -12,6 +12,7 @@
 #include "number.h"
 #include "manager.h"
 #include "signal.h"
+#include "gimmick.h"
 
 //===============================
 // オーバーロードコンストラクタ
@@ -192,6 +193,9 @@ void CTime::Update(void)
 	{
 		// サイン生成
 		CSignal::Create();
+
+		// 竜巻の生成
+		CGimmick::Create(D3DXVECTOR3(245.0f, 0.0f, 210.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmick::TYPE_TORNADE);
 
 		// 生成完了フラグを有効化
 		m_isCreate = true;
