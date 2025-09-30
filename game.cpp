@@ -26,6 +26,7 @@
 CPauseManager* CGame::m_pPausemanager = nullptr; // ポーズマネージャーのポインタ
 CBlockManager* CGame::m_pBlockManager = nullptr; // ブロックマネージャーのポインタ
 CTime* CGame::m_pTime = nullptr;				 // タイムクラスのポインタ
+CCasleBlock* CGame::m_pCasle = nullptr;			 // 城クラス
 
 //==================================
 // コンストラクタ
@@ -74,9 +75,6 @@ HRESULT CGame::Init(void)
 
 	// プレイヤーの生成
 	CPlayer* player = CCharacterManager::GetInstance().AddCharacter<CPlayer>();
-
-	//
-	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEnemy::TYPE_NONE);
 
 	// キャラクターの初期化処理
 	CCharacterManager::GetInstance().InitAll();

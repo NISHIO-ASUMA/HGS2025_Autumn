@@ -17,6 +17,7 @@
 #include "characterManager.h"
 #include "player.h"
 #include "time.h"
+#include "block.h"
 
 //****************************
 // ゲームクラスを定義
@@ -54,12 +55,13 @@ public:
 	static CPauseManager* GetPause(void) { return m_pPausemanager; }
 	static CBlockManager* GetBlockManager(void) { return m_pBlockManager; }
 	static CTime* GetTime(void) { return m_pTime; }
+	static CCasleBlock* GetCasle(void) { return m_pCasle; }
 
 private:
 	static CPauseManager* m_pPausemanager;		// ポーズマネージャーポインタ
 	static CBlockManager* m_pBlockManager;		// ブロックマネージャーへのポインタ
 	static CTime* m_pTime;						// タイムクラスのポインタ
-
+	static CCasleBlock* m_pCasle;
 	int m_nGametype;
 	int m_nStateCount;
 };
