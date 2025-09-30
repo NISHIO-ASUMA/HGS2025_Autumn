@@ -163,13 +163,13 @@ void CGimmick::Move(void)
 	D3DXVECTOR3 disPos = playerPos - GetPos();
 	float distance = D3DXVec3Length(&disPos);
 
-	const float kTriggerDistance = 60.0f; // ”½‰ž‹——£
+	const float kTriggerDistance = 150.0f; // ”½‰ž‹——£
 
 	if (distance < kTriggerDistance)
 	{
 		m_nTimer++;
 
-		if (m_nTimer >= 120)
+		if (m_nTimer >= 60)
 		{// Ž‘±ƒ_ƒ[ƒW
 			pPlayer->Hit(1);
 		}
