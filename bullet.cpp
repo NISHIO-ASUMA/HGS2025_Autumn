@@ -67,11 +67,11 @@ HRESULT CBullet::Init(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, USER user)
 	m_bSkill = false;	// スキルではない状態にする
 
 	// モデル名格納用変数＆その初期化
-	const char* pFilename = "data\\MODELS\\Rock_001.x";
+	const char* pFilename = "data\\MODELS\\can00.x";
 	
 	// 移動量を設定
 	m_move = D3DXVECTOR3(sinf(m_rot.y - D3DX_PI) * BULLET_SPEED, 0.0f, cosf(m_rot.y - D3DX_PI) * BULLET_SPEED);
-
+	m_move.y = 10.0f;
 	// ユーザーがプレイヤーなら
 	if (m_user == USER_PLAYER)
 	{
@@ -120,7 +120,7 @@ void CBullet::Update(void)
 		if (m_user == USER_PLAYER)
 		{
 			// バウンド移動
-			Move();
+			MoveBounce();
 		}
 		// ユーザーが敵なら
 		else if(m_user == USER_ENEMY)
@@ -182,6 +182,39 @@ void CBullet::Move(void)
 {
 	// 位置更新
 	m_pos += m_move;
+
+	// モデルの位置更新
+	m_pModel->SetPos(m_pos);
+	m_pModel->SetRot(m_rot);
+}
+//==================
+// バウンド移動
+//==================
+void CBullet::MoveBounce(void)
+{
+	const float fRestitution = 0.8f;	// 反発係数
+	const float fMinY = 0.2f;			// Ｙ軸の最低移動量
+
+	// 重力加算
+	m_move.y -= 0.7f;
+
+	// 位置更新
+	m_pos += m_move;
+
+	// 地面との衝突
+	if (m_pos.y < 0.0f)
+	{
+		m_pos.y = 0.0f;	// 位置を地面と同じにする
+
+		// Y速度の反転
+		m_move.y *= -fRestitution;
+
+		// 移動量が一定量小さくなったら
+		if (fabs(m_move.y) < fMinY)
+		{
+			m_move.y = 0.0f;	// Y軸の移動量を０に
+		}
+	}
 
 	// モデルの位置更新
 	m_pModel->SetPos(m_pos);
