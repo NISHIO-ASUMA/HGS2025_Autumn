@@ -269,11 +269,11 @@ InputData CPlayer::GatherInput(void)
 	CCamera::MODE camMode = pCamera->GetMode();					// カメラモードの取得
 
 	// ---------------------------
-	// ジャンプ入力
+	// 弾発射
 	// ---------------------------
-	if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTrigger(pJoypad->JOYKEY_A))
+	if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
 	{
-		input.jump = true;
+		CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
 	}
 
 	// ---------------------------
@@ -323,14 +323,6 @@ InputData CPlayer::GatherInput(void)
 	if (pKeyboard->GetPress(DIK_D))
 	{
 		input.moveDir += D3DXVECTOR3(-cosf(CamRot.y), 0, sinf(CamRot.y));
-	}
-
-	// ---------------------------
-	// 弾発射
-	// ---------------------------
-	if (pKeyboard->GetTrigger(DIK_SPACE))
-	{
-		CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
 	}
 
 	// 正規化
