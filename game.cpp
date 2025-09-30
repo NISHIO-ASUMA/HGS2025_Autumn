@@ -96,9 +96,6 @@ HRESULT CGame::Init(void)
 	// スコアを初期化
 	CScore::DeleteScore();
 	
-	// 警告サイン生成
-	// CSignal::Create();
-
 	// 初期化結果を返す
 	return S_OK;
 }

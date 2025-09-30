@@ -11,6 +11,7 @@
 #include "time.h"
 #include "number.h"
 #include "manager.h"
+#include "signal.h"
 
 //===============================
 // オーバーロードコンストラクタ
@@ -32,6 +33,8 @@ CTime::CTime(int nPriority) : CObject(nPriority)
 		m_pNumberMinute[nCnt] = nullptr;
 		m_pNumberSecond[nCnt] = nullptr;
 	}
+
+	m_isCreate = false;
 }
 //===============================
 // デストラクタ
@@ -182,6 +185,16 @@ void CTime::Update(void)
 
 		// 秒を減らす
 		m_nSecond = m_nAllTime % CARVETIME;
+	}
+
+	// 30秒以下になったら
+	if (m_nAllTime <= HALFTIME && !m_isCreate)
+	{
+		// サイン生成
+		CSignal::Create();
+
+		// 生成完了フラグを有効化
+		m_isCreate = true;
 	}
 
 	// 桁計算
