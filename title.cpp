@@ -104,6 +104,16 @@ HRESULT CTitle::Init(void)
 	// 頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
 
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
+	// nullだったら
+	if (pSound == nullptr) return E_FAIL;
+
+	// サウンド再生
+	pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
+
 	return S_OK;
 }
 //=============================================================================
