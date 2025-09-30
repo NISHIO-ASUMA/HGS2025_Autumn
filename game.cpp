@@ -86,9 +86,9 @@ HRESULT CGame::Init(void)
 	CScore::Create(D3DXVECTOR3(1240.0f, 660.0f, 0.0f), 180.0f, 60.0f);
 
 	// フィールド生成
-	CMeshField::Create(VECTOR3_NULL, 1500.0f);
+	CMeshField::Create(D3DXVECTOR3(-20.0f,0.0f,27.0f), 1600.0f);
 
-	// 初期化
+	// スコアを初期化
 	CScore::DeleteScore();
 
 	// 初期化結果を返す
