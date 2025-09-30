@@ -72,6 +72,7 @@ public:
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
 	void SetLife(int nLife) { m_nLife = nLife; }
+
 	//*****************************************************************************
 	// getter関数
 	//*****************************************************************************
@@ -100,7 +101,7 @@ private:
 	int m_nNumModel;					// モデル(パーツ)の総数
 	int m_nLife;						// ライフ
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
-	CHpGauge* m_pHpGauge;					// ＨＰゲージへのポインタ
+	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
 
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;
@@ -187,13 +188,16 @@ public:
 		{
 			CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
 		}
-		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
+
+#ifdef _DEBUG
+		// HPを減らす
+		if (pKeyboard->GetTrigger(DIK_1))
 		{
 			int nLife = pPlayer->GetLife();
 			nLife--;
 			pPlayer->SetLife(nLife);
 		}
-
+#endif
 
 		pPlayer->SetMove(input.moveDir * PLAYER_SPEED);
 

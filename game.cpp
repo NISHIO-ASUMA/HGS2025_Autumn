@@ -17,6 +17,7 @@
 #include "player.h"
 #include "score.h"
 #include "meshfield.h"
+#include "enemy.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -72,6 +73,9 @@ HRESULT CGame::Init(void)
 
 	// プレイヤーの生成
 	CPlayer* player = CCharacterManager::GetInstance().AddCharacter<CPlayer>();
+
+	//
+	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEnemy::TYPE_NONE);
 
 	// キャラクターの初期化処理
 	CCharacterManager::GetInstance().InitAll();

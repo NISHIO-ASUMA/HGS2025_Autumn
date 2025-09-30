@@ -34,7 +34,7 @@ public:
 	void SetOffsetPos(const D3DXVECTOR3& pos) { m_OffsetPos = pos; }
 	void SetOffsetRot(const D3DXVECTOR3& rot) { m_OffsetRot = rot; }
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
-	void SetRot(D3DXVECTOR3 rot) { m_rot = D3DXToRadian(rot); }
+	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 
 	//*****************************************************************************
 	// getterä÷êî
