@@ -172,6 +172,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="meshcylinder.cpp" />
+    <ClCompile Include="meshdome.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="meshimpact.cpp" />
     <ClCompile Include="model.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="meshcylinder.h" />
+    <ClInclude Include="meshdome.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="meshimpact.h" />
     <ClInclude Include="model.h" />

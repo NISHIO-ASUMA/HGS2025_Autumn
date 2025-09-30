@@ -171,6 +171,7 @@ CConveniBlock::CConveniBlock()
 	SetType(TYPE_CONVENI);
 
 	m_nCntSpan = 0;
+	m_nSpanTime = ENEMY_SPAN;
 }
 //=============================================================================
 // コンビニブロックのデストラクタ
@@ -190,7 +191,7 @@ void CConveniBlock::Update(void)
 	m_nCntSpan--;
 	if (m_nCntSpan <= 0)
 	{
-		m_nCntSpan = ENEMY_SPAN;
+		m_nCntSpan = m_nSpanTime;
 
 		auto now = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 		size_t seed = static_cast<size_t>(now) ^ reinterpret_cast<size_t>(this);
@@ -217,6 +218,11 @@ void CConveniBlock::Update(void)
 	//// パーティクル生成
 	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(0.8f, 0.5f, 0.1f, 0.8f), 8, 1);
 	//CParticle::Create<CFireParticle>(VECTOR3_NULL, worldOffset, D3DXCOLOR(1.0f, 0.5f, 0.0f, 0.8f), 15, 1);
+}
+
+void CConveniBlock::AddSpan(void)
+{
+	
 }
 
 //=============================================================================

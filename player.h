@@ -37,7 +37,7 @@ class CPlayer_JumpState;
 #define PLAYER_LIFE (10)
 #define PLAYER_BULLET (100)
 #define PLAYER_HITTIME (60)
-#define PLAYER_CHARGETIME (180)
+#define PLAYER_CHARGETIME (90)
 #define CHARGE_VEC (8)
 
 // 入力データ構造体

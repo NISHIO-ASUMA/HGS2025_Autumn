@@ -88,13 +88,16 @@ void CChargeGauge::Update(void)
 	{
 		m_bUse = true;
 		m_nCntReset++;
-		m_Base += 0.05f;
-		if (m_nCntReset >= PLAYER_CHARGETIME)
-		{//ˆê’èŽžŠÔŒo‰ß‚Å’†g‚ð‚O‚É
-			pPlayer->ChargeShot();
-			m_nCntReset = 0;
-			m_bUse = false;
-			m_Base = 0;
+		if (m_nCntReset >= 60)
+		{
+			m_Base += 0.1f;
+			if (m_nCntReset >= PLAYER_CHARGETIME + 60)
+			{//ˆê’èŽžŠÔŒo‰ß‚Å’†g‚ð‚O‚É
+				pPlayer->ChargeShot();
+				m_nCntReset = 0;
+				m_bUse = false;
+				m_Base = 0;
+			}
 		}
 	}
 	else
