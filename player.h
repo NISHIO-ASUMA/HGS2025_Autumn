@@ -16,6 +16,8 @@
 #include "shadowS.h"
 #include "state.h"
 #include "manager.h"
+#include "gaugePlayer.h"
+#include "bullet.h"
 
 // 前方宣言
 class CPlayer_StandState;
@@ -30,6 +32,7 @@ class CPlayer_JumpState;
 #define MAX_JUMP_POWER	(330.3f)				// ジャンプ初速
 #define CAPSULE_RADIUS (18.5f)					// カプセルコライダーの半径
 #define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
+#define PLAYER_LIFE (10)
 
 // 入力データ構造体
 struct InputData
@@ -68,7 +71,7 @@ public:
 	void SetMotion(int type, int nBlendFrame);
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
-
+	void SetLife(int nLife) { m_nLife = nLife; }
 	//*****************************************************************************
 	// getter関数
 	//*****************************************************************************
@@ -78,6 +81,7 @@ public:
 	D3DXVECTOR3 GetMove(void) const { return m_move; }
 	CCapsuleCollider* GetCollider(void) { return m_pCollider; }
 	InputData GatherInput(void);
+	int GetLife(void) { return m_nLife; }
 
 private:
 	D3DXVECTOR3 m_pos;					// 位置
@@ -94,7 +98,9 @@ private:
 	CMotion* m_pMotion;					// モーションへのポインタ
 	int m_currentMotion;				// 現在のモーション
 	int m_nNumModel;					// モデル(パーツ)の総数
+	int m_nLife;						// ライフ
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
+	CHpGauge* m_pHpGauge;					// ＨＰゲージへのポインタ
 
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;
@@ -118,6 +124,23 @@ public:
 	{
 		// 入力を取得
 		InputData input = pPlayer->GatherInput();
+
+		CInputKeyboard* pKeyboard = CManager::GetInputKeyboard();	// キーボードの取得
+		CInputJoypad* pJoypad = CManager::GetJoyPad();				// ジョイパッドの取得
+
+		// ---------------------------
+		// 弾発射
+		// ---------------------------
+		if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
+		{
+			CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
+		}
+		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
+		{
+			int nLife = pPlayer->GetLife();
+			nLife--;
+			pPlayer->SetLife(nLife);
+		}
 
 		// 移動入力がある場合
 		if (input.moveDir.x != 0.0f || input.moveDir.z != 0.0f)
@@ -153,6 +176,24 @@ public:
 	{
 		// 入力を取得
 		InputData input = pPlayer->GatherInput();
+
+		CInputKeyboard* pKeyboard = CManager::GetInputKeyboard();	// キーボードの取得
+		CInputJoypad* pJoypad = CManager::GetJoyPad();				// ジョイパッドの取得
+
+		// ---------------------------
+		// 弾発射
+		// ---------------------------
+		if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
+		{
+			CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
+		}
+		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
+		{
+			int nLife = pPlayer->GetLife();
+			nLife--;
+			pPlayer->SetLife(nLife);
+		}
+
 
 		pPlayer->SetMove(input.moveDir * PLAYER_SPEED);
 

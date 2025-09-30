@@ -97,7 +97,7 @@ void CRanking::Update(void)
 		if (pFade == nullptr) return;
 
 		// ‰æ–Ê‘JˆÚ
-		pFade->SetFade(new CTitle(true));
+		pFade->SetFade(new CTitle());
 
 		return;
 	}

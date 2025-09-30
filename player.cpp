@@ -12,7 +12,6 @@
 #include "texture.h"
 #include "model.h"
 #include "game.h"
-#include "bullet.h"
 
 // 名前空間stdの使用
 using namespace std;
@@ -41,6 +40,8 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 	{
 		m_apModel[nCnt] = {};							// モデル(パーツ)へのポインタ
 	}
+	m_pHpGauge = nullptr;								// ＨＰゲージへのポインタ
+	m_nLife = 0;										// ライフ
 }
 //=============================================================================
 // デストラクタ
@@ -106,6 +107,11 @@ HRESULT CPlayer::Init(void)
 	// カプセルの中心 = 足元 + オフセット
 	m_colliderPos = m_pos + D3DXVECTOR3(0, m_pCollider->GetHeight() * 0.5f, 0);
 
+	// ライフ
+	m_nLife = PLAYER_LIFE;
+	// ＨＰゲージ生成
+	m_pHpGauge = CHpGauge::Create(D3DXVECTOR3(50.0f, 40.0f, 0.0f), PLAYER_LIFE, GAUGE_Y, D3DCOLOR_RGBA(1, 255, 1, 255));
+
 	return S_OK;
 }
 //=============================================================================
@@ -155,9 +161,6 @@ void CPlayer::Update(void)
 	// カメラモードの取得
 	CCamera::MODE camMode = pCamera->GetMode();
 
-	// 入力判定の取得
-	InputData input = GatherInput();
-
 	// ステートマシン更新
 	m_stateMachine.Update();
 
@@ -168,6 +171,9 @@ void CPlayer::Update(void)
 		// コライダーの更新
 		m_pCollider->UpdateTransform(m_colliderPos, VECTOR3_NULL, VECTOR3_NULL);
 	}
+
+	// 入力判定の取得
+	InputData input = GatherInput();
 
 	D3DXVECTOR3 targetMove = input.moveDir * PLAYER_SPEED;
 
@@ -261,13 +267,13 @@ InputData CPlayer::GatherInput(void)
 	D3DXVECTOR3 CamRot = pCamera->GetRot();						// カメラ角度の取得
 	CCamera::MODE camMode = pCamera->GetMode();					// カメラモードの取得
 
-	// ---------------------------
-	// 弾発射
-	// ---------------------------
-	if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
-	{
-		CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
-	}
+	//// ---------------------------
+	//// 弾発射
+	//// ---------------------------
+	//if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
+	//{
+	//	CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);
+	//}
 
 	// ---------------------------
 	// ゲームパッド入力

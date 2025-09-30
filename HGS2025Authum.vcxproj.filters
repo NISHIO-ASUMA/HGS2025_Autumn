@@ -144,10 +144,17 @@
     <ClCompile Include="bullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="resultmanager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="resultscore.cpp">
+=======
+    <ClCompile Include="gauge.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="gaugePlayer.cpp">
+>>>>>>> c13d477b50a382809f633ee6f9abce4cd33cea3e
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,10 +303,17 @@
     <ClInclude Include="bullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="resultmanager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="resultscore.h">
+=======
+    <ClInclude Include="gauge.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gaugePlayer.h">
+>>>>>>> c13d477b50a382809f633ee6f9abce4cd33cea3e
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
