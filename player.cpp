@@ -318,6 +318,9 @@ InputData CPlayer::GatherInput(void)
 		input.moveDir += D3DXVECTOR3(-cosf(CamRot.y), 0, sinf(CamRot.y));
 	}
 
+	// ---------------------------
+	// ’e”­ŽË
+	// ---------------------------
 	if (pKeyboard->GetTrigger(DIK_SPACE))
 	{
 		CBullet::Create(m_pos, m_rot, CBullet::USER_PLAYER);

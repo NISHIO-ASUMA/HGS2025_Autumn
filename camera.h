@@ -29,6 +29,7 @@ public:
 	void Update(void);
 	void SetCamera(void);
 	void EditCamera(void);
+	void PlayCamera(void);
 
 	//*****************************************************************************
 	// setterä÷êî
