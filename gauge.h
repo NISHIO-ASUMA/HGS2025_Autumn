@@ -14,18 +14,18 @@
 #include "object.h"
 
 // マクロ定義
-#define GAUGE_X (20)
+#define GAUGE_X (50)
 #define GAUGE_Y (20)
 
 // ゲージクラス
-class CGauge : public CObject
+class CGauge
 {
 public:
 
 	// メンバ関数
-	CGauge(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
+	CGauge();
 	~CGauge();
-	HRESULT Init(void);
+	HRESULT Init(D3DXVECTOR3 pos, float base, float fHeight, D3DXCOLOR col);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
@@ -37,7 +37,7 @@ public:
 	void Set();
 
 	// 静的メンバ関数
-	static CGauge* Create(D3DXVECTOR3 pos, int base, float fHeight, D3DXCOLOR col);
+	static CGauge* Create(D3DXVECTOR3 pos, float base, float fHeight, D3DXCOLOR col);
 
 private:
 	// メンバ変数
@@ -47,7 +47,8 @@ private:
 	float m_Base;						// 基準
 	float m_fHeight;					// 高さ
 	float m_rate;						// レート
-	static int m_nIdxTexture;						// テクスチャのインデックス番号
+
+	static int m_nIdxTexture;			// テクスチャのインデックス番号
 
 };
 #endif

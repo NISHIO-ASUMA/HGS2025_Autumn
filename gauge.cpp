@@ -11,15 +11,13 @@
 #include "texture.h"
 //
 int CGauge::m_nIdxTexture = 0;
-
 //==================
 // コンストラクタ
 //==================
-CGauge::CGauge(int nPriority) : CObject(nPriority)
+CGauge::CGauge()
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_pVtxBuff = NULL;
-	m_nIdxTexture = 0;
 	m_Base = 0;
 	m_fHeight = 0;
 }
@@ -32,19 +30,20 @@ CGauge::~CGauge()
 //===========
 // 生成処理
 //===========
-CGauge* CGauge::Create(D3DXVECTOR3 pos, int base, float fHeight, D3DXCOLOR col)
+CGauge* CGauge::Create(D3DXVECTOR3 pos, float base, float fHeight, D3DXCOLOR col)
 {
-	CGauge* pGause = new CGauge;
-
+	CGauge* pGause;
+	//
+	pGause = new CGauge;
 	//初期化
-	if (FAILED(pGause->Init()))
+	if (FAILED(pGause->Init(pos, base, fHeight, col)))
 	{
 		delete pGause;
 		return nullptr;
 	}
 
 	//テクスチャ割り当て
-	std::string TexName = "data\\TEXTURE\\gauge00.jpeg";
+	std::string TexName  = "data\\TEXTURE\\gauge00.jpeg";
 
 	// テクスチャポインタ取得
 	CTexture* pTexture = CManager::GetTexture();
@@ -63,19 +62,24 @@ CGauge* CGauge::Create(D3DXVECTOR3 pos, int base, float fHeight, D3DXCOLOR col)
 //=============
 // 初期化処理
 //=============
-HRESULT CGauge::Init(void)
+HRESULT CGauge::Init(D3DXVECTOR3 pos, float base, float fHeight, D3DXCOLOR col)
 {
 	//デバイスの取得
 	CRenderer* pRenderer = CManager::GetRenderer();
 	LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();
 
+	m_pos = pos;
+	m_Base = base;
+	m_fHeight = fHeight;
+	m_col = col;
+
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
-		                        D3DUSAGE_WRITEONLY,
-		                        FVF_VERTEX_2D,
-		                        D3DPOOL_MANAGED,
-		                        &m_pVtxBuff,
-		                        NULL);
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,
+		D3DPOOL_MANAGED,
+		&m_pVtxBuff,
+		NULL);
 	Set();
 
 	return S_OK;
@@ -113,7 +117,7 @@ void CGauge::Draw(void)
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
-	
+
 	// テクスチャ戻す
 	pDevice->SetTexture(0, CManager::GetTexture()->GetAddress(m_nIdxTexture));
 

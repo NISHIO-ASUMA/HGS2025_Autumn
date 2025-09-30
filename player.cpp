@@ -13,6 +13,7 @@
 #include "model.h"
 #include "game.h"
 #include "bullet.h"
+#include "gaugePlayer.h"
 
 // 名前空間stdの使用
 using namespace std;
@@ -109,9 +110,9 @@ HRESULT CPlayer::Init(void)
 	m_colliderPos = m_pos + D3DXVECTOR3(0, m_pCollider->GetHeight() * 0.5f, 0);
 
 	// ライフ
-	m_nLife = 10;
-	// ＨＰゲージ
-	m_pHpGauge = CGauge::Create(D3DXVECTOR3(50.0f, 40.0f, 0.0f), m_nLife, 20, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
+	m_nLife = PLAYER_LIFE;
+	// ＨＰゲージ生成
+	m_pHpGauge = CHpGauge::Create(D3DXVECTOR3(50.0f, 40.0f, 0.0f), PLAYER_LIFE, GAUGE_Y, D3DCOLOR_RGBA(1, 255, 1, 255));
 
 	return S_OK;
 }

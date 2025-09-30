@@ -16,7 +16,7 @@
 #include "shadowS.h"
 #include "state.h"
 #include "manager.h"
-#include "gauge.h"
+#include "gaugePlayer.h"
 
 // 前方宣言
 class CPlayer_StandState;
@@ -31,6 +31,7 @@ class CPlayer_JumpState;
 #define MAX_JUMP_POWER	(330.3f)				// ジャンプ初速
 #define CAPSULE_RADIUS (18.5f)					// カプセルコライダーの半径
 #define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
+#define PLAYER_LIFE (10)
 
 // 入力データ構造体
 struct InputData
@@ -79,6 +80,7 @@ public:
 	D3DXVECTOR3 GetMove(void) const { return m_move; }
 	CCapsuleCollider* GetCollider(void) { return m_pCollider; }
 	InputData GatherInput(void);
+	int GetLife(void) { return m_nLife; }
 
 private:
 	D3DXVECTOR3 m_pos;					// 位置
@@ -97,7 +99,7 @@ private:
 	int m_nNumModel;					// モデル(パーツ)の総数
 	int m_nLife;						// ライフ
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
-	CGauge* m_pHpGauge;					// ＨＰゲージへのポインタ
+	CHpGauge* m_pHpGauge;					// ＨＰゲージへのポインタ
 
 	// ステートを管理するクラスのインスタンス
 	StateMachine<CPlayer> m_stateMachine;
