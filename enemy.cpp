@@ -373,8 +373,6 @@ bool CEnemy::CollRadius(CObject* pObj, CObject::TYPE type)
 				//’e‚Æ“G‚Ì‘Š«‚ð’²‚×‚é
 				//“G‚Éƒ_ƒ[ƒW
 				Hit(1);
-				//’e‚ðÁ‚·
-				pBullet->SetUse(false);
 			}
 		}
 	}

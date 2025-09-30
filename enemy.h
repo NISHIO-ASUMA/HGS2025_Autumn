@@ -19,7 +19,7 @@
 class CShadow;
 
 // É}ÉNÉçíËã`
-#define ENEMY_LIFE (3)
+#define ENEMY_LIFE (1)
 #define ENEMY_ACTIONSTATE (300)
 #define ENEMY_SPEED (1.35f)
 #define ENEMY_SPAN (420)

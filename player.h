@@ -35,6 +35,9 @@ class CPlayer_JumpState;
 #define CAPSULE_HEIGHT (55z.5f)					// カプセルコライダーの高さ
 #define PLAYER_LIFE (10)
 #define PLAYER_BULLET (100)
+#define PLAYER_HITTIME (60)
+#define PLAYER_CHARGETIME (180)
+#define CHARGE_VEC (8)
 
 // 入力データ構造体
 struct InputData
@@ -67,6 +70,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Hit(int nDamage);
+	void ChargeShot(void);
 
 	//*****************************************************************************
 	// setter関数
@@ -106,6 +110,8 @@ private:
 	int m_nNumModel;					// モデル(パーツ)の総数
 	int m_nLife;						// ライフ
 	int m_nCntBullet;
+	int m_nCntHitTime;
+	int m_nCntCharge;
 	CCapsuleCollider* m_pCollider;		// カプセルコライダー
 	CHpGauge* m_pHpGauge;				// ＨＰゲージへのポインタ
 	CBulletCnt* m_pBulletCnt;
@@ -138,9 +144,9 @@ public:
 		// ---------------------------
 		// 弾発射
 		// ---------------------------
+		int nBullet = pPlayer->GetBullet();
 		if (pKeyboard->GetTrigger(DIK_SPACE) || pJoypad->GetTriggerR2())
 		{
-			int nBullet = pPlayer->GetBullet();
 			if (nBullet > 0)
 			{
 				CBullet::Create(pPlayer->GetPos(), pPlayer->GetRot(), CBullet::USER_PLAYER);
@@ -150,8 +156,13 @@ public:
 					nBullet = 0;
 				}
 			}
-			pPlayer->SetBullet(nBullet);
 		}
+		if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
+		{
+			pPlayer->ChargeShot();
+		}
+		pPlayer->SetBullet(nBullet);
+
 		if (pKeyboard->GetTrigger(DIK_1) || pJoypad->GetTriggerR2())
 		{
 			int nLife = pPlayer->GetLife();
@@ -213,6 +224,10 @@ public:
 				}
 			}
 			pPlayer->SetBullet(nBullet);
+		}
+		if (pKeyboard->GetPress(DIK_SPACE) || pJoypad->GetPressR2())
+		{
+			pPlayer->ChargeShot();
 		}
 
 #ifdef _DEBUG
