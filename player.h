@@ -66,6 +66,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void Hit(int nDamage);
 
 	//*****************************************************************************
 	// setter関数
@@ -87,7 +88,7 @@ public:
 	InputData GatherInput(void);
 	int GetLife(void) { return m_nLife; }
 	int GetBullet(void) { return m_nCntBullet; }
-
+	
 private:
 	D3DXVECTOR3 m_pos;					// 位置
 	D3DXVECTOR3 m_colliderPos;			// カプセル中心
