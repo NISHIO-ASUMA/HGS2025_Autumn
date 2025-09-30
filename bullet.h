@@ -19,7 +19,7 @@
 #define BULET_SIZE (30)
 #define BULLET_LIFE (200)
 #define BULLET_ATTACK (10)
-#define BULLET_SPEED (3.5f)
+#define BULLET_SPEED (7.5f)
 
 // ’eƒNƒ‰ƒX
 class CBullet:public CObjectX
@@ -56,6 +56,7 @@ public:
 	TYPE GetType(void) { return m_type; }
 	bool GetUse(void) { return m_bUse; }
 	bool GetSkill(void) { return m_bSkill; }
+	CModel* GetModel(void) { return m_pModel; }
 	// İ’è
 	void SetUser(USER user) { m_user = user; };
 	void SetUse(bool bUse) { m_bUse = bUse; }
@@ -66,6 +67,7 @@ public:
 
 private:
 	void Move(void);
+	void MoveBounce(void);
 	bool Collision(void);
 
 	// ƒƒ“ƒo•Ï”

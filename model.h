@@ -44,12 +44,13 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	D3DXVECTOR3 GetOffsetPos(void) const { return m_OffsetPos; }
 	D3DXVECTOR3 GetOffsetRot(void) const { return m_OffsetRot; }
-
+	D3DXVECTOR3 GetModelSize(void) { return m_modelSize; }
 private:
 	int* m_nIdxTexture;
 	D3DXVECTOR3 m_pos;					// 位置
 	D3DXVECTOR3 m_rot;					// 向き
 	D3DXVECTOR3 m_move;					// 移動量
+	D3DXVECTOR3 m_modelSize;			// 
 	LPD3DXMESH m_pMesh;					// メッシュへのポインタ
 	LPD3DXBUFFER m_pBuffMat;			// マテリアルへのポインタ
 	DWORD m_dwNumMat;					// マテリアル数

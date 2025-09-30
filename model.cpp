@@ -91,9 +91,30 @@ HRESULT CModel::Init(void)
 
 	// 最大値とかはいったんなし
 
+		// AABB計算用の最小・最大値初期化
+	D3DXVECTOR3 vMin(FLT_MAX, FLT_MAX, FLT_MAX);
+	D3DXVECTOR3 vMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+	// 最大値・最小値を求める
+	for (int nCnt = 0; nCnt < nNumVtx; nCnt++)
+	{
+		D3DXVECTOR3* p = (D3DXVECTOR3*)(pVtxBuff + sizeFVF * nCnt);
+
+		vMin.x = min(vMin.x, p->x);
+		vMin.y = min(vMin.y, p->y);
+		vMin.z = min(vMin.z, p->z);
+
+		vMax.x = max(vMax.x, p->x);
+		vMax.y = max(vMax.y, p->y);
+		vMax.z = max(vMax.z, p->z);
+	}
 
 	// 頂点バッファのアンロック
 	m_pMesh->UnlockVertexBuffer();
+
+	// 元サイズ = 最大 - 最小
+	m_modelSize = vMax - vMin;
+
 
 	D3DXMATERIAL* pMat;// マテリアルへのポインタ
 
@@ -114,6 +135,7 @@ HRESULT CModel::Init(void)
 			m_nIdxTexture[nCntMat] = -1;
 		}
 	}
+
 
 	return S_OK;
 }

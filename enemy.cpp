@@ -17,7 +17,7 @@ int CEnemy::m_nCntKill = 0;
 //==================
 // コンストラクタ
 //==================
-CEnemy::CEnemy(int nPriority) :CObject(nPriority)
+CEnemy::CEnemy(int nPriority) :CObjectX(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -78,13 +78,11 @@ HRESULT CEnemy::Init(void)
 	m_fRandomAngle = D3DXToRadian(rand() % 360);
 
 	//モデル生成
-	const char* pFilename = "data/MODELS/convenience_store00.x";
+	const char* pFilename = "data/MODELS/tornado00.x";
 
 	m_pModel = CModel::Create(pFilename, m_pos, m_rot);
-	
-	m_posHalf = D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y / 2), m_pos.z);
 
-	m_pos.y += m_posHalf.y * 2.0f;
+	m_posHalf = D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y / 2), m_pos.z);
 
 	float GeuseBase = m_nLife / 10.0f;
 	//m_pGauge = CEnemyGauge::Create(D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y / 1.5f), m_pos.z), GeuseBase, 5.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
@@ -118,81 +116,81 @@ void CEnemy::Uninit(void)
 //============
 void CEnemy::Update(void)
 {
-		if (m_bUse == true)
+	if (m_bUse == true)
+	{
+		float rate = (float)m_nLife / (float)ENEMY_LIFE;
+		rate = max(0.0f, min(rate, 1.0f));
+
+		//m_pGauge->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y * 1.5f), m_pos.z));
+		//m_pGauge->SetRate(rate);
+
+		switch (m_State)
 		{
-			float rate = (float)m_nLife / (float)ENEMY_LIFE;
-			rate = max(0.0f, min(rate, 1.0f));
+		case STATE_STAY:
+			//移動
+			Move();
+			break;
+		case STATE_MOVE:
+			//移動
+			Move();
+			break;
+		case STATE_HIT:
 
-			//m_pGauge->SetPos(D3DXVECTOR3(m_pos.x, m_pos.y + (m_size.y * 1.5f), m_pos.z));
-			//m_pGauge->SetRate(rate);
+			break;
 
-			switch (m_State)
-			{
-			case STATE_STAY:
-				//移動
-				Move();
-				break;
-			case STATE_MOVE:
-				//移動
-				Move();
-				break;
-			case STATE_HIT:
-
-				break;
-
-			default:
-				break;
-			}
-
-			//if (m_State != STATE_HIT)
-			//{
-			//}
-			//if (m_State == STATE_STAY)
-			//{
-			//	m_pGauge->SetDraw(false);
-			//}
-			//else
-			//{
-			//	m_pGauge->SetDraw(true);
-			//}
-
-			//当たり判定
-			Collision();
-
-			//寿命
-			if (m_nLife <= 0)
-			{
-				m_bUse = false;
-				//m_pGauge->SetDraw(false);
-			}
+		default:
+			break;
 		}
-		else if (m_bUse == false)
-		{//使っていないなら
-			Uninit();
+
+		//if (m_State != STATE_HIT)
+		//{
+		//}
+		//if (m_State == STATE_STAY)
+		//{
+		//	m_pGauge->SetDraw(false);
+		//}
+		//else
+		//{
+		//	m_pGauge->SetDraw(true);
+		//}
+
+		//当たり判定
+		Collision();
+
+		//寿命
+		if (m_nLife <= 0)
+		{
+			m_bUse = false;
+			//m_pGauge->SetDraw(false);
 		}
+	}
+	else if (m_bUse == false)
+	{//使っていないなら
+		Uninit();
+	}
 }
 //============
 // 描画処理
 //============
 void CEnemy::Draw(void)
 {
-		if (m_bUse == true)
-		{
-			//デバイスの取得
-			CRenderer* pRenderer = CManager::GetRenderer();
-			LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();
+	if (m_bUse == true)
+	{
+		//デバイスの取得
+		CRenderer* pRenderer = CManager::GetRenderer();
+		LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();
 
-			//計算用マトリックス
-			D3DXMATRIX mtxRot, mtxTrans;
-			//ワールドマトリックスの初期化
-			D3DXMatrixIdentity(&m_mtxWorld);
+		//計算用マトリックス
+		D3DXMATRIX mtxRot, mtxTrans;
+		//ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld);
 
-			//ワールドマトリックスの設定
-			pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-			//モデル描画
-			m_pModel->Draw();
-		}
+		//モデル描画
+		m_pModel->Draw();
+	}
 }
 //===========
 // 移動処理
@@ -231,6 +229,11 @@ void CEnemy::Move(void)
 		m_move.y = 0.0f;
 	}
 
+	//if (m_type == TYPE_TORNADO)
+	{
+		m_rot.y += 0.5f;
+	}
+
 	m_pModel->SetPos(m_pos);
 	m_pModel->SetRot(m_rot);
 }
@@ -253,14 +256,6 @@ void CEnemy::Move_Normal(void)
 	//角度
 	float angle = atan2f(toPlayer.x, toPlayer.z);
 	m_rotDest.y = angle + D3DX_PI;
-}
-//====================
-// 敵との当たり判定
-//====================
-bool CEnemy::Collision(void)
-{
-
-	return false;
 }
 //================
 // ダメージ処理
@@ -299,4 +294,98 @@ void CEnemy::State(STATE state)
 //===================
 void CEnemy::ItemSet()
 {
+}
+//====================
+// 敵との当たり判定
+//====================
+bool CEnemy::Collision(void)
+{
+	bool bColl = false;
+
+	for (int nCnt = 0; nCnt < CObject::PRIORITY_MAX; nCnt++)
+	{
+		CObject* pObj = CObject::GetTop(nCnt);
+		while (pObj != NULL)
+		{
+			CObject* pObjNext = pObj->GetNext();
+			CObject::TYPE type = pObj->GetObjType();//タイプ取得
+			switch (type)
+			{
+			case CObject::TYPE_PLAYER:
+				//オブジェクトがプレイヤーなら
+				bColl = CollRadius(pObj, type);
+				break;
+			case CObject::TYPE_BULLET:
+				bColl = CollRadius(pObj, type);
+				break;
+			default:
+				break;
+			}
+			if (bColl == true)
+			{
+				return bColl;
+			}
+
+			pObj = pObjNext;
+		}
+	}
+
+	return bColl;
+}
+
+bool CEnemy::CollRadius(CObject* pObj, CObject::TYPE type)
+{
+	if (type == CObject::TYPE_PLAYER)
+	{
+		
+	}
+	else if (type == CObject::TYPE_BULLET)
+	{
+		CBullet* pBullet = (CBullet*)pObj;
+		bool bUse = pBullet->GetUse();
+		
+		if (bUse == true)
+		{
+			D3DXVECTOR3 BulletSize = pBullet->GetModel()->GetModelSize();
+			float BulletRadius = max(BulletSize.x, max(BulletSize.y, BulletSize.z)) * 0.5f;
+
+			D3DXVECTOR3 BulletPos = pBullet->GetPos();//位置取得
+
+			D3DXVECTOR3 enemySize = m_pModel->GetModelSize();
+			float EnemyRadius = max(enemySize.x, max(enemySize.y, enemySize.z)) * 0.5f;
+
+			//球での判定
+			bool bColl = Radius(m_pos, EnemyRadius, BulletPos, BulletRadius);
+			if (bColl == true)
+			{//当たったら
+				//弾と敵の相性を調べる
+				//敵にダメージ
+				Hit(1);
+				//弾を消す
+				pBullet->SetUse(false);
+			}
+		}
+
+	}
+
+	return false;
+}
+//
+//
+//
+bool CEnemy::Radius(D3DXVECTOR3 pos0, float radius0, D3DXVECTOR3 pos1, float radius1)
+{
+	//距離
+	float fDistance = (((pos1.x - pos0.x) * (pos1.x - pos0.x))
+		+ ((pos1.y - pos0.y) * (pos1.y - pos0.y))
+		+ ((pos1.z - pos0.z) * (pos1.z - pos0.z)));
+
+	//半径
+	float RADIUS = (radius0 + radius1) * (radius0 + radius1);
+
+	if (fDistance <= RADIUS)
+	{
+		return true;
+	}
+	return false;
 }
